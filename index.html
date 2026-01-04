@@ -159,7 +159,7 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+     style="background: url('https://api.dujin.org/bing/1920.php') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
@@ -272,6 +272,40 @@
     
 
     
+      <div class="col-lg-7 mx-auto nopadding-x-md">
+        <div class="container custom mx-auto">
+          <div id="aplayer" style="z-index: 9999;"></div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aplayer/1.10.1/APlayer.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aplayer/1.10.1/APlayer.min.js"></script>
+
+<script defer type="text/javascript" 
+        color="255,255,255" 
+        opacity="1" 
+        zIndex="-1" 
+        count="120" 
+        src="https://cdnjs.cloudflare.com/ajax/libs/canvas-nest.js/1.0.1/canvas-nest.min.js">
+</script>
+
+<script>
+  var OriginTitile = document.title;
+  var titleTime;
+  document.addEventListener('visibilitychange', function () {
+      if (document.hidden) {
+          document.title = '👀 记得回来看看我~ ' + OriginTitile;
+          clearTimeout(titleTime);
+      }
+      else {
+          document.title = '🌈 欢迎回来！' + OriginTitile;
+          titleTime = setTimeout(function () {
+              document.title = OriginTitile;
+          }, 2000);
+      }
+  });
+</script>
+
+        </div>
+      </div>
+    
   </main>
 
   <footer>
@@ -348,5 +382,5 @@
   <noscript>
     <div class="noscript-warning">Blog works best with JavaScript enabled</div>
   </noscript>
-</body>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"position":"right","width":150,"height":300,"hOffset":0,"vOffset":-20},"mobile":{"show":false},"react":{"opacity":0.8},"log":false});</script></body>
 </html>
