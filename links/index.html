@@ -296,10 +296,20 @@
     
       <div class="col-lg-7 mx-auto nopadding-x-md">
         <div class="container custom mx-auto">
-          <div id="aplayer"></div>
+          <div id="aplayer" style="position: fixed; bottom: 0; left: 0; z-index: 9999;"></div>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aplayer/1.10.1/APlayer.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/aplayer/1.10.1/APlayer.min.js"></script>
+
+<style>
+  .aplayer-fixed {
+    z-index: 9999 !important; /* 强制最高层级 */
+  }
+  /* 修复歌词可能被遮挡的问题 */
+  .aplayer-lrc {
+    z-index: 9999 !important;
+  }
+</style>
 
 <script defer type="text/javascript" 
     src="https://cdnjs.cloudflare.com/ajax/libs/canvas-nest.js/1.0.1/canvas-nest.min.js" 
@@ -323,10 +333,8 @@
               name: 'The Truth That You Leave',
               artist: 'Pianoboy',
               url: 'https://music.163.com/song/media/outer/url?id=139774.mp3',
-              
-              // 【重要修改】：加了 ?v=2 强制刷新
-              // 请确认你的 E:\MyBlog\source\img\ 下面真的有一个叫 bg.gif 的文件
-              cover: '/img/bg.gif?v=2'
+              // 【重要提醒】：请务必确认你的 E:\MyBlog\source\img\ 下面有一个叫 bg.gif 的文件
+              cover: '/img/bg.gif?v=3'
           }
       ]
   });
