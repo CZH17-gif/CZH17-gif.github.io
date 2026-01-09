@@ -19,21 +19,26 @@
   <meta name="author" content="CZH">
   <meta name="keywords" content="">
   
-    <meta name="description" content="👋 你好，我是 CZH这里是我的技术修炼基地。目前我正在从零开始构建自己的全栈知识体系。 🛠️ 我的技术栈 前端: HTML &#x2F; CSS &#x2F; JavaScript (正在学习) 工具: Git &#x2F; VS Code &#x2F; Hexo 后端: Node.js (环境搭建已通关)  📮 联系我 GitHub: https:&#x2F;&#x2F;github.com&#x2F;CZH17-g">
-<meta property="og:type" content="website">
-<meta property="og:title" content="关于">
-<meta property="og:url" content="https://czh17-gif.github.io/about/index.html">
+    <meta name="description" content="🚨 为什么必须备份源码？很多博主只做了 hexo d，这只是把生成的网页结果传到了网上。真正的核心资产——你的 Markdown 原稿、精心调教的 _config.yml 配置、主题魔改代码——依然只存在于你本地的电脑里。 一旦电脑损坏或重装系统，你将失去一切。因此，构建私有源码仓库是必选项。 🧠 Git 的核心原理（避坑指南）在执行 Git 指令前，必须理解它的工作机制，否则容易弄乱电脑文件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从零构建全栈知识库 (2)：Git 原理深度解析与源码备份实战">
+<meta property="og:url" content="https://czh17-gif.github.io/2026/01/08/git-workflow-and-backup(2)/index.html">
 <meta property="og:site_name" content="CZH--全栈成长之路">
-<meta property="og:description" content="👋 你好，我是 CZH这里是我的技术修炼基地。目前我正在从零开始构建自己的全栈知识体系。 🛠️ 我的技术栈 前端: HTML &#x2F; CSS &#x2F; JavaScript (正在学习) 工具: Git &#x2F; VS Code &#x2F; Hexo 后端: Node.js (环境搭建已通关)  📮 联系我 GitHub: https:&#x2F;&#x2F;github.com&#x2F;CZH17-g">
+<meta property="og:description" content="🚨 为什么必须备份源码？很多博主只做了 hexo d，这只是把生成的网页结果传到了网上。真正的核心资产——你的 Markdown 原稿、精心调教的 _config.yml 配置、主题魔改代码——依然只存在于你本地的电脑里。 一旦电脑损坏或重装系统，你将失去一切。因此，构建私有源码仓库是必选项。 🧠 Git 的核心原理（避坑指南）在执行 Git 指令前，必须理解它的工作机制，否则容易弄乱电脑文件">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2026-01-04T13:53:05.000Z">
-<meta property="article:modified_time" content="2026-01-04T13:55:27.189Z">
+<meta property="og:image" content="https://czh17-gif.github.io/img/bg.gif">
+<meta property="article:published_time" content="2026-01-08T06:00:00.000Z">
+<meta property="article:modified_time" content="2026-01-08T10:08:42.149Z">
 <meta property="article:author" content="CZH">
+<meta property="article:tag" content="Git">
+<meta property="article:tag" content="备份">
+<meta property="article:tag" content="自动化">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://czh17-gif.github.io/img/bg.gif">
   
   
   
-  <title>关于 - CZH--全栈成长之路</title>
+  <title>从零构建全栈知识库 (2)：Git 原理深度解析与源码备份实战 - CZH--全栈成长之路</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -93,7 +98,7 @@
   <header>
     
 
-<div class="header-inner" style="height: 60vh;">
+<div class="header-inner" style="height: 70vh;">
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
@@ -175,9 +180,49 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="关于"></span>
+            <span id="subtitle" data-typed-text="从零构建全栈知识库 (2)：Git 原理深度解析与源码备份实战"></span>
           
         </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-01-08 14:00" pubdate>
+          2026年1月8日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          444 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          4 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
 
         
       </div>
@@ -193,89 +238,188 @@
 
   <main>
     
-      <div class="container nopadding-x-md">
-        <div id="board"
-          >
-          
-            <div class="about-avatar">
-              <img src="/img/avatar.jpg" srcset="/img/loading.gif" lazyload class="img-fluid" alt="avatar">
-            </div>
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
+      
 
-<div class="text-center">
-  <div class="about-info">
-    <div class="about-name">CZH</div>
-    <div class="about-intro">全栈成长之路</div>
-    <div class="about-icons">
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
       
-        
-        
-        
-        <a href=https://github.com class="
-           hint--bottom hint--rounded"
-           aria-label="GitHub"
-           target="_blank"
-        >
-          <i class="iconfont icon-github-fill" aria-hidden="true"></i>
-          
-        </a>
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">从零构建全栈知识库 (2)：Git 原理深度解析与源码备份实战</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="🚨-为什么必须备份源码？"><a href="#🚨-为什么必须备份源码？" class="headerlink" title="🚨 为什么必须备份源码？"></a>🚨 为什么必须备份源码？</h2><p>很多博主只做了 <code>hexo d</code>，这只是把生成的<strong>网页结果</strong>传到了网上。<br>真正的<strong>核心资产</strong>——你的 Markdown 原稿、精心调教的 <code>_config.yml</code> 配置、主题魔改代码——依然只存在于你本地的电脑里。</p>
+<p>一旦电脑损坏或重装系统，你将失去一切。因此，<strong>构建私有源码仓库</strong>是必选项。</p>
+<h2 id="🧠-Git-的核心原理（避坑指南）"><a href="#🧠-Git-的核心原理（避坑指南）" class="headerlink" title="🧠 Git 的核心原理（避坑指南）"></a>🧠 Git 的核心原理（避坑指南）</h2><p>在执行 Git 指令前，必须理解它的工作机制，否则容易弄乱电脑文件。</p>
+<h3 id="1-git-文件夹：时光机盒子"><a href="#1-git-文件夹：时光机盒子" class="headerlink" title="1. .git 文件夹：时光机盒子"></a>1. <code>.git</code> 文件夹：时光机盒子</h3><p>当你执行 <code>git init</code> 时，Git 会在<strong>当前文件夹</strong>下创建一个隐藏的 <code>.git</code> 文件夹。</p>
+<ul>
+<li>它存储了该文件夹下所有文件的<strong>快照</strong>和<strong>历史变更记录</strong>。</li>
+<li><strong>重要原则</strong>：Git 是“在这个文件夹里建仓库”，它不会占用其他盘的空间。</li>
+</ul>
+<h3 id="2-这里的坑：不要在-C-盘或桌面操作！"><a href="#2-这里的坑：不要在-C-盘或桌面操作！" class="headerlink" title="2. 这里的坑：不要在 C 盘或桌面操作！"></a>2. 这里的坑：不要在 C 盘或桌面操作！</h3><ul>
+<li><strong>错误示范</strong>：打开 Git Bash 直接 <code>git init</code>。这会在 <code>C:\Users\用户名</code> 下建仓库，导致你的桌面、文档所有文件都被吸入 Git，占用大量 C 盘空间。</li>
+<li><strong>正确做法</strong>：必须先 <code>cd /e/MyBlog</code> 进入你的博客目录。建议将项目放在 <strong>D盘</strong> 或 <strong>E盘</strong>，数据更安全，且不占系统盘空间。</li>
+</ul>
+<h2 id="🛠️-实战：如何备份源码到私有仓库"><a href="#🛠️-实战：如何备份源码到私有仓库" class="headerlink" title="🛠️ 实战：如何备份源码到私有仓库"></a>🛠️ 实战：如何备份源码到私有仓库</h2><h3 id="第一步：创建仓库"><a href="#第一步：创建仓库" class="headerlink" title="第一步：创建仓库"></a>第一步：创建仓库</h3><p>在 GitHub 上新建一个仓库，命名为 <code>my-blog-source</code>，<strong>务必勾选 Private (私有)</strong>，保护隐私。</p>
+<h3 id="第二步：建立连接（仅需一次）"><a href="#第二步：建立连接（仅需一次）" class="headerlink" title="第二步：建立连接（仅需一次）"></a>第二步：建立连接（仅需一次）</h3><p>在博客根目录 (<code>E:\MyBlog</code>) 打开终端：</p>
+<pre><code class="language-bash"># 1. 初始化本地仓库
+git init
+
+# 2. 关联远程私有库 (注意换成你的 SSH 地址)
+git remote add origin-source git@github.com:CZH17-gif/my-blog-source.git
+
+# 3. 统一分支名为 main
+git branch -M main
+</code></pre>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
       
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
         
-        
-        
-        <a href=https://douban.com class="
-           hint--bottom hint--rounded"
-           aria-label="豆瓣"
-           target="_blank"
-        >
-          <i class="iconfont icon-douban-fill" aria-hidden="true"></i>
-          
-        </a>
+  <a href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%B3%BB%E5%88%97/" class="category-chain-item">博客搭建系列</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
       
-        
-        
-        
-        <a  class="qr-trigger
-           "
-           
-           target="_self"
-        >
-          <i class="iconfont icon-wechat-fill" aria-hidden="true"></i>
-          
-            <img class="qr-img" src="/img/favicon.png" srcset="/img/loading.gif" lazyload alt="qrcode" />
-          
-        </a>
+        <a href="/tags/Git/" class="print-no-link">#Git</a>
       
+        <a href="/tags/%E8%87%AA%E5%8A%A8%E5%8C%96/" class="print-no-link">#自动化</a>
+      
+        <a href="/tags/%E5%A4%87%E4%BB%BD/" class="print-no-link">#备份</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>从零构建全栈知识库 (2)：Git 原理深度解析与源码备份实战</div>
+      <div>https://czh17-gif.github.io/2026/01/08/git-workflow-and-backup(2)/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>CZH</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年1月8日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/01/08/why-i-build-blog/" title="拒绝“学了就忘”：小白从零搭建个性化全栈博客">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">拒绝“学了就忘”：小白从零搭建个性化全栈博客</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/01/08/blog-architecture-and-logic(1)/" title="从零构建全栈知识库 (1)：底层逻辑、架构选型与环境配置">
+                        <span class="hidden-mobile">从零构建全栈知识库 (1)：底层逻辑、架构选型与环境配置</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
     </div>
   </div>
 </div>
 
-<article class="about-content page-content mt-5">
-  <div class="markdown-body">
-    <h2 id="👋-你好，我是-CZH"><a href="#👋-你好，我是-CZH" class="headerlink" title="👋 你好，我是 CZH"></a>👋 你好，我是 CZH</h2><p>这里是我的技术修炼基地。目前我正在从零开始构建自己的全栈知识体系。</p>
-<h3 id="🛠️-我的技术栈"><a href="#🛠️-我的技术栈" class="headerlink" title="🛠️ 我的技术栈"></a>🛠️ 我的技术栈</h3><ul>
-<li><strong>前端</strong>: HTML &#x2F; CSS &#x2F; JavaScript (正在学习)</li>
-<li><strong>工具</strong>: Git &#x2F; VS Code &#x2F; Hexo</li>
-<li><strong>后端</strong>: Node.js (环境搭建已通关)</li>
-</ul>
-<h3 id="📮-联系我"><a href="#📮-联系我" class="headerlink" title="📮 联系我"></a>📮 联系我</h3><ul>
-<li><strong>GitHub</strong>: <a target="_blank" rel="noopener" href="https://github.com/CZH17-gif">https://github.com/CZH17-gif</a></li>
-<li><strong>Email</strong>: <a href="mailto:&#x32;&#x38;&#x34;&#53;&#x30;&#56;&#x38;&#51;&#52;&#x38;&#x40;&#x71;&#113;&#46;&#x63;&#x6f;&#109;">2845088348@qq.com</a></li>
-</ul>
-<blockquote>
-<p>“保持热爱，奔赴山海。”</p>
-</blockquote>
-<hr>
-
-  </div>
-
-  
-</article>
-
 
 
 
@@ -302,11 +446,8 @@
 
 
 
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
+
     
 
     
@@ -463,6 +604,46 @@
   
 
 
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
 
 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>

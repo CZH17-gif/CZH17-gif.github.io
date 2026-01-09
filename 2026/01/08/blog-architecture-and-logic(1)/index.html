@@ -1,0 +1,768 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="CZH">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="🚀 前言：为什么要做这个博客？在碎片化阅读的时代，我深感“学了忘，忘了学”的无力感。我需要一个完全属于自己的、个性化的、数据可控的知识沉淀基地。 我的需求很明确：  个性化：要有看板娘、背景音乐、动效，不能千篇一律。 低成本：拒绝每年几百块的服务器费用。 高安全：源码必须备份在私有仓库，电脑坏了也能一键恢复。 多端分发：以博客为基地，内容可一键同步至知乎、CSDN。  本文将复盘整个博客搭建的底">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从零构建全栈知识库 (1)：底层逻辑、架构选型与环境配置">
+<meta property="og:url" content="https://czh17-gif.github.io/2026/01/08/blog-architecture-and-logic(1)/index.html">
+<meta property="og:site_name" content="CZH--全栈成长之路">
+<meta property="og:description" content="🚀 前言：为什么要做这个博客？在碎片化阅读的时代，我深感“学了忘，忘了学”的无力感。我需要一个完全属于自己的、个性化的、数据可控的知识沉淀基地。 我的需求很明确：  个性化：要有看板娘、背景音乐、动效，不能千篇一律。 低成本：拒绝每年几百块的服务器费用。 高安全：源码必须备份在私有仓库，电脑坏了也能一键恢复。 多端分发：以博客为基地，内容可一键同步至知乎、CSDN。  本文将复盘整个博客搭建的底">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://czh17-gif.github.io/img/bg.gif">
+<meta property="article:published_time" content="2026-01-08T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-01-08T10:08:38.479Z">
+<meta property="article:author" content="CZH">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="SSH">
+<meta property="article:tag" content="建站逻辑">
+<meta property="article:tag" content="架构">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://czh17-gif.github.io/img/bg.gif">
+  
+  
+  
+  <title>从零构建全栈知识库 (1)：底层逻辑、架构选型与环境配置 - CZH--全栈成长之路</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"czh17-gif.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>CZH--全栈成长之路</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="从零构建全栈知识库 (1)：底层逻辑、架构选型与环境配置"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-01-08 10:00" pubdate>
+          2026年1月8日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          815 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          7 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">从零构建全栈知识库 (1)：底层逻辑、架构选型与环境配置</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="🚀-前言：为什么要做这个博客？"><a href="#🚀-前言：为什么要做这个博客？" class="headerlink" title="🚀 前言：为什么要做这个博客？"></a>🚀 前言：为什么要做这个博客？</h2><p>在碎片化阅读的时代，我深感“学了忘，忘了学”的无力感。我需要一个完全属于自己的、个性化的、数据可控的知识沉淀基地。</p>
+<p>我的需求很明确：</p>
+<ol>
+<li><strong>个性化</strong>：要有看板娘、背景音乐、动效，不能千篇一律。</li>
+<li><strong>低成本</strong>：拒绝每年几百块的服务器费用。</li>
+<li><strong>高安全</strong>：源码必须备份在私有仓库，电脑坏了也能一键恢复。</li>
+<li><strong>多端分发</strong>：以博客为基地，内容可一键同步至知乎、CSDN。</li>
+</ol>
+<p>本文将复盘整个博客搭建的<strong>底层逻辑</strong>与<strong>核心配置思路</strong>。</p>
+<h2 id="⚔️-技术选型：GitHub-Pages-vs-云服务器"><a href="#⚔️-技术选型：GitHub-Pages-vs-云服务器" class="headerlink" title="⚔️ 技术选型：GitHub Pages vs 云服务器"></a>⚔️ 技术选型：GitHub Pages vs 云服务器</h2><p>很多新手纠结是买服务器还是用免费托管，我的对比逻辑如下：</p>
+<table>
+<thead>
+<tr>
+<th align="left">维度</th>
+<th align="left">GitHub Pages (我的选择)</th>
+<th align="left">云服务器 (ECS&#x2F;VPS)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>费用</strong></td>
+<td align="left"><strong>0元 (永久免费)</strong></td>
+<td align="left">几百~几千元&#x2F;年</td>
+</tr>
+<tr>
+<td align="left"><strong>维护</strong></td>
+<td align="left"><strong>极低</strong> (只管写文章)</td>
+<td align="left"><strong>高</strong> (需维护Linux系统、Nginx、安全防护)</td>
+</tr>
+<tr>
+<td align="left"><strong>能力</strong></td>
+<td align="left">仅静态网页 (HTML&#x2F;CSS&#x2F;JS)</td>
+<td align="left">全能 (可跑数据库、后端程序)</td>
+</tr>
+<tr>
+<td align="left"><strong>适用</strong></td>
+<td align="left">个人博客、文档站</td>
+<td align="left">复杂应用、企业官网</td>
+</tr>
+</tbody></table>
+<p><strong>结论</strong>：对于纯内容输出的博客，GitHub Pages + Hexo 是性价比天花板。</p>
+<h2 id="🏗️-核心架构与环境准备"><a href="#🏗️-核心架构与环境准备" class="headerlink" title="🏗️ 核心架构与环境准备"></a>🏗️ 核心架构与环境准备</h2><p>这个博客并不是凭空产生的，它依赖两个核心工具：</p>
+<ol>
+<li><strong>Node.js</strong>：博客的“发动机”。Hexo 是基于 Node.js 运行的，它负责把你的 Markdown 文章“编译”成漂亮的 HTML 网页。</li>
+<li><strong>Git</strong>：博客的“运输车”。它负责把生成的网页推送到 GitHub (公网)，同时把源码备份到 私有仓库。</li>
+</ol>
+<h3 id="关键配置逻辑：SSH-密钥"><a href="#关键配置逻辑：SSH-密钥" class="headerlink" title="关键配置逻辑：SSH 密钥"></a>关键配置逻辑：SSH 密钥</h3><p>在连接 GitHub 时，有两种方式：HTTPS 和 SSH。</p>
+<ul>
+<li><strong>HTTPS</strong>：每次提交都要输账号密码（或 Token），非常繁琐。</li>
+<li><strong>SSH</strong>：配置一次“公钥私钥”，以后自动验证，安全且无感。</li>
+</ul>
+<p><strong>为什么必须配 SSH？</strong><br>因为我们要实现“一键自动化部署”。如果脚本跑到一半弹出来让你输密码，自动化就毫无意义了。</p>
+<p><strong>配置思路：</strong></p>
+<ol>
+<li>本地生成钥匙对：<code>ssh-keygen -t ed25519 -C &quot;邮箱&quot;</code></li>
+<li>把“公钥”交给 GitHub 后台。</li>
+<li>本地测试连通性：<code>ssh -T git@github.com</code></li>
+</ol>
+<h2 id="⚙️-配置文件逻辑：Fluid-主题的覆盖机制"><a href="#⚙️-配置文件逻辑：Fluid-主题的覆盖机制" class="headerlink" title="⚙️ 配置文件逻辑：Fluid 主题的覆盖机制"></a>⚙️ 配置文件逻辑：Fluid 主题的覆盖机制</h2><p>Hexo 的配置逻辑非常巧妙，分为两层：</p>
+<ol>
+<li><p><strong>站点配置 (<code>_config.yml</code>)</strong>：</p>
+<ul>
+<li>位于根目录。</li>
+<li>控制全局：网站标题、作者、URL、部署地址 (Deploy)、使用的框架等。</li>
+</ul>
+</li>
+<li><p><strong>主题配置 (<code>_config.fluid.yml</code>)</strong>：</p>
+<ul>
+<li><strong>重点</strong>：我使用的是 Fluid 主题。为了不修改主题原生文件（方便以后升级），我在根目录新建了这个文件。</li>
+<li><strong>覆盖逻辑</strong>：这里面的设置（如音乐播放器、封面图、看板娘）会<strong>覆盖</strong>主题默认的设置。</li>
+<li><strong>优势</strong>：以后不管怎么魔改，只需要动这一个文件，逻辑清晰，不乱改源码。</li>
+</ul>
+</li>
+</ol>
+<h2 id="🎯-总结"><a href="#🎯-总结" class="headerlink" title="🎯 总结"></a>🎯 总结</h2><p>搭建博客不仅仅是敲代码，更是理清思路的过程。<br>搞懂了 Node.js 负责生成，Git 负责传输，SSH 负责鉴权，配置负责个性化，接下来的实操就是水到渠成的事了。</p>
+<p>下一篇，我将详细讲解<strong>Git 的核心原理</strong>以及如何实现<strong>源码的自动化备份</strong>。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%B3%BB%E5%88%97/" class="category-chain-item">博客搭建系列</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%BB%BA%E7%AB%99%E9%80%BB%E8%BE%91/" class="print-no-link">#建站逻辑</a>
+      
+        <a href="/tags/Hexo/" class="print-no-link">#Hexo</a>
+      
+        <a href="/tags/SSH/" class="print-no-link">#SSH</a>
+      
+        <a href="/tags/%E6%9E%B6%E6%9E%84/" class="print-no-link">#架构</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>从零构建全栈知识库 (1)：底层逻辑、架构选型与环境配置</div>
+      <div>https://czh17-gif.github.io/2026/01/08/blog-architecture-and-logic(1)/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>CZH</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年1月8日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/01/08/git-workflow-and-backup(2)/" title="从零构建全栈知识库 (2)：Git 原理深度解析与源码备份实战">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">从零构建全栈知识库 (2)：Git 原理深度解析与源码备份实战</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+      <div class="col-lg-7 mx-auto nopadding-x-md">
+        <div class="container custom mx-auto">
+          <div id="aplayer" style="position: fixed; bottom: 0; left: 0; z-index: 9999;"></div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aplayer/1.10.1/APlayer.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aplayer/1.10.1/APlayer.min.js"></script>
+
+<style>
+  .aplayer-fixed {
+    z-index: 9999 !important; /* 强制最高层级 */
+  }
+  /* 修复歌词可能被遮挡的问题 */
+  .aplayer-lrc {
+    z-index: 9999 !important;
+  }
+</style>
+
+<script defer type="text/javascript" 
+    src="https://cdnjs.cloudflare.com/ajax/libs/canvas-nest.js/1.0.1/canvas-nest.min.js" 
+    color="255,255,255" opacity="0.6" zIndex="-1" count="150">
+</script>
+
+<script>
+  const ap = new APlayer({
+      container: document.getElementById('aplayer'),
+      fixed: true,        
+      mini: true,         
+      autoplay: false,
+      theme: '#2980b9',   
+      loop: 'all',
+      order: 'list',
+      preload: 'auto',
+      volume: 0.7,
+      listFolded: false,
+      audio: [
+          {
+              name: 'The Truth That You Leave',
+              artist: 'Pianoboy',
+              url: 'https://music.163.com/song/media/outer/url?id=139774.mp3',
+              // 【重要提醒】：请务必确认你的 E:\MyBlog\source\img\ 下面有一个叫 bg.gif 的文件
+              cover: '/img/bg.gif?v=3'
+          }
+      ]
+  });
+
+  // 动态标题
+  var OriginTitile = document.title;
+  var titleTime;
+  document.addEventListener('visibilitychange', function () {
+      if (document.hidden) {
+          document.title = '👀 记得回来看看我~ ' + OriginTitile;
+          clearTimeout(titleTime);
+      }
+      else {
+          document.title = '🌈 欢迎回来！' + OriginTitile;
+          titleTime = setTimeout(function () {
+              document.title = OriginTitile;
+          }, 2000);
+      }
+  });
+</script>
+
+        </div>
+      </div>
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+      © 2026 CZH17-gif
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"position":"right","width":150,"height":300,"hOffset":0,"vOffset":-20},"mobile":{"show":false},"react":{"opacity":0.8},"log":false});</script></body>
+</html>

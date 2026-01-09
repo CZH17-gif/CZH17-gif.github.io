@@ -4,13 +4,91 @@
   
   
   <entry>
-    <title>Hello World</title>
-    <link href="/2026/01/03/hello-world/"/>
-    <url>/2026/01/03/hello-world/</url>
+    <title>拒绝“学了就忘”：小白从零搭建个性化全栈博客</title>
+    <link href="/2026/01/08/why-i-build-blog/"/>
+    <url>/2026/01/08/why-i-build-blog/</url>
     
-    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo new <span class="hljs-string">&quot;My New Post&quot;</span><br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo server<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo generate<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo deploy<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
+    <content type="html"><![CDATA[<h2 id="🧐-困境：陷入“学了忘，忘了学”的怪圈"><a href="#🧐-困境：陷入“学了忘，忘了学”的怪圈" class="headerlink" title="🧐 困境：陷入“学了忘，忘了学”的怪圈"></a>🧐 困境：陷入“学了忘，忘了学”的怪圈</h2><p>曾经有很长的一段时间，我陷入了一种深深的自我怀疑。</p><p>我也曾努力的接触与学习新的技术和知识，但过了一段时间回头看，面对之前学过的知识，脑子里却空空如也。<strong>“学了忘，忘了学，再学再忘”</strong>，这种无限循环让我开始质疑学习的意义到底在哪里？</p><p>我觉得，<strong>记录，交流，总结对于学习非常重要，也希望与大家进行交流和讨论。</strong></p><p>因此一个完全属于我的、可以沉淀知识的本地博客就这样诞生了！。</p><h2 id="💡-我的理想博客长什么样？"><a href="#💡-我的理想博客长什么样？" class="headerlink" title="💡 我的理想博客长什么样？"></a>💡 我的理想博客长什么样？</h2><p>目前，我只想到了以下三点：</p><ol><li><p><strong>拒绝数据丢失，不依赖本地</strong>：<br>我希望它完全不依赖于本地电脑。哪怕有一天我的笔记本坏了，或者我换了新电脑，我只需要从云端的“私有仓库”里拉取配置文件，就能无缝衔接，继续写作。<strong>数据必须掌握在自己手里。</strong></p></li><li><p><strong>零成本，个性化</strong>：<br>作为一个技术尝鲜者，我不想为了写博客每年花费几百块去租云服务器。它必须是免费托管的，但同时不能简陋。我想要有趣的互动、想要背景音乐、想要炫酷的动效——<strong>它必须有个性，必须“像我”。</strong></p></li><li><p><strong>一次编写，高效转发</strong>：<br>我希望以这个博客为基地。在这里写好 Markdown 文章后，可以通过配置（或配合工具），轻松地分发到知乎、CSDN 等平台。不需要重复排版，只需要输入账号信息，让知识传播得更远。</p></li></ol><h2 id="⚔️-方案选择"><a href="#⚔️-方案选择" class="headerlink" title="⚔️ 方案选择"></a>⚔️ 方案选择</h2><h3 id="1-静态网页框架的选择：Hexo-vs-Hugo"><a href="#1-静态网页框架的选择：Hexo-vs-Hugo" class="headerlink" title="1. 静态网页框架的选择：Hexo vs Hugo"></a>1. 静态网页框架的选择：Hexo vs Hugo</h3><p>在决定框架时，我主要对比了静态博客界的两大巨头：<strong>Hexo</strong> 和 <strong>Hugo</strong>。</p><h3 id="Hexo（我现在的选择）"><a href="#Hexo（我现在的选择）" class="headerlink" title="Hexo（我现在的选择）"></a>Hexo（我现在的选择）</h3><ul><li><strong>优点</strong>：<ul><li><strong>生态极好</strong>：由台湾同胞开发，华人用户群体极其庞大。这意味着中文文档完善，中文主题（如我现在用的 Fluid、还有 Butterfly）非常丰富，审美完全在线。</li><li><strong>插件丰富</strong>：对于像我这样的小白，想加个 Live2D 看板娘、加个 APlayer 音乐播放器、搞个点击特效，搜一下插件就能搞定，配置简单。</li></ul></li><li><strong>缺点</strong>：<ul><li>是基于 Node.js 的，当文章数量达到几千篇时，生成速度会变慢。</li></ul></li></ul><h3 id="Hugo（未来的备选）"><a href="#Hugo（未来的备选）" class="headerlink" title="Hugo（未来的备选）"></a>Hugo（未来的备选）</h3><ul><li><strong>优点</strong>：<ul><li>基于 Go 语言，生成速度极快（毫秒级），安装也更简单（一个文件走天下）。</li></ul></li><li><strong>缺点</strong>：<ul><li>插件相对较少，折腾门槛高，主题修改需要学习 Go 模板语言。</li></ul></li></ul><h3 id="2-托管平台的选择：GitHub-Pages-vs-云服务器"><a href="#2-托管平台的选择：GitHub-Pages-vs-云服务器" class="headerlink" title="2. 托管平台的选择：GitHub Pages vs 云服务器"></a>2. 托管平台的选择：GitHub Pages vs 云服务器</h3><p>很多新手纠结是买服务器还是用免费托管，我的对比逻辑如下：</p><table><thead><tr><th align="left">维度</th><th align="left">GitHub Pages (我的选择)</th><th align="left">云服务器 (ECS&#x2F;VPS)</th></tr></thead><tbody><tr><td align="left"><strong>费用</strong></td><td align="left"><strong>0元 (永久免费)</strong></td><td align="left">几百~几千元&#x2F;年</td></tr><tr><td align="left"><strong>维护</strong></td><td align="left"><strong>极低</strong> (只管写文章)</td><td align="left"><strong>高</strong> (需维护Linux系统、Nginx、安全防护)</td></tr><tr><td align="left"><strong>能力</strong></td><td align="left">仅静态网页 (HTML&#x2F;CSS&#x2F;JS)</td><td align="left">全能 (可跑数据库、后端程序)</td></tr><tr><td align="left"><strong>适用</strong></td><td align="left">个人博客、文档站</td><td align="left">复杂应用、企业官网</td></tr></tbody></table><p><strong>结论</strong>：对于纯内容输出的博客，GitHub Pages + Hexo 是性价比天花板。</p><h3 id="🚀-最终决定"><a href="#🚀-最终决定" class="headerlink" title="🚀 最终决定"></a>🚀 最终决定</h3><p><strong>现阶段方案： 通过Hexo创建静态网页，然后上传到github免费托管。</strong></p><p>理由很简单：我现在正处于积累期，**“好用、好看、好配置”**能给我带来更多的写作动力。等未来某一天，我的文章真的积累到了几千篇，Hexo 撑不住的时候，说明我已经是一个资深博主了，那时候再迁移到 Hugo 进行技术升级也不迟。</p><h2 id="🌟-结语"><a href="#🌟-结语" class="headerlink" title="🌟 结语"></a>🌟 结语</h2><p>这个博客的上线，是我对抗遗忘的第一步，也是我全栈成长之路的起点。</p><p>哪怕它现在还很稚嫩，但<strong>开始</strong>本身就是最大的意义。欢迎大家常来做客，见证我的成长！</p><hr><blockquote><p><em>本文首发于 <a href="https://czh17-gif.github.io/">全栈成长之路</a>，转载请注明出处。</em></p></blockquote>]]></content>
     
     
+    <categories>
+      
+      <category>随笔</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Hexo</tag>
+      
+      <tag>思考</tag>
+      
+      <tag>建站</tag>
+      
+      <tag>个人成长</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>从零构建全栈知识库 (2)：Git 原理深度解析与源码备份实战</title>
+    <link href="/2026/01/08/git-workflow-and-backup(2)/"/>
+    <url>/2026/01/08/git-workflow-and-backup(2)/</url>
+    
+    <content type="html"><![CDATA[<h2 id="🚨-为什么必须备份源码？"><a href="#🚨-为什么必须备份源码？" class="headerlink" title="🚨 为什么必须备份源码？"></a>🚨 为什么必须备份源码？</h2><p>很多博主只做了 <code>hexo d</code>，这只是把生成的<strong>网页结果</strong>传到了网上。<br>真正的<strong>核心资产</strong>——你的 Markdown 原稿、精心调教的 <code>_config.yml</code> 配置、主题魔改代码——依然只存在于你本地的电脑里。</p><p>一旦电脑损坏或重装系统，你将失去一切。因此，<strong>构建私有源码仓库</strong>是必选项。</p><h2 id="🧠-Git-的核心原理（避坑指南）"><a href="#🧠-Git-的核心原理（避坑指南）" class="headerlink" title="🧠 Git 的核心原理（避坑指南）"></a>🧠 Git 的核心原理（避坑指南）</h2><p>在执行 Git 指令前，必须理解它的工作机制，否则容易弄乱电脑文件。</p><h3 id="1-git-文件夹：时光机盒子"><a href="#1-git-文件夹：时光机盒子" class="headerlink" title="1. .git 文件夹：时光机盒子"></a>1. <code>.git</code> 文件夹：时光机盒子</h3><p>当你执行 <code>git init</code> 时，Git 会在<strong>当前文件夹</strong>下创建一个隐藏的 <code>.git</code> 文件夹。</p><ul><li>它存储了该文件夹下所有文件的<strong>快照</strong>和<strong>历史变更记录</strong>。</li><li><strong>重要原则</strong>：Git 是“在这个文件夹里建仓库”，它不会占用其他盘的空间。</li></ul><h3 id="2-这里的坑：不要在-C-盘或桌面操作！"><a href="#2-这里的坑：不要在-C-盘或桌面操作！" class="headerlink" title="2. 这里的坑：不要在 C 盘或桌面操作！"></a>2. 这里的坑：不要在 C 盘或桌面操作！</h3><ul><li><strong>错误示范</strong>：打开 Git Bash 直接 <code>git init</code>。这会在 <code>C:\Users\用户名</code> 下建仓库，导致你的桌面、文档所有文件都被吸入 Git，占用大量 C 盘空间。</li><li><strong>正确做法</strong>：必须先 <code>cd /e/MyBlog</code> 进入你的博客目录。建议将项目放在 <strong>D盘</strong> 或 <strong>E盘</strong>，数据更安全，且不占系统盘空间。</li></ul><h2 id="🛠️-实战：如何备份源码到私有仓库"><a href="#🛠️-实战：如何备份源码到私有仓库" class="headerlink" title="🛠️ 实战：如何备份源码到私有仓库"></a>🛠️ 实战：如何备份源码到私有仓库</h2><h3 id="第一步：创建仓库"><a href="#第一步：创建仓库" class="headerlink" title="第一步：创建仓库"></a>第一步：创建仓库</h3><p>在 GitHub 上新建一个仓库，命名为 <code>my-blog-source</code>，<strong>务必勾选 Private (私有)</strong>，保护隐私。</p><h3 id="第二步：建立连接（仅需一次）"><a href="#第二步：建立连接（仅需一次）" class="headerlink" title="第二步：建立连接（仅需一次）"></a>第二步：建立连接（仅需一次）</h3><p>在博客根目录 (<code>E:\MyBlog</code>) 打开终端：</p><pre><code class="language-bash"># 1. 初始化本地仓库git init# 2. 关联远程私有库 (注意换成你的 SSH 地址)git remote add origin-source git@github.com:CZH17-gif/my-blog-source.git# 3. 统一分支名为 maingit branch -M main</code></pre>]]></content>
+    
+    
+    <categories>
+      
+      <category>博客搭建系列</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Git</tag>
+      
+      <tag>自动化</tag>
+      
+      <tag>备份</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>从零构建全栈知识库 (1)：底层逻辑、架构选型与环境配置</title>
+    <link href="/2026/01/08/blog-architecture-and-logic(1)/"/>
+    <url>/2026/01/08/blog-architecture-and-logic(1)/</url>
+    
+    <content type="html"><![CDATA[<h2 id="🚀-前言：为什么要做这个博客？"><a href="#🚀-前言：为什么要做这个博客？" class="headerlink" title="🚀 前言：为什么要做这个博客？"></a>🚀 前言：为什么要做这个博客？</h2><p>在碎片化阅读的时代，我深感“学了忘，忘了学”的无力感。我需要一个完全属于自己的、个性化的、数据可控的知识沉淀基地。</p><p>我的需求很明确：</p><ol><li><strong>个性化</strong>：要有看板娘、背景音乐、动效，不能千篇一律。</li><li><strong>低成本</strong>：拒绝每年几百块的服务器费用。</li><li><strong>高安全</strong>：源码必须备份在私有仓库，电脑坏了也能一键恢复。</li><li><strong>多端分发</strong>：以博客为基地，内容可一键同步至知乎、CSDN。</li></ol><p>本文将复盘整个博客搭建的<strong>底层逻辑</strong>与<strong>核心配置思路</strong>。</p><h2 id="⚔️-技术选型：GitHub-Pages-vs-云服务器"><a href="#⚔️-技术选型：GitHub-Pages-vs-云服务器" class="headerlink" title="⚔️ 技术选型：GitHub Pages vs 云服务器"></a>⚔️ 技术选型：GitHub Pages vs 云服务器</h2><p>很多新手纠结是买服务器还是用免费托管，我的对比逻辑如下：</p><table><thead><tr><th align="left">维度</th><th align="left">GitHub Pages (我的选择)</th><th align="left">云服务器 (ECS&#x2F;VPS)</th></tr></thead><tbody><tr><td align="left"><strong>费用</strong></td><td align="left"><strong>0元 (永久免费)</strong></td><td align="left">几百~几千元&#x2F;年</td></tr><tr><td align="left"><strong>维护</strong></td><td align="left"><strong>极低</strong> (只管写文章)</td><td align="left"><strong>高</strong> (需维护Linux系统、Nginx、安全防护)</td></tr><tr><td align="left"><strong>能力</strong></td><td align="left">仅静态网页 (HTML&#x2F;CSS&#x2F;JS)</td><td align="left">全能 (可跑数据库、后端程序)</td></tr><tr><td align="left"><strong>适用</strong></td><td align="left">个人博客、文档站</td><td align="left">复杂应用、企业官网</td></tr></tbody></table><p><strong>结论</strong>：对于纯内容输出的博客，GitHub Pages + Hexo 是性价比天花板。</p><h2 id="🏗️-核心架构与环境准备"><a href="#🏗️-核心架构与环境准备" class="headerlink" title="🏗️ 核心架构与环境准备"></a>🏗️ 核心架构与环境准备</h2><p>这个博客并不是凭空产生的，它依赖两个核心工具：</p><ol><li><strong>Node.js</strong>：博客的“发动机”。Hexo 是基于 Node.js 运行的，它负责把你的 Markdown 文章“编译”成漂亮的 HTML 网页。</li><li><strong>Git</strong>：博客的“运输车”。它负责把生成的网页推送到 GitHub (公网)，同时把源码备份到 私有仓库。</li></ol><h3 id="关键配置逻辑：SSH-密钥"><a href="#关键配置逻辑：SSH-密钥" class="headerlink" title="关键配置逻辑：SSH 密钥"></a>关键配置逻辑：SSH 密钥</h3><p>在连接 GitHub 时，有两种方式：HTTPS 和 SSH。</p><ul><li><strong>HTTPS</strong>：每次提交都要输账号密码（或 Token），非常繁琐。</li><li><strong>SSH</strong>：配置一次“公钥私钥”，以后自动验证，安全且无感。</li></ul><p><strong>为什么必须配 SSH？</strong><br>因为我们要实现“一键自动化部署”。如果脚本跑到一半弹出来让你输密码，自动化就毫无意义了。</p><p><strong>配置思路：</strong></p><ol><li>本地生成钥匙对：<code>ssh-keygen -t ed25519 -C &quot;邮箱&quot;</code></li><li>把“公钥”交给 GitHub 后台。</li><li>本地测试连通性：<code>ssh -T git@github.com</code></li></ol><h2 id="⚙️-配置文件逻辑：Fluid-主题的覆盖机制"><a href="#⚙️-配置文件逻辑：Fluid-主题的覆盖机制" class="headerlink" title="⚙️ 配置文件逻辑：Fluid 主题的覆盖机制"></a>⚙️ 配置文件逻辑：Fluid 主题的覆盖机制</h2><p>Hexo 的配置逻辑非常巧妙，分为两层：</p><ol><li><p><strong>站点配置 (<code>_config.yml</code>)</strong>：</p><ul><li>位于根目录。</li><li>控制全局：网站标题、作者、URL、部署地址 (Deploy)、使用的框架等。</li></ul></li><li><p><strong>主题配置 (<code>_config.fluid.yml</code>)</strong>：</p><ul><li><strong>重点</strong>：我使用的是 Fluid 主题。为了不修改主题原生文件（方便以后升级），我在根目录新建了这个文件。</li><li><strong>覆盖逻辑</strong>：这里面的设置（如音乐播放器、封面图、看板娘）会<strong>覆盖</strong>主题默认的设置。</li><li><strong>优势</strong>：以后不管怎么魔改，只需要动这一个文件，逻辑清晰，不乱改源码。</li></ul></li></ol><h2 id="🎯-总结"><a href="#🎯-总结" class="headerlink" title="🎯 总结"></a>🎯 总结</h2><p>搭建博客不仅仅是敲代码，更是理清思路的过程。<br>搞懂了 Node.js 负责生成，Git 负责传输，SSH 负责鉴权，配置负责个性化，接下来的实操就是水到渠成的事了。</p><p>下一篇，我将详细讲解<strong>Git 的核心原理</strong>以及如何实现<strong>源码的自动化备份</strong>。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>博客搭建系列</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>建站逻辑</tag>
+      
+      <tag>Hexo</tag>
+      
+      <tag>SSH</tag>
+      
+      <tag>架构</tag>
+      
+    </tags>
     
   </entry>
   
