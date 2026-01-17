@@ -1,183 +1,374 @@
 <?xml version="1.0" encoding="utf-8"?>
-<search> 
-  
-  
-    
-    <entry>
-      <title>【Python进阶】如何运行别人的代码</title>
-      <link href="/2026/01/11/%E6%8B%BF%E5%88%B0%E5%88%AB%E4%BA%BA%E7%9A%84%E4%BB%A3%E7%A0%81%E6%80%8E%E4%B9%88%E8%B7%91%EF%BC%9F/"/>
-      <url>/2026/01/11/%E6%8B%BF%E5%88%B0%E5%88%AB%E4%BA%BA%E7%9A%84%E4%BB%A3%E7%A0%81%E6%80%8E%E4%B9%88%E8%B7%91%EF%BC%9F/</url>
-      
-        <content type="html"><![CDATA[<h1 id="🏃‍♂️-【Python实战】第四篇：拿到别人的代码怎么跑？终极运行指南（含逆向推导神器）"><a href="#🏃‍♂️-【Python实战】第四篇：拿到别人的代码怎么跑？终极运行指南（含逆向推导神器）" class="headerlink" title="🏃‍♂️ 【Python实战】第四篇：拿到别人的代码怎么跑？终极运行指南（含逆向推导神器）"></a>🏃‍♂️ 【Python实战】第四篇：拿到别人的代码怎么跑？终极运行指南（含逆向推导神器）</h1><blockquote><p><strong>前言</strong>：<br>老板、老师或网上大佬丢给你一个压缩包，里面连个说明文件都没有，你该如何优雅地让它在你电脑上跑起来？</p></blockquote><hr><h2 id="🛑-一、-为什么不能直接跑？"><a href="#🛑-一、-为什么不能直接跑？" class="headerlink" title="🛑 一、 为什么不能直接跑？"></a>🛑 一、 为什么不能直接跑？</h2><p>很多新手拿到代码的第一反应是：直接右键 -&gt; <code>Run</code>。<br>结果通常只有一种：<strong>报错</strong>。</p><h3 id="核心原因：环境不对等"><a href="#核心原因：环境不对等" class="headerlink" title="核心原因：环境不对等"></a>核心原因：环境不对等</h3><p>别人的代码是在他的“厨房”里做出来的，他用了特制的调料（比如 <code>pandas 1.5.0</code>, <code>torch 1.12</code>）。</p><ul><li><strong>你的 Base 环境</strong>：可能根本没有这个包。</li><li><strong>你的其他环境</strong>：可能包的版本不对（比如你装了 <code>pandas 2.0</code>，导致旧代码不兼容）。</li></ul><p><strong>✅ 正确做法</strong>：为这份代码，快速搭建一个<strong>专属的临时厨房（虚拟环境）</strong>。</p><hr><h2 id="🛠️-二、-标准化运行四步法"><a href="#🛠️-二、-标准化运行四步法" class="headerlink" title="🛠️ 二、 标准化运行四步法"></a>🛠️ 二、 标准化运行四步法</h2><h3 id="第一步：侦察“配方表”-检查依赖文件"><a href="#第一步：侦察“配方表”-检查依赖文件" class="headerlink" title="第一步：侦察“配方表” (检查依赖文件)"></a>第一步：侦察“配方表” (检查依赖文件)</h3><p>解压代码包，打开文件夹，先不要急着看 <code>.py</code> 文件，先找有没有以下两个文件之一：</p><ol><li><strong><code>requirements.txt</code></strong> (最常见，Pip 格式)</li><li><strong><code>environment.yml</code></strong> (Conda 专用格式)</li></ol><p>这两个文件就是“配方表”，记录了代码运行所需的所有包和版本。</p><h3 id="第二步：建立新厨房-创建环境"><a href="#第二步：建立新厨房-创建环境" class="headerlink" title="第二步：建立新厨房 (创建环境)"></a>第二步：建立新厨房 (创建环境)</h3><p>打开 Anaconda Prompt (或终端)，根据你的项目类型创建一个新环境。<br><em>(假设这个项目叫 <code>run_project</code>，需要 python 3.9)</em></p><pre><code class="language-powershell"># 创建一个名为 run_project 的新环境，因为我们配置过 .condarc，这个新环境会自动建在 E 盘，完全不用担心 C 盘空间。conda create -n run_project python=3.9conda activate run_project# 情况 A：有 requirements.txt (简单模式)# 使用 pip 安装（建议加上清华源加速）：pip install -r requirements.txt -i [https://pypi.tuna.tsinghua.edu.cn/simple](https://pypi.tuna.tsinghua.edu.cn/simple)# 情况 B：有 environment.yml (简单模式)# 直接让 Conda 根据文件自动配置：</code></pre>]]></content>
-      
-      
+<search>
+  <entry>
+    <title>【实用技巧】C盘救星：python（Anaconda）虚拟环境迁移(C盘到其他盘)</title>
+    <url>/2026/01/11/Anaconda%20%E7%8E%AF%E5%A2%83%E8%BF%81%E7%A7%BB/</url>
+    <content><![CDATA[<h1 id="🚀-【实用技巧】C盘救星：Anaconda-环境迁移"><a href="#🚀-【实用技巧】C盘救星：Anaconda-环境迁移" class="headerlink" title="🚀 【实用技巧】C盘救星：Anaconda 环境迁移"></a>🚀 【实用技巧】C盘救星：Anaconda 环境迁移</h1><blockquote>
+<p><strong>摘要</strong>：C 盘空间告急是每个 Python 学习者的噩梦。本文将带你深度复盘如何将 Anaconda 虚拟环境从 C 盘“无损”搬迁至 E 盘</p>
+</blockquote>
+<hr>
+<h2 id="一、-核心痛点：为什么-C-盘会爆红？"><a href="#一、-核心痛点：为什么-C-盘会爆红？" class="headerlink" title="一、 核心痛点：为什么 C 盘会爆红？"></a>一、 核心痛点：为什么 C 盘会爆红？</h2><p>在配置python（或Anaconda）时 默认会将 <strong>虚拟环境 (envs)</strong> 和 <strong>包缓存 (pkgs)</strong> 存放在 <code>C:\Users\用户名\.conda</code> 目录下。这会导致两个严重问题：</p>
+<ol>
+<li><strong>重复下载</strong>：传统的 pip 模式会在每个环境下重复下载包，浪费空间。</li>
+<li><strong>跨盘失效</strong>：Windows 的文件系统不支持跨分区硬链接。如果你的环境建在 E 盘，但仓库（pkgs）还在 C 盘，Conda 只能被迫执行“完整复制”，导致双倍占用。</li>
+</ol>
+<hr>
+<h2 id="二、-操作步骤"><a href="#二、-操作步骤" class="headerlink" title="二、 操作步骤"></a>二、 操作步骤</h2><h3 id="第一步：修改默认路径-配置-E-盘基地"><a href="#第一步：修改默认路径-配置-E-盘基地" class="headerlink" title="第一步：修改默认路径 (配置 E 盘基地)"></a>第一步：修改默认路径 (配置 E 盘基地)</h3><p>我以将C盘的python配置文件转到E盘为例，让以后所有的下载和创建都在 E 盘内部完成。</p>
+<h4 id="1-建立目录"><a href="#1-建立目录" class="headerlink" title="1. 建立目录"></a>1. 建立目录</h4><p>请在 E 盘手动创建以下两个文件夹：</p>
+<ul>
+<li><code>E:\CondaData\envs</code> (存放虚拟环境)</li>
+<li><code>E:\CondaData\pkgs</code> (存放下载的包缓存)</li>
+</ul>
+<h4 id="2-修改配置指令"><a href="#2-修改配置指令" class="headerlink" title="2. 修改配置指令"></a>2. 修改配置指令</h4><p>在 PowerShell 或 CMD 中执行以下命令，强制修改 Conda 的默认路径：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1. 将 E 盘的路径添加到虚拟环境存放目录列表，并设置为最高优先级</span></span><br><span class="line">conda config <span class="literal">--add</span> envs_dirs E:\CondaData\envs</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 指定包缓存存放路径（实现同盘硬链接的关键！）</span></span><br><span class="line">conda config <span class="literal">--add</span> pkgs_dirs E:\CondaData\pkgs</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 验证配置是否生效（如果你看到 E:\CondaData\envs 排在列表的第一行）</span></span><br><span class="line">conda config <span class="literal">--show</span> envs_dirs</span><br></pre></td></tr></table></figure>
+
+<h3 id="第二步：迁移现有环境"><a href="#第二步：迁移现有环境" class="headerlink" title="第二步：迁移现有环境"></a>第二步：迁移现有环境</h3><p>对于那些已经赖在 C 盘不走的旧环境（比如叫 myenv），可以使用最稳妥的**“克隆法”**：</p>
+<h4 id="1-复制环境"><a href="#1-复制环境" class="headerlink" title="1. 复制环境"></a>1. 复制环境</h4><p>比如 C 盘有个环境叫 myenv，将其克隆到 E 盘：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 语法：conda create --prefix 新路径 --clone 旧路径/旧环境名</span></span><br><span class="line">conda create <span class="literal">--prefix</span> E:\CondaData\envs\myenv <span class="literal">--clone</span> myenv</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-验证新环境"><a href="#2-验证新环境" class="headerlink" title="2. 验证新环境"></a>2. 验证新环境</h4><p>克隆之后，验证E盘新的虚拟环境是否能用：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 激活新路径下的环境</span></span><br><span class="line">conda activate E:\CondaData\envs\myenv</span><br><span class="line"></span><br><span class="line"><span class="comment"># 随便跑个命令试试，比如查看包列表，如果没报错，说明搬家成功！</span></span><br><span class="line">conda list</span><br></pre></td></tr></table></figure>
+<h4 id="第三步：清理-C-盘"><a href="#第三步：清理-C-盘" class="headerlink" title="第三步：清理 C 盘"></a>第三步：清理 C 盘</h4><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 删除名为 myenv 的旧环境</span></span><br><span class="line">conda remove <span class="literal">-n</span> myenv <span class="literal">--all</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 清理C 盘里残留安装包的缓存垃圾，(遇到提示输入y确认)</span></span><br><span class="line">conda clean <span class="literal">--all</span></span><br></pre></td></tr></table></figure>
+<p>到这里，C盘的转移就完成了！</p>
+<h3 id="常用关键指令清单"><a href="#常用关键指令清单" class="headerlink" title="常用关键指令清单"></a>常用关键指令清单</h3><ul>
+<li><p>查看所有环境（全家福）： conda env list</p>
+</li>
+<li><p>激活环境： conda activate 环境名 或 conda activate E:\绝对路径</p>
+</li>
+<li><p>删除环境（慎用）： conda remove -n 环境名 –all</p>
+</li>
+<li><p>C 盘大扫除（清理缓存神器）： conda clean –all (清理无用的安装包和缓存，C 盘救星) pip cache purge (清理 pip 的下载缓存)</p>
+</li>
+</ul>
+]]></content>
       <categories>
-          
-          <category> Python系列 </category>
-          
+        <category>Python系列</category>
       </categories>
-      
-      
-        <tags>
-            
-            <tag> Anaconda </tag>
-            
-            <tag> 虚拟环境 </tag>
-            
-            <tag> 硬链接 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>【Python进阶】揭秘 Anaconda：虚拟环境与“硬链接”</title>
-      <link href="/2026/01/11/%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83%E4%B8%8E%E2%80%9C%E7%A1%AC%E9%93%BE%E6%8E%A5%E2%80%9D/"/>
-      <url>/2026/01/11/%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83%E4%B8%8E%E2%80%9C%E7%A1%AC%E9%93%BE%E6%8E%A5%E2%80%9D/</url>
-      
-        <content type="html"><![CDATA[<h1 id="🐍-【Python进阶】揭秘-Anaconda：虚拟环境与“硬链接”"><a href="#🐍-【Python进阶】揭秘-Anaconda：虚拟环境与“硬链接”" class="headerlink" title="🐍 【Python进阶】揭秘 Anaconda：虚拟环境与“硬链接”"></a>🐍 【Python进阶】揭秘 Anaconda：虚拟环境与“硬链接”</h1><blockquote><p><strong>前言</strong>：为什么我们不能把所有包都装在同一个地方？Conda 到底比 Pip 强在哪里？为什么建了 10 个环境，磁盘占用却没有膨胀 10 倍？<br>本文将带你深入 Python 环境的“后台”，揭开<strong>虚拟环境</strong>与<strong>硬链接</strong>的奥秘。</p></blockquote><hr><h2 id="🌏-一、-为什么我们需要“虚拟环境”？"><a href="#🌏-一、-为什么我们需要“虚拟环境”？" class="headerlink" title="🌏 一、 为什么我们需要“虚拟环境”？"></a>🌏 一、 为什么我们需要“虚拟环境”？</h2><p>很多初学者（包括以前的我）都喜欢把所有包都装在 Anaconda 自带的 <code>base</code> 环境里。直到有一天，报错出现了：</p><blockquote><p><em>项目 A 需要 <code>pandas 1.3</code>（旧版），但项目 B 需要 <code>pandas 2.0</code>（新版）。</em></p></blockquote><p>这就是著名的**“依赖地狱” (Dependency Hell)**。</p><h3 id="1-厨房理论"><a href="#1-厨房理论" class="headerlink" title="1. 厨房理论"></a>1. 厨房理论</h3><p>我们可以把 Python 环境比作一个<strong>厨房</strong>：</p><ul><li><strong>Base 环境</strong>：这是大家共用的公用大厨房。<ul><li>如果你为了做川菜（项目 A）买了一堆辣椒，别人做蛋糕（项目 B）时就会觉得厨房乱七八糟，甚至可能误把辣椒当糖用了。</li></ul></li><li><strong>虚拟环境 (Virtual Environment)</strong>：这是为你每个项目专门搭建的<strong>独立小厨房</strong>。<ul><li><strong><code>myenv_data</code> 厨房</strong>：只放切菜刀和案板（Pandas, Matplotlib）。</li><li><strong><code>myenv_ai</code> 厨房</strong>：只放烤箱和搅拌机（PyTorch, TensorFlow）。</li><li><strong>互不干扰</strong>：你在 AI 厨房里把烤箱炸了，完全不会影响隔壁做数据分析的厨房。</li></ul></li></ul><h3 id="2-这里的“独立”是指什么？"><a href="#2-这里的“独立”是指什么？" class="headerlink" title="2. 这里的“独立”是指什么？"></a>2. 这里的“独立”是指什么？</h3><p>从文件层面看，每一个虚拟环境（如 <code>E:\CondaData\envs\myenv</code>）内部都有：</p><ul><li>一个独立的 <strong><code>python.exe</code></strong>（解释器&#x2F;主厨）。</li><li>一个独立的 <strong><code>Lib\site-packages</code></strong> 文件夹（存放第三方包&#x2F;食材）。</li></ul><hr><h2 id="🚀-二、-Anaconda-的核心优势：不止是-Python"><a href="#🚀-二、-Anaconda-的核心优势：不止是-Python" class="headerlink" title="🚀 二、 Anaconda 的核心优势：不止是 Python"></a>🚀 二、 Anaconda 的核心优势：不止是 Python</h2><p>既然 Pip 也能装包，为什么还要用臃肿的 Anaconda？</p><h3 id="1-它是“系统级”的包工头"><a href="#1-它是“系统级”的包工头" class="headerlink" title="1. 它是“系统级”的包工头"></a>1. 它是“系统级”的包工头</h3><ul><li><strong>Pip</strong>：是 Python 官方的采购员。它只管 Python 代码。如果你要装的库依赖于 C++ 或 Fortran（比如 Numpy 的底层计算），Pip 往往假设你电脑上已经有了编译器。如果没有，就会疯狂报错（<code>Microsoft Visual C++ 14.0 is required</code>）。</li><li><strong>Conda</strong>：是全能的包工头。它不管你是 Python 包还是 C++ 动态链接库（DLL），它全都打包好了。<ul><li><strong>优势</strong>：安装 <code>numpy</code> 或 <code>pytorch</code> 这种重型科学计算库时，Conda 能直接把底层的数学库（如 Intel MKL）一并配置好，<strong>开箱即用</strong>。</li></ul></li></ul><h3 id="2-管理仓库与环境"><a href="#2-管理仓库与环境" class="headerlink" title="2. 管理仓库与环境"></a>2. 管理仓库与环境</h3><p>Anaconda 不仅送了你几百个常用包（在 <code>base</code> 里），还提供了一个强大的环境管理工具 <code>conda</code>，它能让我们像切换电视频道一样轻松切换 Python 环境。</p><hr><h2 id="🔗-三、-核心黑科技：硬链接-Hard-Link"><a href="#🔗-三、-核心黑科技：硬链接-Hard-Link" class="headerlink" title="🔗 三、 核心黑科技：硬链接 (Hard Link)"></a>🔗 三、 核心黑科技：硬链接 (Hard Link)</h2><p>这是本篇的重头戏！<br>你可能会问：<em>“如果我建 10 个环境，每个环境都装 Numpy，那岂不是要浪费 10 份磁盘空间？”</em></p><p><strong>答案是：不会。因为 Conda 有“硬链接”技术。</strong></p><h3 id="1-什么是硬链接？"><a href="#1-什么是硬链接？" class="headerlink" title="1. 什么是硬链接？"></a>1. 什么是硬链接？</h3><p>在 Windows 文件系统中，一个文件可以有多个“入口”。</p><ul><li><strong>普通复制</strong>：文件 A 和文件 B 是两块独立的数据，占两份空间。</li><li><strong>硬链接</strong>：文件 A 和文件 B <strong>本质上是同一个物理数据块</strong>，只是有两个不同的文件名指向它。</li></ul><h3 id="2-Conda-的省空间闭环"><a href="#2-Conda-的省空间闭环" class="headerlink" title="2. Conda 的省空间闭环"></a>2. Conda 的省空间闭环</h3><p>这就解释了为什么我们在上一篇博客中，一定要把 <code>pkgs</code>（仓库）和 <code>envs</code>（环境）都放在 <strong>E 盘</strong>。</p><p>看下面这张原理图：</p><pre><code class="language-mermaid">graph LR    subgraph E盘_CondaData [E盘 CondaData 领地]        direction TB        %% 仓库区        subgraph PKGS [📂 pkgs 中央仓库 (真身)]            Real_Numpy[Numpy 文件块]            Real_Pandas[Pandas 文件块]        end        %% 环境 A        subgraph Env_A [envs/data_analysis]            lib_A[site-packages]        end        %% 环境 B        subgraph Env_B [envs/deep_learning]            lib_B[site-packages]        end    end    %% 硬链接机制    Real_Numpy  ==硬链接 (不占空间)==&gt; lib_A    Real_Numpy  ==硬链接 (不占空间)==&gt; lib_B    Real_Pandas ==硬链接 (不占空间)==&gt; lib_A</code></pre>]]></content>
-      
-      
+      <tags>
+        <tag>Python</tag>
+        <tag>虚拟环境迁移</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>个人博客搭建(1)：核心思路</title>
+    <url>/2026/01/08/blog-architecture-and-logic(1)/</url>
+    <content><![CDATA[<h2 id="🗺️-核心思路"><a href="#🗺️-核心思路" class="headerlink" title="🗺️ 核心思路"></a>🗺️ 核心思路</h2><p>这是创建个人专属博客的 <strong>5 个步骤</strong></p>
+<h3 id="1-安装Node-js与git"><a href="#1-安装Node-js与git" class="headerlink" title="1. 安装Node.js与git"></a>1. 安装Node.js与git</h3><ul>
+<li><strong>Node.js (LTS版本)</strong>：博客的“发动机”，负责把 Markdown 生成网页。</li>
+<li><strong>Git</strong>：博客的“运输车”，负责把代码传到 GitHub。</li>
+</ul>
+<h3 id="2-使用免费的GitHub-作为托管平台"><a href="#2-使用免费的GitHub-作为托管平台" class="headerlink" title="2. 使用免费的GitHub 作为托管平台"></a>2. 使用免费的GitHub 作为托管平台</h3><p>注册一个 GitHub 账号，然后创建 <strong>两个</strong> 仓库（Repository）：</p>
+<ul>
+<li><strong>公开仓库 (Public)</strong>：<ul>
+<li>名称格式必须为：<code>github用户名.github.io</code> (例如 <code>我的github用户名是CZH17-gif，仓库名称为CZH17-gif.github.io</code>)</li>
+<li><strong>作用</strong>：存放生成的 HTML 网页，<strong>给全世界看</strong>。</li>
+</ul>
+</li>
+<li><strong>私有仓库 (Private)</strong>：<ul>
+<li>名称随意 (例如 <code>my-blog-source</code>)</li>
+<li><strong>作用</strong>：存放 Markdown 原稿和配置文件，<strong>只给自己看</strong> (防止源码丢失)。</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-本地建站-Hexo-初始化"><a href="#3-本地建站-Hexo-初始化" class="headerlink" title="3. 本地建站 (Hexo 初始化)"></a>3. 本地建站 (Hexo 初始化)</h3><p>在电脑非系统盘（如 E 盘）新建文件夹，右键打开终端：</p>
+<ul>
+<li>安装框架：<code>npm install -g hexo-cli</code></li>
+<li>初始化：<code>hexo init MyBlog</code></li>
+<li>安装依赖：<code>npm install</code></li>
+</ul>
+<h3 id="4-打通“隧道”-SSH-密钥配置"><a href="#4-打通“隧道”-SSH-密钥配置" class="headerlink" title="4. 打通“隧道” (SSH 密钥配置)"></a>4. 打通“隧道” (SSH 密钥配置)</h3><p>为了实现自动化部署，不需要每次输密码：</p>
+<ul>
+<li>本地生成密钥：<code>ssh-keygen -t ed25519 -C &quot;你的邮箱&quot;</code></li>
+<li>上传公钥：把生成的 <code>id_ed25519.pub</code> 内容复制到 GitHub 的 Settings -&gt; SSH keys 中。</li>
+<li><strong>目的</strong>：让你的电脑拥有直接操作 GitHub 仓库的最高权限。</li>
+</ul>
+<h3 id="5-装修与个性化-Fluid-主题配置"><a href="#5-装修与个性化-Fluid-主题配置" class="headerlink" title="5. 装修与个性化 (Fluid 主题配置)"></a>5. 装修与个性化 (Fluid 主题配置)</h3><ul>
+<li>安装 Fluid 主题。</li>
+<li><strong>关键操作</strong>：创建 <code>_config.fluid.yml</code> 文件。</li>
+<li><strong>作用</strong>：专门用来修改音乐、看板娘、壁纸等设置，覆盖默认配置，保证逻辑清晰。</li>
+</ul>
+<h2 id="🏗️-核心架构与环境准备"><a href="#🏗️-核心架构与环境准备" class="headerlink" title="🏗️ 核心架构与环境准备"></a>🏗️ 核心架构与环境准备</h2><p>这个博客并不是凭空产生的，它依赖两个核心工具：</p>
+<ol>
+<li><strong>Node.js</strong>：博客的“发动机”。Hexo 是基于 Node.js 运行的，它负责把你的 Markdown 文章“编译”成漂亮的 HTML 网页。</li>
+<li><strong>Git</strong>：博客的“运输车”。它负责把生成的网页推送到 GitHub (公网)，同时把源码备份到 私有仓库。</li>
+</ol>
+<h3 id="关键配置逻辑：SSH-密钥"><a href="#关键配置逻辑：SSH-密钥" class="headerlink" title="关键配置逻辑：SSH 密钥"></a>关键配置逻辑：SSH 密钥</h3><p>在连接 GitHub 时，有两种方式：HTTPS 和 SSH。</p>
+<ul>
+<li><strong>HTTPS</strong>：每次提交都要输账号密码（或 Token），非常繁琐。</li>
+<li><strong>SSH</strong>：配置一次“公钥私钥”，以后自动验证，安全且无感。</li>
+</ul>
+<p><strong>为什么必须配 SSH？</strong><br>因为我们要实现“一键自动化部署”。如果脚本跑到一半弹出来让你输密码，自动化就毫无意义了。</p>
+<p><strong>配置思路：</strong></p>
+<ol>
+<li>本地生成钥匙对：<code>ssh-keygen -t ed25519 -C &quot;邮箱&quot;</code></li>
+<li>把“公钥”交给 GitHub 后台。</li>
+<li>本地测试连通性：<code>ssh -T git@github.com</code></li>
+</ol>
+<h2 id="⚙️-配置文件逻辑：Fluid-主题的覆盖机制"><a href="#⚙️-配置文件逻辑：Fluid-主题的覆盖机制" class="headerlink" title="⚙️ 配置文件逻辑：Fluid 主题的覆盖机制"></a>⚙️ 配置文件逻辑：Fluid 主题的覆盖机制</h2><p>Hexo 的配置逻辑非常巧妙，分为两层：</p>
+<ol>
+<li><p><strong>站点配置 (<code>_config.yml</code>)</strong>：</p>
+<ul>
+<li>位于根目录。</li>
+<li>控制全局：网站标题、作者、URL、部署地址 (Deploy)、使用的框架等。</li>
+</ul>
+</li>
+<li><p><strong>主题配置 (<code>_config.fluid.yml</code>)</strong>：</p>
+<ul>
+<li><strong>重点</strong>：我使用的是 Fluid 主题。为了不修改主题原生文件（方便以后升级），我在根目录新建了这个文件。</li>
+<li><strong>覆盖逻辑</strong>：这里面的设置（如音乐播放器、封面图、看板娘）会<strong>覆盖</strong>主题默认的设置。</li>
+<li><strong>优势</strong>：以后不管怎么魔改，只需要动这一个文件，逻辑清晰，不乱改源码。</li>
+</ul>
+</li>
+</ol>
+<h2 id="🎯-总结"><a href="#🎯-总结" class="headerlink" title="🎯 总结"></a>🎯 总结</h2><p>搭建博客不仅仅是敲代码，更是理清思路的过程。<br>搞懂了 Node.js 负责生成，Git 负责传输，SSH 负责鉴权，配置负责个性化，接下来的实操就是水到渠成的事了。</p>
+<p>下一篇，我将详细讲解<strong>Git 的核心原理</strong>以及如何实现<strong>源码的自动化备份</strong>。</p>
+]]></content>
       <categories>
-          
-          <category> Python系列 </category>
-          
+        <category>个人博客搭建系列</category>
       </categories>
-      
-      
-        <tags>
-            
-            <tag> Anaconda </tag>
-            
-            <tag> 虚拟环境 </tag>
-            
-            <tag> 硬链接 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>【实用技巧】C盘救星：python（Anaconda）虚拟环境迁移(C盘到其他盘)</title>
-      <link href="/2026/01/11/Anaconda%20%E7%8E%AF%E5%A2%83%E8%BF%81%E7%A7%BB/"/>
-      <url>/2026/01/11/Anaconda%20%E7%8E%AF%E5%A2%83%E8%BF%81%E7%A7%BB/</url>
-      
-        <content type="html"><![CDATA[<h1 id="🚀-【实用技巧】C盘救星：Anaconda-环境迁移"><a href="#🚀-【实用技巧】C盘救星：Anaconda-环境迁移" class="headerlink" title="🚀 【实用技巧】C盘救星：Anaconda 环境迁移"></a>🚀 【实用技巧】C盘救星：Anaconda 环境迁移</h1><blockquote><p><strong>摘要</strong>：C 盘空间告急是每个 Python 学习者的噩梦。本文将带你深度复盘如何将 Anaconda 虚拟环境从 C 盘“无损”搬迁至 E 盘</p></blockquote><hr><h2 id="一、-核心痛点：为什么-C-盘会爆红？"><a href="#一、-核心痛点：为什么-C-盘会爆红？" class="headerlink" title="一、 核心痛点：为什么 C 盘会爆红？"></a>一、 核心痛点：为什么 C 盘会爆红？</h2><p>在配置python（或Anaconda）时 默认会将 <strong>虚拟环境 (envs)</strong> 和 <strong>包缓存 (pkgs)</strong> 存放在 <code>C:\Users\用户名\.conda</code> 目录下。这会导致两个严重问题：</p><ol><li><strong>重复下载</strong>：传统的 pip 模式会在每个环境下重复下载包，浪费空间。</li><li><strong>跨盘失效</strong>：Windows 的文件系统不支持跨分区硬链接。如果你的环境建在 E 盘，但仓库（pkgs）还在 C 盘，Conda 只能被迫执行“完整复制”，导致双倍占用。</li></ol><hr><h2 id="二、-操作步骤"><a href="#二、-操作步骤" class="headerlink" title="二、 操作步骤"></a>二、 操作步骤</h2><h3 id="第一步：修改默认路径-配置-E-盘基地"><a href="#第一步：修改默认路径-配置-E-盘基地" class="headerlink" title="第一步：修改默认路径 (配置 E 盘基地)"></a>第一步：修改默认路径 (配置 E 盘基地)</h3><p>我以将C盘的python配置文件转到E盘为例，让以后所有的下载和创建都在 E 盘内部完成。</p><h4 id="1-建立目录"><a href="#1-建立目录" class="headerlink" title="1. 建立目录"></a>1. 建立目录</h4><p>请在 E 盘手动创建以下两个文件夹：</p><ul><li><code>E:\CondaData\envs</code> (存放虚拟环境)</li><li><code>E:\CondaData\pkgs</code> (存放下载的包缓存)</li></ul><h4 id="2-修改配置指令"><a href="#2-修改配置指令" class="headerlink" title="2. 修改配置指令"></a>2. 修改配置指令</h4><p>在 PowerShell 或 CMD 中执行以下命令，强制修改 Conda 的默认路径：</p><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 将 E 盘的路径添加到虚拟环境存放目录列表，并设置为最高优先级</span></span><br><span class="line">conda config <span class="literal">--add</span> envs_dirs E:\CondaData\envs</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 指定包缓存存放路径（实现同盘硬链接的关键！）</span></span><br><span class="line">conda config <span class="literal">--add</span> pkgs_dirs E:\CondaData\pkgs</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 验证配置是否生效（如果你看到 E:\CondaData\envs 排在列表的第一行）</span></span><br><span class="line">conda config <span class="literal">--show</span> envs_dirs</span><br></pre></td></tr></table></figure><h3 id="第二步：迁移现有环境"><a href="#第二步：迁移现有环境" class="headerlink" title="第二步：迁移现有环境"></a>第二步：迁移现有环境</h3><p>对于那些已经赖在 C 盘不走的旧环境（比如叫 myenv），可以使用最稳妥的**“克隆法”**：</p><h4 id="1-复制环境"><a href="#1-复制环境" class="headerlink" title="1. 复制环境"></a>1. 复制环境</h4><p>比如 C 盘有个环境叫 myenv，将其克隆到 E 盘：</p><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 语法：conda create --prefix 新路径 --clone 旧路径/旧环境名</span></span><br><span class="line">conda create <span class="literal">--prefix</span> E:\CondaData\envs\myenv <span class="literal">--clone</span> myenv</span><br></pre></td></tr></table></figure><h4 id="2-验证新环境"><a href="#2-验证新环境" class="headerlink" title="2. 验证新环境"></a>2. 验证新环境</h4><p>克隆之后，验证E盘新的虚拟环境是否能用：</p><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 激活新路径下的环境</span></span><br><span class="line">conda activate E:\CondaData\envs\myenv</span><br><span class="line"></span><br><span class="line"><span class="comment"># 随便跑个命令试试，比如查看包列表，如果没报错，说明搬家成功！</span></span><br><span class="line">conda list</span><br></pre></td></tr></table></figure><h4 id="第三步：清理-C-盘"><a href="#第三步：清理-C-盘" class="headerlink" title="第三步：清理 C 盘"></a>第三步：清理 C 盘</h4><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 删除名为 myenv 的旧环境</span></span><br><span class="line">conda remove <span class="literal">-n</span> myenv <span class="literal">--all</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 清理C 盘里残留安装包的缓存垃圾，(遇到提示输入y确认)</span></span><br><span class="line">conda clean <span class="literal">--all</span></span><br></pre></td></tr></table></figure><p>到这里，C盘的转移就完成了！</p><h3 id="常用关键指令清单"><a href="#常用关键指令清单" class="headerlink" title="常用关键指令清单"></a>常用关键指令清单</h3><ul><li><p>查看所有环境（全家福）： conda env list</p></li><li><p>激活环境： conda activate 环境名 或 conda activate E:\绝对路径</p></li><li><p>删除环境（慎用）： conda remove -n 环境名 –all</p></li><li><p>C 盘大扫除（清理缓存神器）： conda clean –all (清理无用的安装包和缓存，C 盘救星) pip cache purge (清理 pip 的下载缓存)</p></li></ul>]]></content>
-      
-      
+      <tags>
+        <tag>核心思路</tag>
+        <tag>Hexo</tag>
+        <tag>SSH</tag>
+        <tag>架构</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【Python进阶】揭秘 Anaconda：虚拟环境与“硬链接”</title>
+    <url>/2026/01/11/%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83%E4%B8%8E%E2%80%9C%E7%A1%AC%E9%93%BE%E6%8E%A5%E2%80%9D/</url>
+    <content><![CDATA[<h1 id="🐍-【Python进阶】揭秘-Anaconda：虚拟环境与“硬链接”"><a href="#🐍-【Python进阶】揭秘-Anaconda：虚拟环境与“硬链接”" class="headerlink" title="🐍 【Python进阶】揭秘 Anaconda：虚拟环境与“硬链接”"></a>🐍 【Python进阶】揭秘 Anaconda：虚拟环境与“硬链接”</h1><blockquote>
+<p><strong>前言</strong>：为什么我们不能把所有包都装在同一个地方？Conda 到底比 Pip 强在哪里？为什么建了 10 个环境，磁盘占用却没有膨胀 10 倍？<br>本文将带你深入 Python 环境的“后台”，揭开<strong>虚拟环境</strong>与<strong>硬链接</strong>的奥秘。</p>
+</blockquote>
+<hr>
+<h2 id="🌏-一、-为什么我们需要“虚拟环境”？"><a href="#🌏-一、-为什么我们需要“虚拟环境”？" class="headerlink" title="🌏 一、 为什么我们需要“虚拟环境”？"></a>🌏 一、 为什么我们需要“虚拟环境”？</h2><p>很多初学者（包括以前的我）都喜欢把所有包都装在 Anaconda 自带的 <code>base</code> 环境里。直到有一天，报错出现了：</p>
+<blockquote>
+<p><em>项目 A 需要 <code>pandas 1.3</code>（旧版），但项目 B 需要 <code>pandas 2.0</code>（新版）。</em></p>
+</blockquote>
+<p>这就是著名的**“依赖地狱” (Dependency Hell)**。</p>
+<h3 id="1-厨房理论"><a href="#1-厨房理论" class="headerlink" title="1. 厨房理论"></a>1. 厨房理论</h3><p>我们可以把 Python 环境比作一个<strong>厨房</strong>：</p>
+<ul>
+<li><strong>Base 环境</strong>：这是大家共用的公用大厨房。<ul>
+<li>如果你为了做川菜（项目 A）买了一堆辣椒，别人做蛋糕（项目 B）时就会觉得厨房乱七八糟，甚至可能误把辣椒当糖用了。</li>
+</ul>
+</li>
+<li><strong>虚拟环境 (Virtual Environment)</strong>：这是为你每个项目专门搭建的<strong>独立小厨房</strong>。<ul>
+<li><strong><code>myenv_data</code> 厨房</strong>：只放切菜刀和案板（Pandas, Matplotlib）。</li>
+<li><strong><code>myenv_ai</code> 厨房</strong>：只放烤箱和搅拌机（PyTorch, TensorFlow）。</li>
+<li><strong>互不干扰</strong>：你在 AI 厨房里把烤箱炸了，完全不会影响隔壁做数据分析的厨房。</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-这里的“独立”是指什么？"><a href="#2-这里的“独立”是指什么？" class="headerlink" title="2. 这里的“独立”是指什么？"></a>2. 这里的“独立”是指什么？</h3><p>从文件层面看，每一个虚拟环境（如 <code>E:\CondaData\envs\myenv</code>）内部都有：</p>
+<ul>
+<li>一个独立的 <strong><code>python.exe</code></strong>（解释器&#x2F;主厨）。</li>
+<li>一个独立的 <strong><code>Lib\site-packages</code></strong> 文件夹（存放第三方包&#x2F;食材）。</li>
+</ul>
+<hr>
+<h2 id="🚀-二、-Anaconda-的核心优势：不止是-Python"><a href="#🚀-二、-Anaconda-的核心优势：不止是-Python" class="headerlink" title="🚀 二、 Anaconda 的核心优势：不止是 Python"></a>🚀 二、 Anaconda 的核心优势：不止是 Python</h2><p>既然 Pip 也能装包，为什么还要用臃肿的 Anaconda？</p>
+<h3 id="1-它是“系统级”的包工头"><a href="#1-它是“系统级”的包工头" class="headerlink" title="1. 它是“系统级”的包工头"></a>1. 它是“系统级”的包工头</h3><ul>
+<li><strong>Pip</strong>：是 Python 官方的采购员。它只管 Python 代码。如果你要装的库依赖于 C++ 或 Fortran（比如 Numpy 的底层计算），Pip 往往假设你电脑上已经有了编译器。如果没有，就会疯狂报错（<code>Microsoft Visual C++ 14.0 is required</code>）。</li>
+<li><strong>Conda</strong>：是全能的包工头。它不管你是 Python 包还是 C++ 动态链接库（DLL），它全都打包好了。<ul>
+<li><strong>优势</strong>：安装 <code>numpy</code> 或 <code>pytorch</code> 这种重型科学计算库时，Conda 能直接把底层的数学库（如 Intel MKL）一并配置好，<strong>开箱即用</strong>。</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-管理仓库与环境"><a href="#2-管理仓库与环境" class="headerlink" title="2. 管理仓库与环境"></a>2. 管理仓库与环境</h3><p>Anaconda 不仅送了你几百个常用包（在 <code>base</code> 里），还提供了一个强大的环境管理工具 <code>conda</code>，它能让我们像切换电视频道一样轻松切换 Python 环境。</p>
+<hr>
+<h2 id="🔗-三、-核心黑科技：硬链接-Hard-Link"><a href="#🔗-三、-核心黑科技：硬链接-Hard-Link" class="headerlink" title="🔗 三、 核心黑科技：硬链接 (Hard Link)"></a>🔗 三、 核心黑科技：硬链接 (Hard Link)</h2><p>这是本篇的重头戏！<br>你可能会问：<em>“如果我建 10 个环境，每个环境都装 Numpy，那岂不是要浪费 10 份磁盘空间？”</em></p>
+<p><strong>答案是：不会。因为 Conda 有“硬链接”技术。</strong></p>
+<h3 id="1-什么是硬链接？"><a href="#1-什么是硬链接？" class="headerlink" title="1. 什么是硬链接？"></a>1. 什么是硬链接？</h3><p>在 Windows 文件系统中，一个文件可以有多个“入口”。</p>
+<ul>
+<li><strong>普通复制</strong>：文件 A 和文件 B 是两块独立的数据，占两份空间。</li>
+<li><strong>硬链接</strong>：文件 A 和文件 B <strong>本质上是同一个物理数据块</strong>，只是有两个不同的文件名指向它。</li>
+</ul>
+<h3 id="2-Conda-的省空间闭环"><a href="#2-Conda-的省空间闭环" class="headerlink" title="2. Conda 的省空间闭环"></a>2. Conda 的省空间闭环</h3><p>这就解释了为什么我们在上一篇博客中，一定要把 <code>pkgs</code>（仓库）和 <code>envs</code>（环境）都放在 <strong>E 盘</strong>。</p>
+<p>看下面这张原理图：</p>
+<pre><code class="language-mermaid">graph LR
+    subgraph E盘_CondaData [E盘 CondaData 领地]
+        direction TB
+
+        %% 仓库区
+        subgraph PKGS [📂 pkgs 中央仓库 (真身)]
+            Real_Numpy[Numpy 文件块]
+            Real_Pandas[Pandas 文件块]
+        end
+
+        %% 环境 A
+        subgraph Env_A [envs/data_analysis]
+            lib_A[site-packages]
+        end
+
+        %% 环境 B
+        subgraph Env_B [envs/deep_learning]
+            lib_B[site-packages]
+        end
+    end
+
+    %% 硬链接机制
+    Real_Numpy  ==硬链接 (不占空间)==&gt; lib_A
+    Real_Numpy  ==硬链接 (不占空间)==&gt; lib_B
+    Real_Pandas ==硬链接 (不占空间)==&gt; lib_A
+</code></pre>
+]]></content>
       <categories>
-          
-          <category> Python系列 </category>
-          
+        <category>Python系列</category>
       </categories>
-      
-      
-        <tags>
-            
-            <tag> Python </tag>
-            
-            <tag> 虚拟环境迁移 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>个人博客搭建(2)：Git 原理与具体操作</title>
-      <link href="/2026/01/08/git-workflow-and-backup(2)/"/>
-      <url>/2026/01/08/git-workflow-and-backup(2)/</url>
-      
-        <content type="html"><![CDATA[<h2 id="🚨-为什么必须备份源码？"><a href="#🚨-为什么必须备份源码？" class="headerlink" title="🚨 为什么必须备份源码？"></a>🚨 为什么必须备份源码？</h2><p>很多博主只做了 <code>hexo d</code>，这只是把生成的<strong>网页结果</strong>传到了网上。<br>真正的<strong>核心资产</strong>——你的 Markdown 原稿、精心调教的 <code>_config.yml</code> 配置、主题魔改代码——依然只存在于你本地的电脑里。</p><p>一旦电脑损坏或重装系统，你将失去一切。因此，<strong>构建私有源码仓库</strong>是必选项。</p><h2 id="🧠-Git-的核心原理（避坑指南）"><a href="#🧠-Git-的核心原理（避坑指南）" class="headerlink" title="🧠 Git 的核心原理（避坑指南）"></a>🧠 Git 的核心原理（避坑指南）</h2><p>在执行 Git 指令前，必须理解它的工作机制，否则容易弄乱电脑文件。</p><h3 id="1-git-文件夹：时光机盒子"><a href="#1-git-文件夹：时光机盒子" class="headerlink" title="1. .git 文件夹：时光机盒子"></a>1. <code>.git</code> 文件夹：时光机盒子</h3><p>当你执行 <code>git init</code> 时，Git 会在<strong>当前文件夹</strong>下创建一个隐藏的 <code>.git</code> 文件夹。</p><ul><li>它存储了该文件夹下所有文件的<strong>快照</strong>和<strong>历史变更记录</strong>。</li><li><strong>重要原则</strong>：Git 是“在这个文件夹里建仓库”，它不会占用其他盘的空间。</li></ul><h3 id="2-这里的坑：不要在-C-盘或桌面操作！"><a href="#2-这里的坑：不要在-C-盘或桌面操作！" class="headerlink" title="2. 这里的坑：不要在 C 盘或桌面操作！"></a>2. 这里的坑：不要在 C 盘或桌面操作！</h3><ul><li><strong>错误示范</strong>：打开 Git Bash 直接 <code>git init</code>。这会在 <code>C:\Users\用户名</code> 下建仓库，导致你的桌面、文档所有文件都被吸入 Git，占用大量 C 盘空间。</li><li><strong>正确做法</strong>：必须先 <code>cd /e/MyBlog</code> 进入你的博客目录。建议将项目放在 <strong>D盘</strong> 或 <strong>E盘</strong>，数据更安全，且不占系统盘空间。</li></ul><h2 id="🛠️-实战：如何备份源码到私有仓库"><a href="#🛠️-实战：如何备份源码到私有仓库" class="headerlink" title="🛠️ 实战：如何备份源码到私有仓库"></a>🛠️ 实战：如何备份源码到私有仓库</h2><h3 id="第一步：创建仓库"><a href="#第一步：创建仓库" class="headerlink" title="第一步：创建仓库"></a>第一步：创建仓库</h3><p>在 GitHub 上新建一个仓库，命名为 <code>my-blog-source</code>，<strong>务必勾选 Private (私有)</strong>，保护隐私。</p><h3 id="第二步：建立连接（仅需一次）"><a href="#第二步：建立连接（仅需一次）" class="headerlink" title="第二步：建立连接（仅需一次）"></a>第二步：建立连接（仅需一次）</h3><p>在博客根目录 (<code>E:\MyBlog</code>) 打开终端：</p><pre><code class="language-bash"># 1. 初始化本地仓库git init# 2. 关联远程私有库 (注意换成你的 SSH 地址)git remote add origin-source git@github.com:CZH17-gif/my-blog-source.git# 3. 统一分支名为 maingit branch -M main</code></pre>]]></content>
-      
-      
+      <tags>
+        <tag>Anaconda</tag>
+        <tag>虚拟环境</tag>
+        <tag>硬链接</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>个人博客搭建(2)：Git 原理与具体操作</title>
+    <url>/2026/01/08/git-workflow-and-backup(2)/</url>
+    <content><![CDATA[<h2 id="🚨-为什么必须备份源码？"><a href="#🚨-为什么必须备份源码？" class="headerlink" title="🚨 为什么必须备份源码？"></a>🚨 为什么必须备份源码？</h2><p>很多博主只做了 <code>hexo d</code>，这只是把生成的<strong>网页结果</strong>传到了网上。<br>真正的<strong>核心资产</strong>——你的 Markdown 原稿、精心调教的 <code>_config.yml</code> 配置、主题魔改代码——依然只存在于你本地的电脑里。</p>
+<p>一旦电脑损坏或重装系统，你将失去一切。因此，<strong>构建私有源码仓库</strong>是必选项。</p>
+<h2 id="🧠-Git-的核心原理（避坑指南）"><a href="#🧠-Git-的核心原理（避坑指南）" class="headerlink" title="🧠 Git 的核心原理（避坑指南）"></a>🧠 Git 的核心原理（避坑指南）</h2><p>在执行 Git 指令前，必须理解它的工作机制，否则容易弄乱电脑文件。</p>
+<h3 id="1-git-文件夹：时光机盒子"><a href="#1-git-文件夹：时光机盒子" class="headerlink" title="1. .git 文件夹：时光机盒子"></a>1. <code>.git</code> 文件夹：时光机盒子</h3><p>当你执行 <code>git init</code> 时，Git 会在<strong>当前文件夹</strong>下创建一个隐藏的 <code>.git</code> 文件夹。</p>
+<ul>
+<li>它存储了该文件夹下所有文件的<strong>快照</strong>和<strong>历史变更记录</strong>。</li>
+<li><strong>重要原则</strong>：Git 是“在这个文件夹里建仓库”，它不会占用其他盘的空间。</li>
+</ul>
+<h3 id="2-这里的坑：不要在-C-盘或桌面操作！"><a href="#2-这里的坑：不要在-C-盘或桌面操作！" class="headerlink" title="2. 这里的坑：不要在 C 盘或桌面操作！"></a>2. 这里的坑：不要在 C 盘或桌面操作！</h3><ul>
+<li><strong>错误示范</strong>：打开 Git Bash 直接 <code>git init</code>。这会在 <code>C:\Users\用户名</code> 下建仓库，导致你的桌面、文档所有文件都被吸入 Git，占用大量 C 盘空间。</li>
+<li><strong>正确做法</strong>：必须先 <code>cd /e/MyBlog</code> 进入你的博客目录。建议将项目放在 <strong>D盘</strong> 或 <strong>E盘</strong>，数据更安全，且不占系统盘空间。</li>
+</ul>
+<h2 id="🛠️-实战：如何备份源码到私有仓库"><a href="#🛠️-实战：如何备份源码到私有仓库" class="headerlink" title="🛠️ 实战：如何备份源码到私有仓库"></a>🛠️ 实战：如何备份源码到私有仓库</h2><h3 id="第一步：创建仓库"><a href="#第一步：创建仓库" class="headerlink" title="第一步：创建仓库"></a>第一步：创建仓库</h3><p>在 GitHub 上新建一个仓库，命名为 <code>my-blog-source</code>，<strong>务必勾选 Private (私有)</strong>，保护隐私。</p>
+<h3 id="第二步：建立连接（仅需一次）"><a href="#第二步：建立连接（仅需一次）" class="headerlink" title="第二步：建立连接（仅需一次）"></a>第二步：建立连接（仅需一次）</h3><p>在博客根目录 (<code>E:\MyBlog</code>) 打开终端：</p>
+<pre><code class="language-bash"># 1. 初始化本地仓库
+git init
+
+# 2. 关联远程私有库 (注意换成你的 SSH 地址)
+git remote add origin-source git@github.com:CZH17-gif/my-blog-source.git
+
+# 3. 统一分支名为 main
+git branch -M main
+</code></pre>
+]]></content>
       <categories>
-          
-          <category> 个人博客搭建系列 </category>
-          
+        <category>个人博客搭建系列</category>
       </categories>
-      
-      
-        <tags>
-            
-            <tag> Git </tag>
-            
-            <tag> 自动化 </tag>
-            
-            <tag> 备份 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>个人博客搭建(1)：核心思路</title>
-      <link href="/2026/01/08/blog-architecture-and-logic(1)/"/>
-      <url>/2026/01/08/blog-architecture-and-logic(1)/</url>
-      
-        <content type="html"><![CDATA[<h2 id="🗺️-核心思路"><a href="#🗺️-核心思路" class="headerlink" title="🗺️ 核心思路"></a>🗺️ 核心思路</h2><p>这是创建个人专属博客的 <strong>5 个步骤</strong></p><h3 id="1-安装Node-js与git"><a href="#1-安装Node-js与git" class="headerlink" title="1. 安装Node.js与git"></a>1. 安装Node.js与git</h3><ul><li><strong>Node.js (LTS版本)</strong>：博客的“发动机”，负责把 Markdown 生成网页。</li><li><strong>Git</strong>：博客的“运输车”，负责把代码传到 GitHub。</li></ul><h3 id="2-使用免费的GitHub-作为托管平台"><a href="#2-使用免费的GitHub-作为托管平台" class="headerlink" title="2. 使用免费的GitHub 作为托管平台"></a>2. 使用免费的GitHub 作为托管平台</h3><p>注册一个 GitHub 账号，然后创建 <strong>两个</strong> 仓库（Repository）：</p><ul><li><strong>公开仓库 (Public)</strong>：<ul><li>名称格式必须为：<code>github用户名.github.io</code> (例如 <code>我的github用户名是CZH17-gif，仓库名称为CZH17-gif.github.io</code>)</li><li><strong>作用</strong>：存放生成的 HTML 网页，<strong>给全世界看</strong>。</li></ul></li><li><strong>私有仓库 (Private)</strong>：<ul><li>名称随意 (例如 <code>my-blog-source</code>)</li><li><strong>作用</strong>：存放 Markdown 原稿和配置文件，<strong>只给自己看</strong> (防止源码丢失)。</li></ul></li></ul><h3 id="3-本地建站-Hexo-初始化"><a href="#3-本地建站-Hexo-初始化" class="headerlink" title="3. 本地建站 (Hexo 初始化)"></a>3. 本地建站 (Hexo 初始化)</h3><p>在电脑非系统盘（如 E 盘）新建文件夹，右键打开终端：</p><ul><li>安装框架：<code>npm install -g hexo-cli</code></li><li>初始化：<code>hexo init MyBlog</code></li><li>安装依赖：<code>npm install</code></li></ul><h3 id="4-打通“隧道”-SSH-密钥配置"><a href="#4-打通“隧道”-SSH-密钥配置" class="headerlink" title="4. 打通“隧道” (SSH 密钥配置)"></a>4. 打通“隧道” (SSH 密钥配置)</h3><p>为了实现自动化部署，不需要每次输密码：</p><ul><li>本地生成密钥：<code>ssh-keygen -t ed25519 -C &quot;你的邮箱&quot;</code></li><li>上传公钥：把生成的 <code>id_ed25519.pub</code> 内容复制到 GitHub 的 Settings -&gt; SSH keys 中。</li><li><strong>目的</strong>：让你的电脑拥有直接操作 GitHub 仓库的最高权限。</li></ul><h3 id="5-装修与个性化-Fluid-主题配置"><a href="#5-装修与个性化-Fluid-主题配置" class="headerlink" title="5. 装修与个性化 (Fluid 主题配置)"></a>5. 装修与个性化 (Fluid 主题配置)</h3><ul><li>安装 Fluid 主题。</li><li><strong>关键操作</strong>：创建 <code>_config.fluid.yml</code> 文件。</li><li><strong>作用</strong>：专门用来修改音乐、看板娘、壁纸等设置，覆盖默认配置，保证逻辑清晰。</li></ul><h2 id="🏗️-核心架构与环境准备"><a href="#🏗️-核心架构与环境准备" class="headerlink" title="🏗️ 核心架构与环境准备"></a>🏗️ 核心架构与环境准备</h2><p>这个博客并不是凭空产生的，它依赖两个核心工具：</p><ol><li><strong>Node.js</strong>：博客的“发动机”。Hexo 是基于 Node.js 运行的，它负责把你的 Markdown 文章“编译”成漂亮的 HTML 网页。</li><li><strong>Git</strong>：博客的“运输车”。它负责把生成的网页推送到 GitHub (公网)，同时把源码备份到 私有仓库。</li></ol><h3 id="关键配置逻辑：SSH-密钥"><a href="#关键配置逻辑：SSH-密钥" class="headerlink" title="关键配置逻辑：SSH 密钥"></a>关键配置逻辑：SSH 密钥</h3><p>在连接 GitHub 时，有两种方式：HTTPS 和 SSH。</p><ul><li><strong>HTTPS</strong>：每次提交都要输账号密码（或 Token），非常繁琐。</li><li><strong>SSH</strong>：配置一次“公钥私钥”，以后自动验证，安全且无感。</li></ul><p><strong>为什么必须配 SSH？</strong><br>因为我们要实现“一键自动化部署”。如果脚本跑到一半弹出来让你输密码，自动化就毫无意义了。</p><p><strong>配置思路：</strong></p><ol><li>本地生成钥匙对：<code>ssh-keygen -t ed25519 -C &quot;邮箱&quot;</code></li><li>把“公钥”交给 GitHub 后台。</li><li>本地测试连通性：<code>ssh -T git@github.com</code></li></ol><h2 id="⚙️-配置文件逻辑：Fluid-主题的覆盖机制"><a href="#⚙️-配置文件逻辑：Fluid-主题的覆盖机制" class="headerlink" title="⚙️ 配置文件逻辑：Fluid 主题的覆盖机制"></a>⚙️ 配置文件逻辑：Fluid 主题的覆盖机制</h2><p>Hexo 的配置逻辑非常巧妙，分为两层：</p><ol><li><p><strong>站点配置 (<code>_config.yml</code>)</strong>：</p><ul><li>位于根目录。</li><li>控制全局：网站标题、作者、URL、部署地址 (Deploy)、使用的框架等。</li></ul></li><li><p><strong>主题配置 (<code>_config.fluid.yml</code>)</strong>：</p><ul><li><strong>重点</strong>：我使用的是 Fluid 主题。为了不修改主题原生文件（方便以后升级），我在根目录新建了这个文件。</li><li><strong>覆盖逻辑</strong>：这里面的设置（如音乐播放器、封面图、看板娘）会<strong>覆盖</strong>主题默认的设置。</li><li><strong>优势</strong>：以后不管怎么魔改，只需要动这一个文件，逻辑清晰，不乱改源码。</li></ul></li></ol><h2 id="🎯-总结"><a href="#🎯-总结" class="headerlink" title="🎯 总结"></a>🎯 总结</h2><p>搭建博客不仅仅是敲代码，更是理清思路的过程。<br>搞懂了 Node.js 负责生成，Git 负责传输，SSH 负责鉴权，配置负责个性化，接下来的实操就是水到渠成的事了。</p><p>下一篇，我将详细讲解<strong>Git 的核心原理</strong>以及如何实现<strong>源码的自动化备份</strong>。</p>]]></content>
-      
-      
+      <tags>
+        <tag>Git</tag>
+        <tag>自动化</tag>
+        <tag>备份</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【Python进阶】如何运行别人的代码</title>
+    <url>/2026/01/11/%E6%8B%BF%E5%88%B0%E5%88%AB%E4%BA%BA%E7%9A%84%E4%BB%A3%E7%A0%81%E6%80%8E%E4%B9%88%E8%B7%91%EF%BC%9F/</url>
+    <content><![CDATA[<h1 id="🏃‍♂️-【Python实战】第四篇：拿到别人的代码怎么跑？终极运行指南（含逆向推导神器）"><a href="#🏃‍♂️-【Python实战】第四篇：拿到别人的代码怎么跑？终极运行指南（含逆向推导神器）" class="headerlink" title="🏃‍♂️ 【Python实战】第四篇：拿到别人的代码怎么跑？终极运行指南（含逆向推导神器）"></a>🏃‍♂️ 【Python实战】第四篇：拿到别人的代码怎么跑？终极运行指南（含逆向推导神器）</h1><blockquote>
+<p><strong>前言</strong>：<br>老板、老师或网上大佬丢给你一个压缩包，里面连个说明文件都没有，你该如何优雅地让它在你电脑上跑起来？</p>
+</blockquote>
+<hr>
+<h2 id="🛑-一、-为什么不能直接跑？"><a href="#🛑-一、-为什么不能直接跑？" class="headerlink" title="🛑 一、 为什么不能直接跑？"></a>🛑 一、 为什么不能直接跑？</h2><p>很多新手拿到代码的第一反应是：直接右键 -&gt; <code>Run</code>。<br>结果通常只有一种：<strong>报错</strong>。</p>
+<h3 id="核心原因：环境不对等"><a href="#核心原因：环境不对等" class="headerlink" title="核心原因：环境不对等"></a>核心原因：环境不对等</h3><p>别人的代码是在他的“厨房”里做出来的，他用了特制的调料（比如 <code>pandas 1.5.0</code>, <code>torch 1.12</code>）。</p>
+<ul>
+<li><strong>你的 Base 环境</strong>：可能根本没有这个包。</li>
+<li><strong>你的其他环境</strong>：可能包的版本不对（比如你装了 <code>pandas 2.0</code>，导致旧代码不兼容）。</li>
+</ul>
+<p><strong>✅ 正确做法</strong>：为这份代码，快速搭建一个<strong>专属的临时厨房（虚拟环境）</strong>。</p>
+<hr>
+<h2 id="🛠️-二、-标准化运行四步法"><a href="#🛠️-二、-标准化运行四步法" class="headerlink" title="🛠️ 二、 标准化运行四步法"></a>🛠️ 二、 标准化运行四步法</h2><h3 id="第一步：侦察“配方表”-检查依赖文件"><a href="#第一步：侦察“配方表”-检查依赖文件" class="headerlink" title="第一步：侦察“配方表” (检查依赖文件)"></a>第一步：侦察“配方表” (检查依赖文件)</h3><p>解压代码包，打开文件夹，先不要急着看 <code>.py</code> 文件，先找有没有以下两个文件之一：</p>
+<ol>
+<li><strong><code>requirements.txt</code></strong> (最常见，Pip 格式)</li>
+<li><strong><code>environment.yml</code></strong> (Conda 专用格式)</li>
+</ol>
+<p>这两个文件就是“配方表”，记录了代码运行所需的所有包和版本。</p>
+<h3 id="第二步：建立新厨房-创建环境"><a href="#第二步：建立新厨房-创建环境" class="headerlink" title="第二步：建立新厨房 (创建环境)"></a>第二步：建立新厨房 (创建环境)</h3><p>打开 Anaconda Prompt (或终端)，根据你的项目类型创建一个新环境。<br><em>(假设这个项目叫 <code>run_project</code>，需要 python 3.9)</em></p>
+<pre><code class="language-powershell"># 创建一个名为 run_project 的新环境，因为我们配置过 .condarc，这个新环境会自动建在 E 盘，完全不用担心 C 盘空间。
+conda create -n run_project python=3.9
+
+conda activate run_project
+
+# 情况 A：有 requirements.txt (简单模式)
+# 使用 pip 安装（建议加上清华源加速）：
+pip install -r requirements.txt -i [https://pypi.tuna.tsinghua.edu.cn/simple](https://pypi.tuna.tsinghua.edu.cn/simple)
+
+# 情况 B：有 environment.yml (简单模式)
+# 直接让 Conda 根据文件自动配置：
+</code></pre>
+]]></content>
       <categories>
-          
-          <category> 个人博客搭建系列 </category>
-          
+        <category>Python系列</category>
       </categories>
-      
-      
-        <tags>
-            
-            <tag> 核心思路 </tag>
-            
-            <tag> Hexo </tag>
-            
-            <tag> SSH </tag>
-            
-            <tag> 架构 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>拒绝学了就忘：小白从零搭建个性化全栈博客</title>
-      <link href="/2022/01/08/why-i-build-blog/"/>
-      <url>/2022/01/08/why-i-build-blog/</url>
-      
-        <content type="html"><![CDATA[<h2 id="一、原因"><a href="#一、原因" class="headerlink" title="一、原因"></a>一、原因</h2><p>曾经有一段时间，<strong>“学了忘，忘了学，再学再忘”</strong>，这种怪循环让我觉得自己的学习效率底下<br>因此我觉得，<strong>记录，交流，总结对于学习非常重要，也希望与大家进行交流和讨论。</strong></p><h2 id="二、理想博客"><a href="#二、理想博客" class="headerlink" title="二、理想博客"></a>二、理想博客</h2><p>在参考了Google Research Blog、OpenAI Research Blog、张鑫旭的鑫空间-鑫生活、Anthony Fu、CoolShell (酷壳 - 陈皓)等等顶级的博客之后，我理想中的博客的样子也愈发清晰：</p><ol><li><p><strong>内容至上</strong>：<br>所有的元素（标题、图片、摘要）都是为了更快地获取信息。首页我打算用整齐划一的“卡片”排列，内容页则采用大面积的留白，来提升阅读体验。</p></li><li><p><strong>拒绝数据丢失，不依赖本地</strong>：<br>我希望它完全不依赖于本地电脑。哪怕有一天我的笔记本坏了，或者我换了新电脑，我只需要从云端的“私有仓库”里拉取配置文件，就能无缝衔接，继续写作。<strong>数据必须掌握在自己手里。</strong></p></li><li><p><strong>零成本，循序渐进</strong>：<br>作为一个技术尝鲜者，我不想为了写博客每年花费几百块去租云服务器。它必须是免费托管的，但同时不能简陋。等我熟练之后，再考虑租用服务器。</p></li><li><p><strong>一次编写，高效转发</strong>：<br>我希望以这个博客为基地。在这里写好 Markdown 文章后，可以通过配置（或配合工具），轻松地分发到知乎、CSDN 等平台。不需要重复排版，只需要输入账号信息，让知识传播得更远。</p></li></ol><h2 id="三、方案选择"><a href="#三、方案选择" class="headerlink" title="三、方案选择"></a>三、方案选择</h2><h3 id="1-静态网页框架的选择：Hexo-vs-Hugo"><a href="#1-静态网页框架的选择：Hexo-vs-Hugo" class="headerlink" title="1. 静态网页框架的选择：Hexo vs Hugo"></a>1. 静态网页框架的选择：Hexo vs Hugo</h3><p>在决定框架时，我主要对比了静态博客界的两大巨头：<strong>Hexo</strong> 和 <strong>Hugo</strong>。</p><h4 id="Hexo（我现在的选择）"><a href="#Hexo（我现在的选择）" class="headerlink" title="Hexo（我现在的选择）"></a>Hexo（我现在的选择）</h4><p>  <strong>优点</strong>：<br>    * <strong>生态极好</strong>：由台湾同胞开发，华人用户群体极其庞大。这意味着中文文档完善，中文主题（如我现在用的 Fluid、还有 Butterfly）非常丰富，审美完全在线。<br>    * <strong>插件丰富</strong>：对于像我这样的小白，想加个 Live2D 看板娘、加个 APlayer 音乐播放器、搞个点击特效，搜一下插件就能搞定，配置简单。<br> <strong>缺点</strong>：<br>    * 是基于 Node.js 的，当文章数量达到几千篇时，生成速度会变慢。</p><h4 id="Hugo（未来的备选）"><a href="#Hugo（未来的备选）" class="headerlink" title="Hugo（未来的备选）"></a>Hugo（未来的备选）</h4><p>  <strong>优点</strong>：<br>    * 基于 Go 语言，生成速度极快（毫秒级），安装也更简单（一个文件走天下）。<br>  <strong>缺点</strong>：<br>    * 插件相对较少，折腾门槛高，主题修改需要学习 Go 模板语言。</p><h3 id="2-托管平台的选择：GitHub-Pages-vs-云服务器"><a href="#2-托管平台的选择：GitHub-Pages-vs-云服务器" class="headerlink" title="2. 托管平台的选择：GitHub Pages vs 云服务器"></a>2. 托管平台的选择：GitHub Pages vs 云服务器</h3><p>很多新手纠结是买服务器还是用免费托管，我的对比逻辑如下：</p><table><thead><tr><th align="left">维度</th><th align="left">GitHub Pages (我的选择)</th><th align="left">云服务器 (ECS&#x2F;VPS)</th></tr></thead><tbody><tr><td align="left"><strong>费用</strong></td><td align="left"><strong>0元 (永久免费)</strong></td><td align="left">几百~几千元&#x2F;年</td></tr><tr><td align="left"><strong>维护</strong></td><td align="left"><strong>极低</strong> (只管写文章)</td><td align="left"><strong>高</strong> (需维护Linux系统、Nginx、安全防护)</td></tr><tr><td align="left"><strong>能力</strong></td><td align="left">仅静态网页 (HTML&#x2F;CSS&#x2F;JS)</td><td align="left">全能 (可跑数据库、后端程序)</td></tr><tr><td align="left"><strong>适用</strong></td><td align="left">个人博客、文档站</td><td align="left">复杂应用、企业官网</td></tr></tbody></table><p><strong>结论</strong>：对于纯内容输出的博客，GitHub Pages + Hexo 是性价比天花板。</p><h2 id="四、现阶段方案"><a href="#四、现阶段方案" class="headerlink" title="四、现阶段方案"></a>四、现阶段方案</h2><p><strong>现阶段方案： 通过Hexo创建静态网页，然后上传到github免费托管，使用Giscus进行评论。</strong></p><p>理由很简单：我现在正处于积累期，**“好用、好看、好配置”**能给我带来更多的写作动力。等未来某一天，我的文章真的积累到了几千篇，Hexo 撑不住的时候，说明我已经是一个资深博主了，那时候再迁移到 Hugo 进行技术升级也不迟。</p><h2 id="🌟-结语"><a href="#🌟-结语" class="headerlink" title="🌟 结语"></a>🌟 结语</h2><p>这个博客的上线，是我对抗遗忘的第一步，也是我全栈成长之路的起点。<br>哪怕它现在还很稚嫩，但<strong>开始</strong>本身就是最大的意义。欢迎大家常来做客，见证我的成长！</p><p>下面是我觉得真的非常厉害的博客，篇幅有限，我就只列了2个：</p><ul><li>osh Comeau，作为React 社区的大 V，曾就职于 Khan Academy，他的博客风格交互体验真的非常好<br>链接： <a href="https://www.joshwcomeau.com/">https://www.joshwcomeau.com/</a></li><li>Google Research Blog，干净、但是高级，属于是内容至上，链接： <a href="https://research.google/blog/">https://research.google/blog/</a></li></ul><hr><blockquote><p><em>本文首发于 <a href="https://czh17-gif.github.io/">CZH-Tech</a>，转载请注明出处。</em></p></blockquote>]]></content>
-      
-      
+      <tags>
+        <tag>Anaconda</tag>
+        <tag>虚拟环境</tag>
+        <tag>硬链接</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>拒绝学了就忘：小白从零搭建个性化全栈博客</title>
+    <url>/2022/01/08/why-i-build-blog/</url>
+    <content><![CDATA[<h2 id="一、原因"><a href="#一、原因" class="headerlink" title="一、原因"></a>一、原因</h2><p>曾经有一段时间，<strong>“学了忘，忘了学，再学再忘”</strong>，这种怪循环让我觉得自己的学习效率底下<br>因此我觉得，<strong>记录，交流，总结对于学习非常重要，也希望与大家进行交流和讨论。</strong></p>
+<h2 id="二、理想博客"><a href="#二、理想博客" class="headerlink" title="二、理想博客"></a>二、理想博客</h2><p>在参考了Google Research Blog、OpenAI Research Blog、张鑫旭的鑫空间-鑫生活、Anthony Fu、CoolShell (酷壳 - 陈皓)等等顶级的博客之后，我理想中的博客的样子也愈发清晰：</p>
+<ol>
+<li><p><strong>内容至上</strong>：<br>所有的元素（标题、图片、摘要）都是为了更快地获取信息。首页我打算用整齐划一的“卡片”排列，内容页则采用大面积的留白，来提升阅读体验。</p>
+</li>
+<li><p><strong>拒绝数据丢失，不依赖本地</strong>：<br>我希望它完全不依赖于本地电脑。哪怕有一天我的笔记本坏了，或者我换了新电脑，我只需要从云端的“私有仓库”里拉取配置文件，就能无缝衔接，继续写作。<strong>数据必须掌握在自己手里。</strong></p>
+</li>
+<li><p><strong>零成本，循序渐进</strong>：<br>作为一个技术尝鲜者，我不想为了写博客每年花费几百块去租云服务器。它必须是免费托管的，但同时不能简陋。等我熟练之后，再考虑租用服务器。</p>
+</li>
+<li><p><strong>一次编写，高效转发</strong>：<br>我希望以这个博客为基地。在这里写好 Markdown 文章后，可以通过配置（或配合工具），轻松地分发到知乎、CSDN 等平台。不需要重复排版，只需要输入账号信息，让知识传播得更远。</p>
+</li>
+</ol>
+<h2 id="三、方案选择"><a href="#三、方案选择" class="headerlink" title="三、方案选择"></a>三、方案选择</h2><h3 id="1-静态网页框架的选择：Hexo-vs-Hugo"><a href="#1-静态网页框架的选择：Hexo-vs-Hugo" class="headerlink" title="1. 静态网页框架的选择：Hexo vs Hugo"></a>1. 静态网页框架的选择：Hexo vs Hugo</h3><p>在决定框架时，我主要对比了静态博客界的两大巨头：<strong>Hexo</strong> 和 <strong>Hugo</strong>。</p>
+<h4 id="Hexo（我现在的选择）"><a href="#Hexo（我现在的选择）" class="headerlink" title="Hexo（我现在的选择）"></a>Hexo（我现在的选择）</h4><p>  <strong>优点</strong>：<br>    * <strong>生态极好</strong>：由台湾同胞开发，华人用户群体极其庞大。这意味着中文文档完善，中文主题（如我现在用的 Fluid、还有 Butterfly）非常丰富，审美完全在线。<br>    * <strong>插件丰富</strong>：对于像我这样的小白，想加个 Live2D 看板娘、加个 APlayer 音乐播放器、搞个点击特效，搜一下插件就能搞定，配置简单。<br> <strong>缺点</strong>：<br>    * 是基于 Node.js 的，当文章数量达到几千篇时，生成速度会变慢。</p>
+<h4 id="Hugo（未来的备选）"><a href="#Hugo（未来的备选）" class="headerlink" title="Hugo（未来的备选）"></a>Hugo（未来的备选）</h4><p>  <strong>优点</strong>：<br>    * 基于 Go 语言，生成速度极快（毫秒级），安装也更简单（一个文件走天下）。<br>  <strong>缺点</strong>：<br>    * 插件相对较少，折腾门槛高，主题修改需要学习 Go 模板语言。</p>
+<h3 id="2-托管平台的选择：GitHub-Pages-vs-云服务器"><a href="#2-托管平台的选择：GitHub-Pages-vs-云服务器" class="headerlink" title="2. 托管平台的选择：GitHub Pages vs 云服务器"></a>2. 托管平台的选择：GitHub Pages vs 云服务器</h3><p>很多新手纠结是买服务器还是用免费托管，我的对比逻辑如下：</p>
+<table>
+<thead>
+<tr>
+<th align="left">维度</th>
+<th align="left">GitHub Pages (我的选择)</th>
+<th align="left">云服务器 (ECS&#x2F;VPS)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>费用</strong></td>
+<td align="left"><strong>0元 (永久免费)</strong></td>
+<td align="left">几百~几千元&#x2F;年</td>
+</tr>
+<tr>
+<td align="left"><strong>维护</strong></td>
+<td align="left"><strong>极低</strong> (只管写文章)</td>
+<td align="left"><strong>高</strong> (需维护Linux系统、Nginx、安全防护)</td>
+</tr>
+<tr>
+<td align="left"><strong>能力</strong></td>
+<td align="left">仅静态网页 (HTML&#x2F;CSS&#x2F;JS)</td>
+<td align="left">全能 (可跑数据库、后端程序)</td>
+</tr>
+<tr>
+<td align="left"><strong>适用</strong></td>
+<td align="left">个人博客、文档站</td>
+<td align="left">复杂应用、企业官网</td>
+</tr>
+</tbody></table>
+<p><strong>结论</strong>：对于纯内容输出的博客，GitHub Pages + Hexo 是性价比天花板。</p>
+<h2 id="四、现阶段方案"><a href="#四、现阶段方案" class="headerlink" title="四、现阶段方案"></a>四、现阶段方案</h2><p><strong>现阶段方案： 通过Hexo创建静态网页，然后上传到github免费托管，使用Giscus进行评论。</strong></p>
+<p>理由很简单：我现在正处于积累期，**“好用、好看、好配置”**能给我带来更多的写作动力。等未来某一天，我的文章真的积累到了几千篇，Hexo 撑不住的时候，说明我已经是一个资深博主了，那时候再迁移到 Hugo 进行技术升级也不迟。</p>
+<h2 id="🌟-结语"><a href="#🌟-结语" class="headerlink" title="🌟 结语"></a>🌟 结语</h2><p>这个博客的上线，是我对抗遗忘的第一步，也是我全栈成长之路的起点。<br>哪怕它现在还很稚嫩，但<strong>开始</strong>本身就是最大的意义。欢迎大家常来做客，见证我的成长！</p>
+<p>下面是我觉得真的非常厉害的博客，篇幅有限，我就只列了2个：</p>
+<ul>
+<li>osh Comeau，作为React 社区的大 V，曾就职于 Khan Academy，他的博客风格交互体验真的非常好<br>链接： <a href="https://www.joshwcomeau.com/">https://www.joshwcomeau.com/</a></li>
+<li>Google Research Blog，干净、但是高级，属于是内容至上，链接： <a href="https://research.google/blog/">https://research.google/blog/</a></li>
+</ul>
+<hr>
+<blockquote>
+<p><em>本文首发于 <a href="https://czh17-gif.github.io/">CZH-Tech</a>，转载请注明出处。</em></p>
+</blockquote>
+]]></content>
       <categories>
-          
-          <category> 随笔 </category>
-          
+        <category>随笔</category>
       </categories>
-      
-      
-        <tags>
-            
-            <tag> 思考 </tag>
-            
-            <tag> 建站 </tag>
-            
-            <tag> 方案选择 </tag>
-            
-            <tag> 个人成长 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-  
-  
+      <tags>
+        <tag>思考</tag>
+        <tag>建站</tag>
+        <tag>方案选择</tag>
+        <tag>个人成长</tag>
+      </tags>
+  </entry>
 </search>
