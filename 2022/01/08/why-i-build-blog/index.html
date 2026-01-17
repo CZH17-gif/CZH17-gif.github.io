@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<title>拒绝学了就忘：小白从零搭建个性化全栈博客 | CZH Tech Blog</title>
+
+<link rel="stylesheet" href="/css/style.css">
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+<link rel="preconnect" href="https://gs.jurieo.com/gemini/fonts-googleapis">
+<link rel="preconnect" href="https://gs.jurieo.com/gemini/fonts-gstatic" crossorigin>
+<link href="https://gs.jurieo.com/gemini/fonts-googleapis/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<meta name="generator" content="Hexo 8.1.1"></head>
+<body>
+  <nav class="top-nav">
+  <div class="container nav-inner">
+    <a href="/" class="nav-logo">
+      <i class="iconfont icon-code" style="margin-right:8px;"></i> CZH Tech Blog
+    </a>
+    <div class="nav-links">
+      <a href="/"><i class="iconfont icon-home"></i> 首页</a>
+      <a href="/archives/"><i class="iconfont icon-archive"></i> 归档</a>
+      <a href="/categories/"><i class="iconfont icon-th-large"></i> 专栏</a>
+      <a href="/about/"><i class="iconfont icon-user"></i> 关于</a>
+    </div>
+  </div>
+</nav>
+  
+  
+  
+  <header class="page-banner" 
+          style="background-image: url('/img/banner.webp'); background-color: #000;">
+    <div class="banner-mask"></div>
+    <div class="banner-title">拒绝学了就忘：小白从零搭建个性化全栈博客</div>
+  </header>
+
+  
+  <div class="post-wrapper">
+  <div class="post-main">
+    
+    <div class="post-nav">
+      <span class="back-home" onclick="location.href='/'">
+        <i class="iconfont icon-arrow-left"></i> 返回首页
+      </span>
+      <span class="breadcrumb-sep">/</span>
+      <span>正文内容</span>
+    </div>
+
+    <article class="post-article">
+      <header class="post-header">
+        <div class="post-meta">
+          <time><i class="iconfont icon-calendar"></i> 2022-01-08</time>
+          <span class="meta-divider">|</span>
+          <span><i class="iconfont icon-folder"></i> 随笔</span>
+          <span class="meta-divider">|</span>
+          <span><i class="iconfont icon-file-text"></i> 1715 字</span>
+        </div>
+      </header>
+      
+      <div class="markdown-body">
+        <h2 id="一、原因"><a href="#一、原因" class="headerlink" title="一、原因"></a>一、原因</h2><p>曾经有一段时间，<strong>“学了忘，忘了学，再学再忘”</strong>，这种怪循环让我觉得自己的学习效率底下<br>因此我觉得，<strong>记录，交流，总结对于学习非常重要，也希望与大家进行交流和讨论。</strong></p>
+<h2 id="二、理想博客"><a href="#二、理想博客" class="headerlink" title="二、理想博客"></a>二、理想博客</h2><p>在参考了Google Research Blog、OpenAI Research Blog、张鑫旭的鑫空间-鑫生活、Anthony Fu、CoolShell (酷壳 - 陈皓)等等顶级的博客之后，我理想中的博客的样子也愈发清晰：</p>
+<ol>
+<li><p><strong>内容至上</strong>：<br>所有的元素（标题、图片、摘要）都是为了更快地获取信息。首页我打算用整齐划一的“卡片”排列，内容页则采用大面积的留白，来提升阅读体验。</p>
+</li>
+<li><p><strong>拒绝数据丢失，不依赖本地</strong>：<br>我希望它完全不依赖于本地电脑。哪怕有一天我的笔记本坏了，或者我换了新电脑，我只需要从云端的“私有仓库”里拉取配置文件，就能无缝衔接，继续写作。<strong>数据必须掌握在自己手里。</strong></p>
+</li>
+<li><p><strong>零成本，循序渐进</strong>：<br>作为一个技术尝鲜者，我不想为了写博客每年花费几百块去租云服务器。它必须是免费托管的，但同时不能简陋。等我熟练之后，再考虑租用服务器。</p>
+</li>
+<li><p><strong>一次编写，高效转发</strong>：<br>我希望以这个博客为基地。在这里写好 Markdown 文章后，可以通过配置（或配合工具），轻松地分发到知乎、CSDN 等平台。不需要重复排版，只需要输入账号信息，让知识传播得更远。</p>
+</li>
+</ol>
+<h2 id="三、方案选择"><a href="#三、方案选择" class="headerlink" title="三、方案选择"></a>三、方案选择</h2><h3 id="1-静态网页框架的选择：Hexo-vs-Hugo"><a href="#1-静态网页框架的选择：Hexo-vs-Hugo" class="headerlink" title="1. 静态网页框架的选择：Hexo vs Hugo"></a>1. 静态网页框架的选择：Hexo vs Hugo</h3><p>在决定框架时，我主要对比了静态博客界的两大巨头：<strong>Hexo</strong> 和 <strong>Hugo</strong>。</p>
+<h4 id="Hexo（我现在的选择）"><a href="#Hexo（我现在的选择）" class="headerlink" title="Hexo（我现在的选择）"></a>Hexo（我现在的选择）</h4><p>  <strong>优点</strong>：<br>    * <strong>生态极好</strong>：由台湾同胞开发，华人用户群体极其庞大。这意味着中文文档完善，中文主题（如我现在用的 Fluid、还有 Butterfly）非常丰富，审美完全在线。<br>    * <strong>插件丰富</strong>：对于像我这样的小白，想加个 Live2D 看板娘、加个 APlayer 音乐播放器、搞个点击特效，搜一下插件就能搞定，配置简单。<br> <strong>缺点</strong>：<br>    * 是基于 Node.js 的，当文章数量达到几千篇时，生成速度会变慢。</p>
+<h4 id="Hugo（未来的备选）"><a href="#Hugo（未来的备选）" class="headerlink" title="Hugo（未来的备选）"></a>Hugo（未来的备选）</h4><p>  <strong>优点</strong>：<br>    * 基于 Go 语言，生成速度极快（毫秒级），安装也更简单（一个文件走天下）。<br>  <strong>缺点</strong>：<br>    * 插件相对较少，折腾门槛高，主题修改需要学习 Go 模板语言。</p>
+<h3 id="2-托管平台的选择：GitHub-Pages-vs-云服务器"><a href="#2-托管平台的选择：GitHub-Pages-vs-云服务器" class="headerlink" title="2. 托管平台的选择：GitHub Pages vs 云服务器"></a>2. 托管平台的选择：GitHub Pages vs 云服务器</h3><p>很多新手纠结是买服务器还是用免费托管，我的对比逻辑如下：</p>
+<table>
+<thead>
+<tr>
+<th align="left">维度</th>
+<th align="left">GitHub Pages (我的选择)</th>
+<th align="left">云服务器 (ECS&#x2F;VPS)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>费用</strong></td>
+<td align="left"><strong>0元 (永久免费)</strong></td>
+<td align="left">几百~几千元&#x2F;年</td>
+</tr>
+<tr>
+<td align="left"><strong>维护</strong></td>
+<td align="left"><strong>极低</strong> (只管写文章)</td>
+<td align="left"><strong>高</strong> (需维护Linux系统、Nginx、安全防护)</td>
+</tr>
+<tr>
+<td align="left"><strong>能力</strong></td>
+<td align="left">仅静态网页 (HTML&#x2F;CSS&#x2F;JS)</td>
+<td align="left">全能 (可跑数据库、后端程序)</td>
+</tr>
+<tr>
+<td align="left"><strong>适用</strong></td>
+<td align="left">个人博客、文档站</td>
+<td align="left">复杂应用、企业官网</td>
+</tr>
+</tbody></table>
+<p><strong>结论</strong>：对于纯内容输出的博客，GitHub Pages + Hexo 是性价比天花板。</p>
+<h2 id="四、现阶段方案"><a href="#四、现阶段方案" class="headerlink" title="四、现阶段方案"></a>四、现阶段方案</h2><p><strong>现阶段方案： 通过Hexo创建静态网页，然后上传到github免费托管，使用Giscus进行评论。</strong></p>
+<p>理由很简单：我现在正处于积累期，**“好用、好看、好配置”**能给我带来更多的写作动力。等未来某一天，我的文章真的积累到了几千篇，Hexo 撑不住的时候，说明我已经是一个资深博主了，那时候再迁移到 Hugo 进行技术升级也不迟。</p>
+<h2 id="🌟-结语"><a href="#🌟-结语" class="headerlink" title="🌟 结语"></a>🌟 结语</h2><p>这个博客的上线，是我对抗遗忘的第一步，也是我全栈成长之路的起点。<br>哪怕它现在还很稚嫩，但<strong>开始</strong>本身就是最大的意义。欢迎大家常来做客，见证我的成长！</p>
+<p>下面是我觉得真的非常厉害的博客，篇幅有限，我就只列了2个：</p>
+<ul>
+<li>osh Comeau，作为React 社区的大 V，曾就职于 Khan Academy，他的博客风格交互体验真的非常好<br>链接： <a target="_blank" rel="noopener" href="https://www.joshwcomeau.com/">https://www.joshwcomeau.com/</a></li>
+<li>Google Research Blog，干净、但是高级，属于是内容至上，链接： <a target="_blank" rel="noopener" href="https://research.google/blog/">https://research.google/blog/</a></li>
+</ul>
+<hr>
+<blockquote>
+<p><em>本文首发于 <a href="https://czh17-gif.github.io/">CZH-Tech</a>，转载请注明出处。</em></p>
+</blockquote>
+
+      </div>
+
+      <div class="post-footer-tags">
+        
+          
+            <a href="/tags/%E6%80%9D%E8%80%83/" class="tag-link"># 思考</a>
+          
+            <a href="/tags/%E5%BB%BA%E7%AB%99/" class="tag-link"># 建站</a>
+          
+            <a href="/tags/%E6%96%B9%E6%A1%88%E9%80%89%E6%8B%A9/" class="tag-link"># 方案选择</a>
+          
+            <a href="/tags/%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF/" class="tag-link"># 个人成长</a>
+          
+        
+      </div>
+    </article>
+
+    <div class="comment-container">
+      <div class="comment-head">
+        <i class="iconfont icon-message"></i> 参与讨论
+      </div>
+      <script src="https://giscus.app/client.js"
+              data-repo="CZH17-gif/CZH17-gif.github.io"
+              data-repo-id="R_kgDOQzBcSw"
+              data-category="Announcements"
+              data-category-id="DIC_kwDOQzBcS84C0ys7"
+              data-mapping="pathname"
+              data-strict="0"
+              data-reactions-enabled="0"
+              data-emit-metadata="0"
+              data-input-position="top"
+              data-theme="light"
+              data-lang="zh-CN"
+              crossorigin="anonymous"
+              async>
+      </script>
+    </div>
+  </div>
+
+  <aside class="toc-sidebar">
+    <div class="toc-card">
+      <div class="toc-title">
+        <i class="iconfont icon-list"></i> 文章目录
+      </div>
+      <div class="toc-content">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%8E%9F%E5%9B%A0"><span class="toc-text">一、原因</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E7%90%86%E6%83%B3%E5%8D%9A%E5%AE%A2"><span class="toc-text">二、理想博客</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E6%96%B9%E6%A1%88%E9%80%89%E6%8B%A9"><span class="toc-text">三、方案选择</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E9%9D%99%E6%80%81%E7%BD%91%E9%A1%B5%E6%A1%86%E6%9E%B6%E7%9A%84%E9%80%89%E6%8B%A9%EF%BC%9AHexo-vs-Hugo"><span class="toc-text">1. 静态网页框架的选择：Hexo vs Hugo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%89%98%E7%AE%A1%E5%B9%B3%E5%8F%B0%E7%9A%84%E9%80%89%E6%8B%A9%EF%BC%9AGitHub-Pages-vs-%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-text">2. 托管平台的选择：GitHub Pages vs 云服务器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E7%8E%B0%E9%98%B6%E6%AE%B5%E6%96%B9%E6%A1%88"><span class="toc-text">四、现阶段方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%8C%9F-%E7%BB%93%E8%AF%AD"><span class="toc-text">🌟 结语</span></a></li></ol>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const tocLinks = document.querySelectorAll('.toc-link');
+    const sections = Array.from(tocLinks).map(link => {
+      return document.querySelector(decodeURI(link.getAttribute('href')));
+    }).filter(section => section !== null);
+
+    function spy() {
+      const scrollPos = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+      let activeIndex = -1;
+      
+      sections.forEach((section, index) => {
+        if (scrollPos >= section.offsetTop - 100) {
+          activeIndex = index;
+        }
+      });
+
+      tocLinks.forEach(link => link.classList.remove('active'));
+      if (activeIndex !== -1) {
+        tocLinks[activeIndex].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', spy);
+    spy(); 
+  });
+</script>
+
+<style>
+  /* 局部微调样式 */
+  .comment-container {
+    margin-top: 50px;
+    padding: 30px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  }
+  .comment-head {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .post-footer-tags {
+    margin-top: 40px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .tag-link {
+    background: #f1f3f4;
+    color: #5f6368;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    transition: 0.3s;
+  }
+  .tag-link:hover {
+    background: #1a73e8;
+    color: #fff;
+    text-decoration: none;
+  }
+  .meta-divider {
+    margin: 0 10px;
+    color: #eee;
+  }
+</style>
+
+  <footer style="text-align:center; padding:40px 0; color:#888; margin-top:60px; border-top:1px solid #eee;">
+  <p>&copy; 2026 CZH</p>
+</footer>
+
+  
+    <script>
+      if(document.getElementById('typed-text')) {
+        new Typed('#typed-text', {
+          strings: ['拒绝学了就忘：小白从零搭建个性化全栈博客'],
+          typeSpeed: 70, showCursor: false
+        });
+      }
+    </script>
+  
+
+  <script>
+    var searchFunc = function(path, search_id, content_id) {
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        success: function(xmlResponse) {
+          var datas = $("entry", xmlResponse).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          if (!$input) return;
+          
+          $input.addEventListener('input', function() {
+            var str = '<div class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              $resultContent.style.display = 'none';
+              return;
+            }
+            var count = 0;
+            datas.forEach(function(data) {
+              var isMatch = true;
+              var data_title = data.title.trim().toLowerCase();
+              var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+              if (data_title && keywords.some(k => data_title.indexOf(k) >= 0 || data_content.indexOf(k) >= 0)) {
+                 str += "<a href='" + data.url + "' class='search-item'>";
+                 str += "<div class='search-title'>" + data.title + "</div>";
+                 str += "</a>";
+                 count++;
+              }
+            });
+            if (count > 0) {
+              $resultContent.innerHTML = str;
+              $resultContent.style.display = 'block';
+            }
+          });
+        }
+      });
+    };
+    searchFunc('/search.xml', 'local-search-input', 'search-result');
+  </script>
+</body>
+</html>

@@ -1,0 +1,431 @@
+/* themes/google-research/source/css/style.css */
+
+/* ================= 1. 全局与重置 ================= */
+:root { --primary: #1a73e8; --text: #202124; --gray: #5f6368; --border: #dadce0; --bg: #f8f9fa; }
+* { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
+body { font-family: -apple-system, "Noto Sans SC", sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+a { text-decoration: none; color: inherit; transition: 0.2s; }
+img { max-width: 100%; display: block; }
+ul { list-style: none; }
+.container { max-width: 1400px; margin: 0 auto; padding: 0 24px; width: 100%; }
+
+/* 【暴力隐藏看板娘】 */
+#live2d-widget, canvas#live2dcanvas { display: none !important; opacity: 0 !important; pointer-events: none !important; }
+
+/* ================= 2. 顶部导航 (深色毛玻璃) ================= */
+.top-nav { background: rgba(32, 33, 36, 0.95); backdrop-filter: blur(10px); height: 64px; position: sticky; top: 0; z-index: 1000; display: flex; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+.nav-inner { display: flex; justify-content: space-between; align-items: center; width: 100%; color: #fff; }
+.nav-logo { font-size: 1.3rem; font-weight: 700; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; }
+.nav-links a { color: #e8eaed; margin-left: 25px; font-size: 14px; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; opacity: 0.9; }
+.nav-links a:hover { color: #fff; opacity: 1; }
+
+/* ================= 3. Header & Banner (核心修复区) ================= */
+.home-header { 
+  background: #000; 
+  color: #fff; 
+  padding: 120px 0; /* 增加高度，大气一点 */
+  overflow: hidden; /* 防止 3D 图片撑开滚动条 */
+}
+.header-wrapper { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+}
+
+/* --- 左侧文字区 --- */
+.header-text { 
+  max-width: 650px; /* 稍微加宽容器，给文字更多空间 */
+  position: relative;
+  z-index: 2;
+}
+
+/* 1. 英文大标题 (打字机修复) */
+.title-en { 
+  font-size: 3.2rem; /*稍微减小一点点，防止太挤 */
+  line-height: 1.2; 
+  font-weight: 700; 
+  min-height: 70px; /* 占位，防止打字时高度跳动 */
+  margin-bottom: 35px;
+  background: linear-gradient(to right, #fff, #aab); 
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: 'Google Sans', sans-serif;
+  
+  /* 【关键修复】强制不换行，解决打字时单词跳动的问题 */
+  white-space: nowrap; 
+}
+
+/* 2. 中文介绍 */
+.header-desc {
+  border-left: 3px solid #1a73e8; /* 谷歌蓝竖线装饰 */
+  padding-left: 20px;
+  margin-bottom: 40px;
+}
+.desc-main {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #fff;
+  margin-bottom: 10px;
+}
+.desc-sub {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.75); /* 稍微变灰，拉开层次 */
+  margin-bottom: 5px;
+  line-height: 1.6;
+}
+
+/* 3. 链接区 */
+.header-links {
+  display: flex;
+  align-items: center;
+}
+.header-links a {
+  color: #fff;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-bottom: 2px;
+  border-bottom: 1px solid rgba(255,255,255,0.2); /* 底部细线 */
+  transition: 0.3s;
+}
+.header-links a:hover {
+  border-bottom-color: #1a73e8;
+  color: #1a73e8;
+}
+.link-sep {
+  margin: 0 15px;
+  color: #555;
+}
+
+/* --- 右侧图片区 (3D 特效) --- */
+.header-img {
+  perspective: 1000px; /* 开启 3D 透视 */
+}
+.header-img img { 
+  width: 500px; 
+  height: 320px; 
+  object-fit: cover; 
+  border-radius: 12px; 
+  box-shadow: 0 25px 50px rgba(0,0,0,0.6); /* 深邃阴影 */
+  
+  /* 核心：3D 侧倾效果 */
+  transform: rotateY(-8deg) rotateX(2deg); 
+  transition: transform 0.5s ease-out;
+}
+/* 鼠标放上去回正 */
+.header-img img:hover {
+  transform: rotateY(0) rotateX(0);
+}
+
+/* 内页 Banner (保持不变) */
+.page-banner { height: 45vh; background-size: cover; background-position: center; position: relative; display: flex; align-items: center; justify-content: center; color: #fff; margin-bottom: -60px; background-color: #000; }
+.banner-mask { position: absolute; inset: 0; background: rgba(0,0,0,0.4); }
+.banner-title { position: relative; z-index: 2; font-size: 2.5rem; font-weight: 700; text-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+
+/* ================= 4. 筛选栏 & 搜索 ================= */
+.filter-bar { background: #fff; border-bottom: 1px solid var(--border); padding: 15px 0; position: sticky; top: 64px; z-index: 990; }
+.filter-inner { display: flex; align-items: center; justify-content: space-between; } 
+.filter-links { display: flex; gap: 30px; }
+.filter-links a { color: var(--gray); font-size: 14px; font-weight: 500; padding-bottom: 5px; border-bottom: 2px solid transparent; }
+.filter-links a.active { color: var(--text); border-bottom-color: var(--primary); }
+.search-container { position: relative; margin-left: auto; width: 300px; }
+.search-box { background: #f1f3f4; border-radius: 20px; padding: 6px 16px; display: flex; align-items: center; width: 100%; transition: 0.2s; }
+.search-box input { border: none; background: transparent; width: 100%; margin-left: 10px; font-size: 14px; }
+#search-result { position: absolute; top: 110%; right: 0; width: 400px; max-height: 400px; overflow-y: auto; background: #fff; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); border: 1px solid #eee; display: none; z-index: 1001; padding: 10px; }
+.search-item { display: block; padding: 10px; border-bottom: 1px solid #f1f1f1; transition: 0.2s; }
+.search-item:hover { background: #f8f9fa; }
+.search-title { font-weight: 700; color: #1a73e8; font-size: 14px; display: block; margin-bottom: 4px; }
+.search-content { font-size: 12px; color: #666; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* ================= 5. 首页网格 ================= */
+.home-layout { margin: 40px auto; }
+.grid-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+.grid-card { background: #fff; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; transition: 0.3s; }
+.grid-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+.grid-cover img { width: 100%; height: 220px; object-fit: cover; }
+.grid-info { padding: 24px; flex: 1; display: flex; flex-direction: column; }
+.grid-date { font-size: 0.85rem; color: var(--gray); margin-bottom: 8px; }
+.grid-title { font-size: 1.25rem; font-weight: 500; line-height: 1.4; margin: 0; color: var(--text); }
+
+/* 分页 */
+.pagination-container { margin: 60px 0; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+.pagination { display: flex; gap: 10px; align-items: center; }
+.page-number, .extend { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); border-radius: 50%; color: var(--gray); font-size: 14px; }
+.page-number.current { background: #e8f0fe; color: var(--primary); border-color: var(--primary); font-weight: 700; }
+.page-jump { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--gray); }
+.page-jump input { width: 60px; padding: 6px; text-align: center; border: 1px solid var(--border); border-radius: 4px; outline: none; }
+.page-jump-btn { padding: 6px 16px; background: var(--primary); color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+
+
+/* ================= 6. 专栏 & 时光轴 (拆分版) ================= */
+.stream-layout { max-width: 1100px; margin: -60px auto 60px; position: relative; z-index: 10; padding: 0 20px; }
+.stream-wrapper { background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+
+/* 通用头部 */
+.stream-head-center { text-align: center; margin-bottom: 40px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+.stream-head-center h1 { font-size: 2rem; font-weight: 700; color: var(--text); margin: 0; display: inline-flex; align-items: center; gap: 10px; }
+
+.stream-head { margin-bottom: 30px; border-bottom: 2px solid var(--primary); display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; }
+.stream-head h1 { font-size: 1.8rem; font-weight: 700; margin: 0; color: var(--text); }
+.stream-stats { font-size: 0.9rem; color: var(--gray); background: #f1f3f4; padding: 4px 12px; border-radius: 20px; }
+
+/* 年份标题 */
+.archive-year { font-size: 1.5rem; font-weight: 700; color: #202124; margin: 40px 0 20px; display: flex; align-items: center; gap: 10px; }
+.archive-year::before { content: ''; display: block; width: 8px; height: 8px; background: var(--primary); border-radius: 50%; }
+
+/* ---------------------------------------------------------
+   TYPE A: 专栏卡片 (Stream Card) - 左图右文，固定高度
+--------------------------------------------------------- */
+.stream-card { 
+  display: flex; 
+  background: #fff; 
+  border: 1px solid var(--border); 
+  border-radius: 12px; 
+  overflow: hidden; 
+  margin-bottom: 25px; 
+  transition: all 0.3s ease; 
+  height: 220px; /* 【关键】固定高度，确保整齐 */
+}
+
+.stream-card:hover { 
+  transform: translateY(-3px); 
+  border-color: var(--primary); 
+  box-shadow: 0 8px 25px rgba(0,0,0,0.08); 
+}
+
+/* 专栏左侧图片 */
+.stream-img { 
+  width: 350px; /* 固定图片宽度 */
+  flex-shrink: 0; 
+  overflow: hidden;
+  position: relative;
+}
+.stream-img img { 
+  width: 100%; 
+  height: 100%; 
+  object-fit: cover; 
+  transition: 0.5s; 
+}
+.stream-card:hover .stream-img img { transform: scale(1.05); }
+
+/* 专栏右侧内容 */
+.stream-info { 
+  flex: 1; 
+  padding: 30px; 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: center; /* 内容垂直居中 */
+}
+
+.stream-title { 
+  font-size: 1.4rem; 
+  font-weight: 700; 
+  color: var(--text); 
+  margin-bottom: 10px; 
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* 标题最多1行 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.stream-title:hover { color: var(--primary); }
+
+.stream-meta { 
+  font-size: 0.85rem; 
+  color: #999; 
+  margin-bottom: 15px; 
+  display: flex; 
+  align-items: center; 
+  gap: 8px;
+}
+
+.stream-excerpt { 
+  color: #5f6368; 
+  font-size: 0.95rem; 
+  line-height: 1.6; 
+  display: -webkit-box; 
+  -webkit-line-clamp: 2; /* 摘要最多2行 */
+  -webkit-box-orient: vertical; 
+  overflow: hidden; 
+}
+
+/* ---------------------------------------------------------
+   TYPE B: 时光轴卡片 (Archive Card) - 纯文字，紧凑
+--------------------------------------------------------- */
+.archive-card {
+  display: block;
+  background: #fff;
+  border-bottom: 1px solid #eee; /* 只留底边框，像清单一样 */
+  padding: 15px 10px;
+  transition: 0.2s;
+  margin-bottom: 0;
+}
+.archive-card:last-child { border-bottom: none; }
+
+.archive-card:hover {
+  background: #f8f9fa;
+  padding-left: 20px; /* 悬停右移特效 */
+  border-left: 4px solid var(--primary);
+}
+
+.archive-inner {
+  display: flex;
+  justify-content: space-between; /* 左右两端对齐 */
+  align-items: center;
+}
+
+.archive-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  flex: 1;
+}
+.archive-title:hover { color: var(--primary); }
+
+.archive-date {
+  color: #999;
+  font-family: monospace;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  margin-left: 20px;
+}
+
+/* 移动端适配 */
+@media (max-width: 900px) {
+  /* 专栏卡片变垂直 */
+  .stream-card { flex-direction: column; height: auto; }
+  .stream-img { width: 100%; height: 200px; }
+  .stream-info { padding: 20px; }
+  
+  /* 时光轴保持原样，字号稍微改小 */
+  .archive-title { font-size: 1rem; }
+}
+
+/* ================= 7. 文章详情 ================= */
+.post-wrapper { max-width: 1400px; margin: -60px auto 60px; padding: 0 20px; position: relative; z-index: 10; display: grid; grid-template-columns: 1fr 260px; gap: 40px; }
+.post-main { background: #fff; padding: 60px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+.post-nav { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; font-size: 0.9rem; color: var(--gray); }
+.back-home { color: var(--primary); font-weight: 600; cursor: pointer; }
+.post-header { text-align: center; border-bottom: 1px solid #eee; padding-bottom: 30px; margin-bottom: 40px; }
+.post-header h1 { font-size: 2.5rem; margin-bottom: 15px; }
+.post-meta { color: var(--gray); font-size: 0.95rem; }
+
+.toc-sidebar { position: sticky; top: 100px; height: fit-content; }
+.toc-card { background: #fff; padding: 25px; border-radius: 8px; border-left: 4px solid var(--primary); }
+.toc-title { font-weight: 700; margin-bottom: 15px; font-size: 1.1rem; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+.toc-content ol { padding-left: 0; list-style: none; } 
+.toc-content > ol > li > a { font-weight: 600; color: #3c4043; font-size: 0.95rem; display: block; padding: 3px 0; }
+.toc-content ol ol { padding-left: 15px; margin-top: 5px; } 
+.toc-content ol ol li a { font-weight: 400; color: #5f6368; font-size: 0.9rem; }
+.toc-content a:hover, .toc-content a.active { color: var(--primary); transform: translateX(3px); display: inline-block; }
+
+/* ================= 8. Markdown 排版 (修复 H2/H4) ================= */
+.markdown-body { font-size: 17px; line-height: 1.8; color: #2c3e50; text-align: justify; }
+
+/* 修复：H2 只有底边框，无井号 */
+.markdown-body h2 { 
+  font-size: 1.8rem; 
+  border-bottom: 1px solid #eee; 
+  padding-bottom: 12px; 
+  margin: 50px 0 25px; 
+  font-weight: 700; 
+  color: #202124;
+}
+.markdown-body h2::before { content: none; } 
+
+/* 修复：H3 保持左侧竖线 
+.markdown-body h3 { 
+  font-size: 1.4rem; 
+  margin: 35px 0 20px; 
+  font-weight: 700; 
+  position: relative; 
+  padding-left: 15px; 
+  border-left: 4px solid var(--primary);
+  background: linear-gradient(to right, #f0f7ff, transparent); 
+} */
+
+/* 【修改】H4 标题增强 (黑粗体 + 间距) */
+.markdown-body h3 {
+  font-size: 1.3rem;
+  font-weight: 700;         /* 加粗 */
+  color: #000;              /* 纯黑，对比强烈 */
+  margin-top: 35px;         /* 顶部间距加大 */
+  margin-bottom: 25px;      /* 底部保留间距 */
+  position: relative;
+  padding-left: 15px;       /* 左侧留白 */
+  background: linear-gradient(to right, #f8f9fa, transparent); /* 背景渐变：从左到右，浅灰色渐变到透明 */
+}
+
+/* H3 左侧加一个小方块装饰，增强辨识度 */
+.markdown-body h3::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 4px;
+  bottom: 4px;    /* 底部位置：距离标题顶部7像素 */
+  width: 4px;
+  background: #000;      /* 黑色装饰条 */
+  border-radius: 2px;      /* 装饰条圆角：2像素，形成小圆角矩形 */
+} 
+
+
+/* 修复：H4 增强辨识度 */
+.markdown-body h4 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 22px 0 13px;
+  color: #000;
+  background: #fff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  /*display: inline-block; /* 包裹文字 */
+  /*border-left: 4px solid #dadce0;*/
+}
+
+.markdown-body p { margin-bottom: 25px; }
+.markdown-body ul { list-style: disc; padding-left: 20px; margin-bottom: 20px; }
+.markdown-body ol { list-style: decimal; padding-left: 20px; margin-bottom: 20px; }
+.markdown-body li { margin-bottom: 8px; }
+.markdown-body table { width: 100%; border-collapse: collapse; margin: 30px 0; display: block; overflow-x: auto; border: 1px solid #eee; border-radius: 8px; }  
+.markdown-body th, .markdown-body td { border: 1px solid #dfe2e5; padding: 12px 15px; }
+.markdown-body th { background-color: #f8f9fa; font-weight: 700; color: #202124; }
+.markdown-body tr:nth-child(2n) { background-color: #fbfbfb; }
+.markdown-body blockquote { border-left: 4px solid var(--primary); background: #f0f7ff; padding: 20px; margin: 30px 0; color: #4a5568; border-radius: 0 8px 8px 0; }
+.markdown-body img { margin: 30px auto; border-radius: 8px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+
+/* VSCode 代码块（行内代码） */
+.markdown-body code { background-color: #f8f9fa; color: #000; padding: 3px 6px; border-radius: 4px; font-family: 'Consolas', monospace; font-size: 0.9em; }  
+/* 代码块样式（多行代码） */
+.markdown-body pre { background: #f8f9fa !important; color: #abb2bf; padding: 20px; border-radius: 8px; overflow: auto; margin: 30px 0; font-family: 'Consolas', monospace; font-size: 16px; line-height: 1.5; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }  /* 阴影效果box-shadow：向下偏移10像素，模糊30像素，黑色半透明阴影 */
+.markdown-body pre .keyword { color: #c678dd; }     /* 语法高亮：关键字（如 if, for, function 等） */
+.markdown-body pre .string { color: #98c379; }  
+.markdown-body pre .function { color: #61afef; } 
+.markdown-body pre .number { color: #d19a66; }  
+.markdown-body pre .comment { color: #5c6370; font-style: italic; } 
+
+/* ================= 9. 评论区 ================= */
+.comment-container { margin-top: 60px; padding-top: 40px; border-top: 1px solid #eee; }
+.comment-head { font-size: 1.5rem; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+
+/* ================= 10. 关于页 (加宽+大头像) ================= */
+.about-wrapper { max-width: 1100px; margin: -60px auto 60px; position: relative; z-index: 10; padding: 0 20px; }
+.about-card { background: #fff; padding: 80px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); text-align: center; margin-top: 120px; }
+.about-avatar { width: 180px; height: 180px; margin: -170px auto 40px; }
+.about-avatar img { width: 100%; height: 100%; border-radius: 50%; border: 8px solid #fff; box-shadow: 0 8px 25px rgba(0,0,0,0.15); background: #fff; }
+
+/* 移动端适配 */
+@media (max-width: 900px) {
+  .header-wrapper { flex-direction: column; text-align: center; }
+  .header-img { display: none; }
+  .grid-container { grid-template-columns: 1fr; }
+  .post-wrapper { grid-template-columns: 1fr; }
+  .toc-sidebar { display: none; } 
+  #search-result { width: 100%; right: 0; left: 0; }
+  .about-avatar { width: 140px; height: 140px; margin-top: -130px; }
+  
+  /* 移动端恢复换行，防止文字溢出屏幕 */
+  .title-en { font-size: 2.5rem; white-space: normal; }
+  .header-desc { border-left: none; padding-left: 0; display: inline-block; }
+  .header-links { justify-content: center; }
+}

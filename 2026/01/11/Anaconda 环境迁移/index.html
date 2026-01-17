@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<title>【实用技巧】C盘救星：python（Anaconda）虚拟环境迁移(C盘到其他盘) | CZH Tech Blog</title>
+
+<link rel="stylesheet" href="/css/style.css">
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+<link rel="preconnect" href="https://gs.jurieo.com/gemini/fonts-googleapis">
+<link rel="preconnect" href="https://gs.jurieo.com/gemini/fonts-gstatic" crossorigin>
+<link href="https://gs.jurieo.com/gemini/fonts-googleapis/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<meta name="generator" content="Hexo 8.1.1"></head>
+<body>
+  <nav class="top-nav">
+  <div class="container nav-inner">
+    <a href="/" class="nav-logo">
+      <i class="iconfont icon-code" style="margin-right:8px;"></i> CZH Tech Blog
+    </a>
+    <div class="nav-links">
+      <a href="/"><i class="iconfont icon-home"></i> 首页</a>
+      <a href="/archives/"><i class="iconfont icon-archive"></i> 归档</a>
+      <a href="/categories/"><i class="iconfont icon-th-large"></i> 专栏</a>
+      <a href="/about/"><i class="iconfont icon-user"></i> 关于</a>
+    </div>
+  </div>
+</nav>
+  
+  
+  
+  <header class="page-banner" 
+          style="background-image: url('/img/banner.webp'); background-color: #000;">
+    <div class="banner-mask"></div>
+    <div class="banner-title">【实用技巧】C盘救星：python（Anaconda）虚拟环境迁移(C盘到其他盘)</div>
+  </header>
+
+  
+  <div class="post-wrapper">
+  <div class="post-main">
+    
+    <div class="post-nav">
+      <span class="back-home" onclick="location.href='/'">
+        <i class="iconfont icon-arrow-left"></i> 返回首页
+      </span>
+      <span class="breadcrumb-sep">/</span>
+      <span>正文内容</span>
+    </div>
+
+    <article class="post-article">
+      <header class="post-header">
+        <div class="post-meta">
+          <time><i class="iconfont icon-calendar"></i> 2026-01-11</time>
+          <span class="meta-divider">|</span>
+          <span><i class="iconfont icon-folder"></i> Python系列</span>
+          <span class="meta-divider">|</span>
+          <span><i class="iconfont icon-file-text"></i> 1450 字</span>
+        </div>
+      </header>
+      
+      <div class="markdown-body">
+        <h1 id="🚀-【实用技巧】C盘救星：Anaconda-环境迁移"><a href="#🚀-【实用技巧】C盘救星：Anaconda-环境迁移" class="headerlink" title="🚀 【实用技巧】C盘救星：Anaconda 环境迁移"></a>🚀 【实用技巧】C盘救星：Anaconda 环境迁移</h1><blockquote>
+<p><strong>摘要</strong>：C 盘空间告急是每个 Python 学习者的噩梦。本文将带你深度复盘如何将 Anaconda 虚拟环境从 C 盘“无损”搬迁至 E 盘</p>
+</blockquote>
+<hr>
+<h2 id="一、-核心痛点：为什么-C-盘会爆红？"><a href="#一、-核心痛点：为什么-C-盘会爆红？" class="headerlink" title="一、 核心痛点：为什么 C 盘会爆红？"></a>一、 核心痛点：为什么 C 盘会爆红？</h2><p>在配置python（或Anaconda）时 默认会将 <strong>虚拟环境 (envs)</strong> 和 <strong>包缓存 (pkgs)</strong> 存放在 <code>C:\Users\用户名\.conda</code> 目录下。这会导致两个严重问题：</p>
+<ol>
+<li><strong>重复下载</strong>：传统的 pip 模式会在每个环境下重复下载包，浪费空间。</li>
+<li><strong>跨盘失效</strong>：Windows 的文件系统不支持跨分区硬链接。如果你的环境建在 E 盘，但仓库（pkgs）还在 C 盘，Conda 只能被迫执行“完整复制”，导致双倍占用。</li>
+</ol>
+<hr>
+<h2 id="二、-操作步骤"><a href="#二、-操作步骤" class="headerlink" title="二、 操作步骤"></a>二、 操作步骤</h2><h3 id="第一步：修改默认路径-配置-E-盘基地"><a href="#第一步：修改默认路径-配置-E-盘基地" class="headerlink" title="第一步：修改默认路径 (配置 E 盘基地)"></a>第一步：修改默认路径 (配置 E 盘基地)</h3><p>我以将C盘的python配置文件转到E盘为例，让以后所有的下载和创建都在 E 盘内部完成。</p>
+<h4 id="1-建立目录"><a href="#1-建立目录" class="headerlink" title="1. 建立目录"></a>1. 建立目录</h4><p>请在 E 盘手动创建以下两个文件夹：</p>
+<ul>
+<li><code>E:\CondaData\envs</code> (存放虚拟环境)</li>
+<li><code>E:\CondaData\pkgs</code> (存放下载的包缓存)</li>
+</ul>
+<h4 id="2-修改配置指令"><a href="#2-修改配置指令" class="headerlink" title="2. 修改配置指令"></a>2. 修改配置指令</h4><p>在 PowerShell 或 CMD 中执行以下命令，强制修改 Conda 的默认路径：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 将 E 盘的路径添加到虚拟环境存放目录列表，并设置为最高优先级</span></span><br><span class="line">conda config <span class="literal">--add</span> envs_dirs E:\CondaData\envs</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 指定包缓存存放路径（实现同盘硬链接的关键！）</span></span><br><span class="line">conda config <span class="literal">--add</span> pkgs_dirs E:\CondaData\pkgs</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 验证配置是否生效（如果你看到 E:\CondaData\envs 排在列表的第一行）</span></span><br><span class="line">conda config <span class="literal">--show</span> envs_dirs</span><br></pre></td></tr></table></figure>
+
+<h3 id="第二步：迁移现有环境"><a href="#第二步：迁移现有环境" class="headerlink" title="第二步：迁移现有环境"></a>第二步：迁移现有环境</h3><p>对于那些已经赖在 C 盘不走的旧环境（比如叫 myenv），可以使用最稳妥的**“克隆法”**：</p>
+<h4 id="1-复制环境"><a href="#1-复制环境" class="headerlink" title="1. 复制环境"></a>1. 复制环境</h4><p>比如 C 盘有个环境叫 myenv，将其克隆到 E 盘：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 语法：conda create --prefix 新路径 --clone 旧路径/旧环境名</span></span><br><span class="line">conda create <span class="literal">--prefix</span> E:\CondaData\envs\myenv <span class="literal">--clone</span> myenv</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-验证新环境"><a href="#2-验证新环境" class="headerlink" title="2. 验证新环境"></a>2. 验证新环境</h4><p>克隆之后，验证E盘新的虚拟环境是否能用：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 激活新路径下的环境</span></span><br><span class="line">conda activate E:\CondaData\envs\myenv</span><br><span class="line"></span><br><span class="line"><span class="comment"># 随便跑个命令试试，比如查看包列表，如果没报错，说明搬家成功！</span></span><br><span class="line">conda list</span><br></pre></td></tr></table></figure>
+<h4 id="第三步：清理-C-盘"><a href="#第三步：清理-C-盘" class="headerlink" title="第三步：清理 C 盘"></a>第三步：清理 C 盘</h4><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 删除名为 myenv 的旧环境</span></span><br><span class="line">conda remove <span class="literal">-n</span> myenv <span class="literal">--all</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 清理C 盘里残留安装包的缓存垃圾，(遇到提示输入y确认)</span></span><br><span class="line">conda clean <span class="literal">--all</span></span><br></pre></td></tr></table></figure>
+<p>到这里，C盘的转移就完成了！</p>
+<h3 id="常用关键指令清单"><a href="#常用关键指令清单" class="headerlink" title="常用关键指令清单"></a>常用关键指令清单</h3><ul>
+<li><p>查看所有环境（全家福）： conda env list</p>
+</li>
+<li><p>激活环境： conda activate 环境名 或 conda activate E:\绝对路径</p>
+</li>
+<li><p>删除环境（慎用）： conda remove -n 环境名 –all</p>
+</li>
+<li><p>C 盘大扫除（清理缓存神器）： conda clean –all (清理无用的安装包和缓存，C 盘救星) pip cache purge (清理 pip 的下载缓存)</p>
+</li>
+</ul>
+
+      </div>
+
+      <div class="post-footer-tags">
+        
+          
+            <a href="/tags/Python/" class="tag-link"># Python</a>
+          
+            <a href="/tags/%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83%E8%BF%81%E7%A7%BB/" class="tag-link"># 虚拟环境迁移</a>
+          
+        
+      </div>
+    </article>
+
+    <div class="comment-container">
+      <div class="comment-head">
+        <i class="iconfont icon-message"></i> 参与讨论
+      </div>
+      <script src="https://giscus.app/client.js"
+              data-repo="CZH17-gif/CZH17-gif.github.io"
+              data-repo-id="R_kgDOQzBcSw"
+              data-category="Announcements"
+              data-category-id="DIC_kwDOQzBcS84C0ys7"
+              data-mapping="pathname"
+              data-strict="0"
+              data-reactions-enabled="0"
+              data-emit-metadata="0"
+              data-input-position="top"
+              data-theme="light"
+              data-lang="zh-CN"
+              crossorigin="anonymous"
+              async>
+      </script>
+    </div>
+  </div>
+
+  <aside class="toc-sidebar">
+    <div class="toc-card">
+      <div class="toc-title">
+        <i class="iconfont icon-list"></i> 文章目录
+      </div>
+      <div class="toc-content">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%F0%9F%9A%80-%E3%80%90%E5%AE%9E%E7%94%A8%E6%8A%80%E5%B7%A7%E3%80%91C%E7%9B%98%E6%95%91%E6%98%9F%EF%BC%9AAnaconda-%E7%8E%AF%E5%A2%83%E8%BF%81%E7%A7%BB"><span class="toc-text">🚀 【实用技巧】C盘救星：Anaconda 环境迁移</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81-%E6%A0%B8%E5%BF%83%E7%97%9B%E7%82%B9%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88-C-%E7%9B%98%E4%BC%9A%E7%88%86%E7%BA%A2%EF%BC%9F"><span class="toc-text">一、 核心痛点：为什么 C 盘会爆红？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81-%E6%93%8D%E4%BD%9C%E6%AD%A5%E9%AA%A4"><span class="toc-text">二、 操作步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%9A%E4%BF%AE%E6%94%B9%E9%BB%98%E8%AE%A4%E8%B7%AF%E5%BE%84-%E9%85%8D%E7%BD%AE-E-%E7%9B%98%E5%9F%BA%E5%9C%B0"><span class="toc-text">第一步：修改默认路径 (配置 E 盘基地)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A%E8%BF%81%E7%A7%BB%E7%8E%B0%E6%9C%89%E7%8E%AF%E5%A2%83"><span class="toc-text">第二步：迁移现有环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%85%B3%E9%94%AE%E6%8C%87%E4%BB%A4%E6%B8%85%E5%8D%95"><span class="toc-text">常用关键指令清单</span></a></li></ol></li></ol></li></ol>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const tocLinks = document.querySelectorAll('.toc-link');
+    const sections = Array.from(tocLinks).map(link => {
+      return document.querySelector(decodeURI(link.getAttribute('href')));
+    }).filter(section => section !== null);
+
+    function spy() {
+      const scrollPos = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+      let activeIndex = -1;
+      
+      sections.forEach((section, index) => {
+        if (scrollPos >= section.offsetTop - 100) {
+          activeIndex = index;
+        }
+      });
+
+      tocLinks.forEach(link => link.classList.remove('active'));
+      if (activeIndex !== -1) {
+        tocLinks[activeIndex].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', spy);
+    spy(); 
+  });
+</script>
+
+<style>
+  /* 局部微调样式 */
+  .comment-container {
+    margin-top: 50px;
+    padding: 30px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  }
+  .comment-head {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .post-footer-tags {
+    margin-top: 40px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .tag-link {
+    background: #f1f3f4;
+    color: #5f6368;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    transition: 0.3s;
+  }
+  .tag-link:hover {
+    background: #1a73e8;
+    color: #fff;
+    text-decoration: none;
+  }
+  .meta-divider {
+    margin: 0 10px;
+    color: #eee;
+  }
+</style>
+
+  <footer style="text-align:center; padding:40px 0; color:#888; margin-top:60px; border-top:1px solid #eee;">
+  <p>&copy; 2026 CZH</p>
+</footer>
+
+  
+    <script>
+      if(document.getElementById('typed-text')) {
+        new Typed('#typed-text', {
+          strings: ['【实用技巧】C盘救星：python（Anaconda）虚拟环境迁移(C盘到其他盘)'],
+          typeSpeed: 70, showCursor: false
+        });
+      }
+    </script>
+  
+
+  <script>
+    var searchFunc = function(path, search_id, content_id) {
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        success: function(xmlResponse) {
+          var datas = $("entry", xmlResponse).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          if (!$input) return;
+          
+          $input.addEventListener('input', function() {
+            var str = '<div class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              $resultContent.style.display = 'none';
+              return;
+            }
+            var count = 0;
+            datas.forEach(function(data) {
+              var isMatch = true;
+              var data_title = data.title.trim().toLowerCase();
+              var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+              if (data_title && keywords.some(k => data_title.indexOf(k) >= 0 || data_content.indexOf(k) >= 0)) {
+                 str += "<a href='" + data.url + "' class='search-item'>";
+                 str += "<div class='search-title'>" + data.title + "</div>";
+                 str += "</a>";
+                 count++;
+              }
+            });
+            if (count > 0) {
+              $resultContent.innerHTML = str;
+              $resultContent.style.display = 'block';
+            }
+          });
+        }
+      });
+    };
+    searchFunc('/search.xml', 'local-search-input', 'search-result');
+  </script>
+</body>
+</html>
