@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<title>CZH Tech Blog</title>
+
+<link rel="stylesheet" href="/css/style.css">
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+<link rel="preconnect" href="https://gs.jurieo.com/gemini/fonts-googleapis">
+<link rel="preconnect" href="https://gs.jurieo.com/gemini/fonts-gstatic" crossorigin>
+<link href="https://gs.jurieo.com/gemini/fonts-googleapis/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<meta name="generator" content="Hexo 8.1.1"></head>
+<body>
+  <nav class="top-nav">
+  <div class="container nav-inner">
+    <a href="/" class="nav-logo">
+      <i class="iconfont icon-code" style="margin-right:8px;"></i> CZH Tech Blog
+    </a>
+    <div class="nav-links">
+      <a href="/"><i class="iconfont icon-home"></i> 首页</a>
+      <a href="/archives/"><i class="iconfont icon-archive"></i> 归档</a>
+      <a href="/categories/"><i class="iconfont icon-th-large"></i> 专栏</a>
+      <a href="/portfolio/"><i class="iconfont icon-video"></i> 作品集</a>
+      <a href="/about/"><i class="iconfont icon-user"></i> 关于</a>
+    </div>
+  </div>
+</nav>
+  
+  
+  
+  <header class="page-banner" 
+          style="background-image: url('/img/banner.webp'); background-color: #000;">
+    <div class="banner-mask"></div>
+    <div class="banner-title">CZH Tech Blog</div>
+  </header>
+
+  
+  <div class="post-wrapper">
+  <div class="post-main">
+    
+    <div class="post-nav">
+      <span class="back-home" onclick="location.href='/'">
+        <i class="iconfont icon-arrow-left"></i> 返回首页
+      </span>
+      <span class="breadcrumb-sep">/</span>
+      <span>正文内容</span>
+    </div>
+
+    <article class="post-article">
+      <header class="post-header">
+        <div class="post-meta">
+          <time><i class="iconfont icon-calendar"></i> 2026-01-28</time>
+          <span class="meta-divider">|</span>
+          <span><i class="iconfont icon-folder"></i> 未分类</span>
+          <span class="meta-divider">|</span>
+          <span><i class="iconfont icon-file-text"></i> 4584 字</span>
+        </div>
+      </header>
+      
+      <div class="markdown-body">
+        <h1 id="实战记录（2）：Conda-环境隔离实战：本地部署-Xinference-LangChain-Chatchat"><a href="#实战记录（2）：Conda-环境隔离实战：本地部署-Xinference-LangChain-Chatchat" class="headerlink" title="实战记录（2）：Conda 环境隔离实战：本地部署 Xinference + LangChain-Chatchat"></a>实战记录（2）：Conda 环境隔离实战：本地部署 Xinference + LangChain-Chatchat</h1><h2 id="前言：为什么我们需要两个虚拟环境？"><a href="#前言：为什么我们需要两个虚拟环境？" class="headerlink" title="前言：为什么我们需要两个虚拟环境？"></a>前言：为什么我们需要两个虚拟环境？</h2><p>在本地搭建私有化 RAG（检索增强生成）知识库时，很多开发者会遇到一个典型的痛点——<strong>“依赖地狱” (Dependency Hell)</strong>。</p>
+<p>简单来说，就是 <strong>“一山不容二虎”</strong>：</p>
+<ul>
+<li><strong>Xinference (后端推理)</strong> 说：“我需要 <strong>新版本</strong> 的 <code>FastAPI</code> 和 <code>Gradio</code> 才能工作。”</li>
+<li><strong>LangChain-Chatchat (前端应用)</strong> 说：“不行，我只能用 <strong>旧版本</strong> 的 <code>FastAPI</code> 和 <code>Numpy</code> 才能跑。”</li>
+</ul>
+<p>如果你试图把这两个软件装在同一个 Conda 环境（比如 <code>deep_learning</code>）里，pip 在安装时就会“打架”，强制把高版本依赖降级，导致 Xinference 彻底坏掉。</p>
+<p><strong>解决方案：环境隔离（Conda Environment Isolation）</strong></p>
+<p>我们需要建立两个独立的“平行宇宙”：</p>
+<ol>
+<li><strong><code>xinference_env</code></strong>：只跑后端模型，锁定 <code>numpy&lt;2.0</code>，适配新版组件。</li>
+<li><strong><code>chatchat_env</code></strong>：只跑前端 UI，适配旧版组件。</li>
+</ol>
+<p>运行的时候，我们需要同时打开<strong>两个 Shell 窗口</strong>，左边跑后端，右边跑前端。</p>
+<hr>
+<h2 id="第一部分：构建后端环境-xinference-env"><a href="#第一部分：构建后端环境-xinference-env" class="headerlink" title="第一部分：构建后端环境 (xinference_env)"></a>第一部分：构建后端环境 (xinference_env)</h2><p>这是最容易报错的部分。我们需要创建一个干净的环境，并打上特定的“补丁”来防止崩溃。</p>
+<h3 id="1-创建并激活环境"><a href="#1-创建并激活环境" class="headerlink" title="1. 创建并激活环境"></a>1. 创建并激活环境</h3><p>打开 PowerShell，执行以下命令。注意我们将 Python 锁定在 <strong>3.10</strong> 以获得最佳稳定性，并强制安装在 E 盘。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 指定路径创建环境 (防止占用 C 盘)</span></span><br><span class="line">conda create <span class="literal">-p</span> E:\CondaData\envs\xinference_env python=<span class="number">3.10</span> <span class="literal">-y</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 激活新环境</span></span><br><span class="line">conda activate E:\CondaData\envs\xinference_env</span><br></pre></td></tr></table></figure>
+<h3 id="2-安装核心组件-核心避坑点"><a href="#2-安装核心组件-核心避坑点" class="headerlink" title="2. 安装核心组件 (核心避坑点)"></a>2. 安装核心组件 (核心避坑点)</h3><p>这里有三个关键动作：</p>
+<ul>
+<li><strong>锁死 Numpy：</strong> 防止安装 Numpy 2.0 导致底层二进制冲突。</li>
+<li><strong>安装显卡监控：</strong> 防止报黄色警告。</li>
+<li><strong>Gradio 降级修复：</strong> Xinference 目前对 Gradio 5.x 兼容性不佳，需降级到 4.44.1。</li>
+</ul>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 3. 安装 xinference 全家桶（同时锁死 numpy 版本防止崩溃）</span></span><br><span class="line">pip install <span class="string">&quot;xinference[all]&quot;</span> <span class="string">&quot;numpy&lt;2.0&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. 补充显卡监控库</span></span><br><span class="line">pip install nvidia<span class="literal">-ml-py</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 5. 【重要修复】降级关键包，解决启动卡死/版本冲突问题</span></span><br><span class="line"><span class="comment"># 忽略执行过程中的红字依赖报错，只要最后显示 Successfully installed 即可</span></span><br><span class="line">pip install <span class="string">&quot;gradio==4.44.1&quot;</span> <span class="string">&quot;fastapi==0.111.0&quot;</span> <span class="string">&quot;uvicorn==0.29.0&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="第二部分：构建前端环境-chatchat-env"><a href="#第二部分：构建前端环境-chatchat-env" class="headerlink" title="第二部分：构建前端环境 (chatchat_env)"></a>第二部分：构建前端环境 (chatchat_env)</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 创建前端专用环境</span></span><br><span class="line">conda create <span class="literal">-p</span> E:\CondaData\envs\chatchat_env python=<span class="number">3.10</span> <span class="literal">-y</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 激活环境</span></span><br><span class="line">conda activate E:\CondaData\envs\chatchat_env</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 安装 Chatchat 依赖 (根据你的具体项目 requirement.txt 安装)</span></span><br><span class="line"><span class="comment"># pip install -r requirements.txt</span></span><br></pre></td></tr></table></figure>
+<h2 id="第三部分：如何运行？-手动打开两个-Shell"><a href="#第三部分：如何运行？-手动打开两个-Shell" class="headerlink" title="第三部分：如何运行？(手动打开两个 Shell )"></a>第三部分：如何运行？(手动打开两个 Shell )</h2><p>左边窗口：PowerShell 1 (后端)<br>负责提供算力支持，你会看到大量的日志在跳动（模型加载、API 请求）。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 清理端口 (防止之前的进程卡死)：</span></span><br><span class="line">taskkill /F /IM python.exe</span><br><span class="line">taskkill /F /IM xinference<span class="literal">-local</span>.exe</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 启动服务</span></span><br><span class="line">conda activate E:\CondaData\envs\xinference_env</span><br><span class="line"><span class="comment"># 启动命令 (Host 改为 127.0.0.1 避开防火墙干扰)</span></span><br><span class="line">xinference<span class="literal">-local</span> <span class="literal">--host</span> <span class="number">127.0</span>.<span class="number">0.1</span> <span class="literal">--port</span> <span class="number">9997</span></span><br></pre></td></tr></table></figure>
+<p>右边窗口：PowerShell 2 (前端)<br>负责显示 UI 界面，连接后端的 9997 端口。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 步骤 1：激活前端环境</span></span><br><span class="line">conda activate E:\CondaData\envs\chatchat_env</span><br><span class="line"></span><br><span class="line"><span class="comment"># 步骤 2：切换到项目目录必须进入 libs 下的 server 目录，这是新版 Chatchat 的核心位置。</span></span><br><span class="line"><span class="built_in">cd</span> /d E:\AI_Projects\Langchain<span class="literal">-Chatchat-master</span></span><br><span class="line"><span class="comment"># 步骤 3：设置环境变量 (关键！) 告诉系统项目的根目录在哪里，防止读取配置失败。</span></span><br><span class="line"><span class="variable">$env:CHATCHAT_ROOT</span> = <span class="string">&quot;E:\AI_Projects\Langchain-Chatchat-master&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 步骤 4：修复/初始化配置 这一步会重新生成或修复配置，防止路径写错。</span></span><br><span class="line">chatchat init</span><br><span class="line">(注：如果提示 basic_settings.yaml 已存在问是否覆盖，输入 y 并回车。放心，这不会删掉你的知识库数据，只会修复路径配置。)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 步骤 5：加载本地知识库</span></span><br><span class="line">chatchat kb <span class="literal">-r</span>  </span><br><span class="line"></span><br><span class="line"><span class="comment"># 步骤 6：前端启动</span></span><br><span class="line">chatchat <span class="built_in">start</span> <span class="literal">-a</span></span><br></pre></td></tr></table></figure>
+<h2 id="第四部分：一键启动脚本"><a href="#第四部分：一键启动脚本" class="headerlink" title="第四部分：一键启动脚本"></a>第四部分：一键启动脚本</h2><p>每次都要手动开两个窗口、输四行命令太麻烦了？ 我们可以写一个 Windows 批处理脚本 (.bat)，双击一下，自动弹出两个窗口并运行。</p>
+<p>请新建一个文本文档，命名为 start_ai_system.bat (注意后缀是 .bat)，粘贴以下内容：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">@<span class="built_in">echo</span> off</span><br><span class="line"><span class="built_in">echo</span> =================================================</span><br><span class="line"><span class="built_in">echo</span>       正在启动 AI 私有化部署系统 (双环境版)</span><br><span class="line"><span class="built_in">echo</span> =================================================</span><br><span class="line"></span><br><span class="line">:: <span class="built_in">Set</span> Chatchat Project Path (方便下方调用)</span><br><span class="line"><span class="built_in">set</span> CHATCHAT_PATH=E:\AI_Projects\Langchain<span class="literal">-Chatchat-master</span>\libs\chatchat<span class="literal">-server</span></span><br><span class="line"></span><br><span class="line">:: <span class="literal">---------------------------------------------------</span></span><br><span class="line">:: [<span class="number">1</span>/<span class="number">3</span>] 清理残留进程 (可选)</span><br><span class="line">:: <span class="literal">---------------------------------------------------</span></span><br><span class="line"><span class="built_in">echo</span> [<span class="number">1</span>/<span class="number">3</span>] 清理旧进程...</span><br><span class="line">taskkill /F /IM xinference<span class="literal">-local</span>.exe &gt;nul <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line">:: taskkill /F /IM python.exe &gt;nul <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line"></span><br><span class="line">:: <span class="literal">---------------------------------------------------</span></span><br><span class="line">:: [<span class="number">2</span>/<span class="number">3</span>] 启动后端 Xinference (窗口 A)</span><br><span class="line">:: <span class="literal">---------------------------------------------------</span></span><br><span class="line"><span class="built_in">echo</span> [<span class="number">2</span>/<span class="number">3</span>] 正在启动后端 Xinference (端口 <span class="number">9997</span>)...</span><br><span class="line">:: 使用 call conda activate 激活后端环境</span><br><span class="line"><span class="built_in">start</span> <span class="string">&quot;Backend_Xinference&quot;</span> cmd /k <span class="string">&quot;call conda activate E:\CondaData\envs\xinference_env &amp;&amp; xinference-local --host 127.0.0.1 --port 9997&quot;</span></span><br><span class="line"></span><br><span class="line">:: 等待 <span class="number">8</span> 秒，确保后端完全启动</span><br><span class="line"><span class="built_in">echo</span> 等待后端就绪...</span><br><span class="line">timeout /t <span class="number">8</span> /nobreak &gt;nul</span><br><span class="line"></span><br><span class="line">:: <span class="literal">---------------------------------------------------</span></span><br><span class="line">:: [<span class="number">3</span>/<span class="number">3</span>] 启动前端 Chatchat (窗口 B)</span><br><span class="line">:: <span class="literal">---------------------------------------------------</span></span><br><span class="line"><span class="built_in">echo</span> [<span class="number">3</span>/<span class="number">3</span>] 正在启动前端 Chatchat...</span><br><span class="line">:: 解释：</span><br><span class="line">:: <span class="number">1</span>. /d 指定工作目录</span><br><span class="line">:: <span class="number">2</span>. 激活环境</span><br><span class="line">:: <span class="number">3</span>. <span class="built_in">set</span> CHATCHAT_ROOT 设置环境变量 (Batch语法)</span><br><span class="line">:: <span class="number">4</span>. chatchat <span class="built_in">start</span> <span class="literal">-a</span> 启动</span><br><span class="line"><span class="built_in">start</span> <span class="string">&quot;Frontend_Chatchat&quot;</span> /d <span class="string">&quot;%CHATCHAT_PATH%&quot;</span> cmd /k <span class="string">&quot;call conda activate E:\CondaData\envs\chatchat_env &amp;&amp; set CHATCHAT_ROOT=%CHATCHAT_PATH% &amp;&amp; chatchat start -a&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> =================================================</span><br><span class="line"><span class="built_in">echo</span>           系统启动中，请勿关闭弹出的黑窗口</span><br><span class="line"><span class="built_in">echo</span> =================================================</span><br><span class="line">pause</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>注意：Windows 的命令行（CMD）默认使用 GBK (ANSI) 编码来显示中文，而你现在的 .bat 文件应该是用 UTF-8 格式保存的。</li>
+</ul>
+<p>当 CMD 用 GBK 去读 UTF-8 的汉字时，就会出现乱码。更糟糕的是，乱码会吞掉部分命令字符（比如把 set CH 吞成了乱码，只剩下 ATCHAT_ROOT），导致程序运行报错。</p>
+<ul>
+<li>解决：用“记事本”另存为 ANSI 编码（推荐）不需要改代码，只需要改文件的保存格式。</li>
+</ul>
+<ol>
+<li><p>右键点击你的 start_ai_system.bat 文件，选择 “编辑”（或者用记事本打开）。</p>
+</li>
+<li><p>点击左上角的 “文件” (File) -&gt; “另存为” (Save As)。</p>
+</li>
+<li><p>在弹出的窗口最下方，找到 “编码” (Encoding) 选项。把它从 UTF-8 改为 ANSI。</p>
+</li>
+<li><p>点击 保存 并覆盖原文件。再次双击运行，乱码就会消失，命令也能正常识别了。</p>
+</li>
+</ol>
+
+      </div>
+
+      <div class="post-footer-tags">
+        
+      </div>
+    </article>
+
+    <div class="comment-container">
+      <div class="comment-head">
+        <i class="iconfont icon-message"></i> 参与讨论
+      </div>
+      <script src="https://giscus.app/client.js"
+              data-repo="CZH17-gif/CZH17-gif.github.io"
+              data-repo-id="R_kgDOQzBcSw"
+              data-category="Announcements"
+              data-category-id="DIC_kwDOQzBcS84C0ys7"
+              data-mapping="pathname"
+              data-strict="0"
+              data-reactions-enabled="0"
+              data-emit-metadata="0"
+              data-input-position="top"
+              data-theme="light"
+              data-lang="zh-CN"
+              crossorigin="anonymous"
+              async>
+      </script>
+    </div>
+  </div>
+
+  <aside class="toc-sidebar">
+    <div class="toc-card">
+      <div class="toc-title">
+        <i class="iconfont icon-list"></i> 文章目录
+      </div>
+      <div class="toc-content">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9E%E6%88%98%E8%AE%B0%E5%BD%95%EF%BC%882%EF%BC%89%EF%BC%9AConda-%E7%8E%AF%E5%A2%83%E9%9A%94%E7%A6%BB%E5%AE%9E%E6%88%98%EF%BC%9A%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2-Xinference-LangChain-Chatchat"><span class="toc-text">实战记录（2）：Conda 环境隔离实战：本地部署 Xinference + LangChain-Chatchat</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E6%88%91%E4%BB%AC%E9%9C%80%E8%A6%81%E4%B8%A4%E4%B8%AA%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83%EF%BC%9F"><span class="toc-text">前言：为什么我们需要两个虚拟环境？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86%EF%BC%9A%E6%9E%84%E5%BB%BA%E5%90%8E%E7%AB%AF%E7%8E%AF%E5%A2%83-xinference-env"><span class="toc-text">第一部分：构建后端环境 (xinference_env)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%88%9B%E5%BB%BA%E5%B9%B6%E6%BF%80%E6%B4%BB%E7%8E%AF%E5%A2%83"><span class="toc-text">1. 创建并激活环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AE%89%E8%A3%85%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6-%E6%A0%B8%E5%BF%83%E9%81%BF%E5%9D%91%E7%82%B9"><span class="toc-text">2. 安装核心组件 (核心避坑点)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%EF%BC%9A%E6%9E%84%E5%BB%BA%E5%89%8D%E7%AB%AF%E7%8E%AF%E5%A2%83-chatchat-env"><span class="toc-text">第二部分：构建前端环境 (chatchat_env)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E9%83%A8%E5%88%86%EF%BC%9A%E5%A6%82%E4%BD%95%E8%BF%90%E8%A1%8C%EF%BC%9F-%E6%89%8B%E5%8A%A8%E6%89%93%E5%BC%80%E4%B8%A4%E4%B8%AA-Shell"><span class="toc-text">第三部分：如何运行？(手动打开两个 Shell )</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E9%83%A8%E5%88%86%EF%BC%9A%E4%B8%80%E9%94%AE%E5%90%AF%E5%8A%A8%E8%84%9A%E6%9C%AC"><span class="toc-text">第四部分：一键启动脚本</span></a></li></ol></li></ol>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const tocLinks = document.querySelectorAll('.toc-link');
+    const sections = Array.from(tocLinks).map(link => {
+      return document.querySelector(decodeURI(link.getAttribute('href')));
+    }).filter(section => section !== null);
+
+    function spy() {
+      const scrollPos = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+      let activeIndex = -1;
+      
+      sections.forEach((section, index) => {
+        if (scrollPos >= section.offsetTop - 100) {
+          activeIndex = index;
+        }
+      });
+
+      tocLinks.forEach(link => link.classList.remove('active'));
+      if (activeIndex !== -1) {
+        tocLinks[activeIndex].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', spy);
+    spy(); 
+  });
+</script>
+
+<style>
+  /* 局部微调样式 */
+  .comment-container {
+    margin-top: 50px;
+    padding: 30px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  }
+  .comment-head {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .post-footer-tags {
+    margin-top: 40px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .tag-link {
+    background: #f1f3f4;
+    color: #5f6368;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    transition: 0.3s;
+  }
+  .tag-link:hover {
+    background: #1a73e8;
+    color: #fff;
+    text-decoration: none;
+  }
+  .meta-divider {
+    margin: 0 10px;
+    color: #eee;
+  }
+</style>
+
+  <footer style="text-align:center; padding:40px 0; color:#888; margin-top:60px; border-top:1px solid #eee;">
+  <p>&copy; 2026 CZH</p>
+</footer>
+
+  
+    <script>
+      if(document.getElementById('typed-text')) {
+        new Typed('#typed-text', {
+          strings: ['CZH Blog'],
+          typeSpeed: 70, showCursor: false
+        });
+      }
+    </script>
+  
+
+  <script>
+    var searchFunc = function(path, search_id, content_id) {
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        success: function(xmlResponse) {
+          var datas = $("entry", xmlResponse).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          if (!$input) return;
+          
+          $input.addEventListener('input', function() {
+            var str = '<div class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              $resultContent.style.display = 'none';
+              return;
+            }
+            var count = 0;
+            datas.forEach(function(data) {
+              var isMatch = true;
+              var data_title = data.title.trim().toLowerCase();
+              var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+              if (data_title && keywords.some(k => data_title.indexOf(k) >= 0 || data_content.indexOf(k) >= 0)) {
+                 str += "<a href='" + data.url + "' class='search-item'>";
+                 str += "<div class='search-title'>" + data.title + "</div>";
+                 str += "</a>";
+                 count++;
+              }
+            });
+            if (count > 0) {
+              $resultContent.innerHTML = str;
+              $resultContent.style.display = 'block';
+            }
+          });
+        }
+      });
+    };
+    searchFunc('/search.xml', 'local-search-input', 'search-result');
+  </script>
+</body>
+</html>

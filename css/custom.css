@@ -1,0 +1,117 @@
+/* source/css/custom.css */
+
+/* 1. 强制注入的过滤器栏样式 (Google Style) */
+.google-filter-bar {
+    background: #ffffff;
+    width: 100%;
+    border-bottom: 1px solid #dadce0;
+    margin-bottom: 30px;
+    padding: 15px 0;
+}
+
+.google-filter-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.filter-item {
+    margin-right: 30px;
+    color: #5f6368;
+    font-weight: 500;
+    text-decoration: none;
+    font-family: 'Google Sans', sans-serif;
+    font-size: 14px;
+}
+
+.filter-item.active {
+    color: #202124;
+    border-bottom: 3px solid #1a73e8; /* 选中的蓝色下划线 */
+    padding-bottom: 15px;
+}
+
+/* 模拟搜索框 */
+.google-search-box {
+    background: #f1f3f4;
+    border-radius: 8px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    width: 240px;
+}
+
+.search-input {
+    border: none;
+    background: transparent;
+    outline: none;
+    margin-left: 10px;
+    color: #3c4043;
+    width: 100%;
+}
+
+/* 2. 暴力强制网格布局 (解决卡片太宽的问题) */
+.home-article-list, .masonry-container {
+    display: grid !important;
+    /* 强制一行 3 个，宽度自适应 */
+    grid-template-columns: repeat(3, 1fr) !important; 
+    gap: 20px !important;
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    padding: 0 20px !important;
+}
+
+/* 手机端强制改为 1 列 */
+@media (max-width: 768px) {
+    .home-article-list, .masonry-container {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* 3. 卡片样式重绘 (Google 方块风) */
+.home-article-post, .masonry-item {
+    width: 100% !important; /* 填满格子 */
+    background: #fff !important;
+    border: 1px solid #dadce0 !important;
+    border-radius: 8px !important;
+    box-shadow: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    margin: 0 !important; /* 去掉多余边距 */
+    transition: all 0.2s ease;
+}
+
+.home-article-post:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+    transform: translateY(-2px);
+}
+
+/* 图片区域 */
+.article-thumbnail, .home-article-post .img-container {
+    height: 180px !important;
+    width: 100% !important;
+    border-radius: 8px 8px 0 0 !important;
+}
+
+.article-thumbnail img {
+    object-fit: cover !important;
+    height: 100% !important;
+    width: 100% !important;
+}
+
+/* 文字区域 */
+.home-article-post .content {
+    padding: 20px !important;
+}
+
+.home-article-post .title {
+    font-size: 1.2rem !important;
+    color: #202124 !important;
+    margin-bottom: 10px !important;
+}
+
+.home-article-post .article-meta {
+    color: #5f6368 !important;
+}

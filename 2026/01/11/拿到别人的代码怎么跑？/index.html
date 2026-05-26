@@ -30,6 +30,7 @@
       <a href="/"><i class="iconfont icon-home"></i> 首页</a>
       <a href="/archives/"><i class="iconfont icon-archive"></i> 归档</a>
       <a href="/categories/"><i class="iconfont icon-th-large"></i> 专栏</a>
+      <a href="/portfolio/"><i class="iconfont icon-video"></i> 作品集</a>
       <a href="/about/"><i class="iconfont icon-user"></i> 关于</a>
     </div>
   </div>
@@ -62,7 +63,7 @@
           <span class="meta-divider">|</span>
           <span><i class="iconfont icon-folder"></i> Python系列</span>
           <span class="meta-divider">|</span>
-          <span><i class="iconfont icon-file-text"></i> 965 字</span>
+          <span><i class="iconfont icon-file-text"></i> 1537 字</span>
         </div>
       </header>
       
@@ -86,18 +87,23 @@
 </ol>
 <p>这两个文件就是“配方表”，记录了代码运行所需的所有包和版本。</p>
 <h3 id="第二步：建立新厨房-创建环境"><a href="#第二步：建立新厨房-创建环境" class="headerlink" title="第二步：建立新厨房 (创建环境)"></a>第二步：建立新厨房 (创建环境)</h3><p>打开 Anaconda Prompt (或终端)，根据你的项目类型创建一个新环境。<br><em>(假设这个项目叫 <code>run_project</code>，需要 python 3.9)</em></p>
-<pre><code class="language-powershell"># 创建一个名为 run_project 的新环境，因为我们配置过 .condarc，这个新环境会自动建在 E 盘，完全不用担心 C 盘空间。
-conda create -n run_project python=3.9
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建一个名为 run_project 的新环境，因为我们配置过 .condarc，这个新环境会自动建在 E 盘，完全不用担心 C 盘空间。</span></span><br><span class="line">conda create <span class="literal">-n</span> run_project python=<span class="number">3.9</span></span><br><span class="line"></span><br><span class="line">conda activate run_project</span><br></pre></td></tr></table></figure>
+<h4 id="情况-A：有-requirements-txt-简单模式"><a href="#情况-A：有-requirements-txt-简单模式" class="headerlink" title="情况 A：有 requirements.txt (简单模式)"></a>情况 A：有 requirements.txt (简单模式)</h4><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用 pip 安装（建议加上清华源加速）：</span></span><br><span class="line">pip install <span class="literal">-r</span> requirements.txt <span class="literal">-i</span> [<span class="type">https</span>://<span class="type">pypi.tuna.tsinghua.edu.cn</span>/<span class="type">simple</span>](https://pypi.tuna.tsinghua.edu.cn/simple)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-conda activate run_project
+<h4 id="情况-B：有-environment-yml-简单模式"><a href="#情况-B：有-environment-yml-简单模式" class="headerlink" title="情况 B：有 environment.yml (简单模式)"></a>情况 B：有 environment.yml (简单模式)</h4><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 直接让 Conda 根据文件自动配置：</span></span><br><span class="line">conda env create <span class="operator">-f</span> environment.yml</span><br></pre></td></tr></table></figure>
 
-# 情况 A：有 requirements.txt (简单模式)
-# 使用 pip 安装（建议加上清华源加速）：
-pip install -r requirements.txt -i [https://pypi.tuna.tsinghua.edu.cn/simple](https://pypi.tuna.tsinghua.edu.cn/simple)
-
-# 情况 B：有 environment.yml (简单模式)
-# 直接让 Conda 根据文件自动配置：
-</code></pre>
+<h4 id="情况-C：什么文件都没有-地狱模式-自动扫描模式"><a href="#情况-C：什么文件都没有-地狱模式-自动扫描模式" class="headerlink" title="情况 C：什么文件都没有 (地狱模式 -&gt; 自动扫描模式)"></a>情况 C：什么文件都没有 (地狱模式 -&gt; 自动扫描模式)</h4><p>如果对方是个“不讲武德”的人，没给你留任何说明文件，千万别手动一个个去试！ 我们有两个神器：</p>
+<p>方案 1：使用 pipreqs 生成配方（推荐） 这是一个专门的第三方工具，它能扫描整个文件夹里的 .py 文件，自动分析出用了哪些包，并帮你生成 requirements.txt。</p>
+<p>1.安装工具 (只需装一次)：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install pipreqs</span><br></pre></td></tr></table></figure>
+<p>2.一键扫描： 在终端里，进入代码所在的文件夹，然后运行：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># --encoding=utf8 是为了防止Windows下编码报错</span></span><br><span class="line">pipreqs ./ <span class="literal">--encoding</span>=utf8</span><br></pre></td></tr></table></figure>
+<p>3.安装： 这时候你会发现文件夹里多了一个 requirements.txt！然后回到“情况 A”执行安装命令即可。</p>
+<p>方案 2:利用 PyCharm 的“红色灯泡” (Lazy 模式) 如果你懒得用命令行，PyCharm 也有内置神技：</p>
+<p>用 PyCharm 打开代码，配置好解释器。</p>
+<p>打开主代码文件，你会看到缺少的包下面有红色波浪线。</p>
+<p>把鼠标放上去，或者按 Alt + Enter。</p>
+<p>选择 “Install package xxx”。PyCharm 会自动在后台帮你装好。</p>
 
       </div>
 

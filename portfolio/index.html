@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<title>视频作品集 | CZH Tech Blog</title>
+
+<link rel="stylesheet" href="/css/style.css">
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+<link rel="preconnect" href="https://gs.jurieo.com/gemini/fonts-googleapis">
+<link rel="preconnect" href="https://gs.jurieo.com/gemini/fonts-gstatic" crossorigin>
+<link href="https://gs.jurieo.com/gemini/fonts-googleapis/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<meta name="generator" content="Hexo 8.1.1"></head>
+<body>
+  <nav class="top-nav">
+  <div class="container nav-inner">
+    <a href="/" class="nav-logo">
+      <i class="iconfont icon-code" style="margin-right:8px;"></i> CZH Tech Blog
+    </a>
+    <div class="nav-links">
+      <a href="/"><i class="iconfont icon-home"></i> 首页</a>
+      <a href="/archives/"><i class="iconfont icon-archive"></i> 归档</a>
+      <a href="/categories/"><i class="iconfont icon-th-large"></i> 专栏</a>
+      <a href="/portfolio/"><i class="iconfont icon-video"></i> 作品集</a>
+      <a href="/about/"><i class="iconfont icon-user"></i> 关于</a>
+    </div>
+  </div>
+</nav>
+  
+  
+  
+  <header class="page-banner" 
+          style="background-image: url('/img/banner.webp'); background-color: #000;">
+    <div class="banner-mask"></div>
+    <div class="banner-title">视频作品集</div>
+  </header>
+
+  
+  <div class="portfolio-wrapper">
+  <div class="portfolio-header">
+    <h1><i class="iconfont icon-video"></i> 视频作品集</h1>
+    <p class="portfolio-desc">这里展示我的个人视频作品</p>
+  </div>
+
+  <div class="portfolio-grid">
+
+    <div class="portfolio-card" onclick="openVideoModal('video1')">
+      <div class="portfolio-cover">
+        <img src="/img/first.webp" alt="作品1封面" loading="lazy">
+        <div class="play-overlay">
+          <i class="iconfont icon-play-fill"></i>
+        </div>
+      </div>
+      <div class="portfolio-info">
+        <h3 class="portfolio-title">作品标题 1</h3>
+        <p class="portfolio-date">2026-05-20</p>
+        <p class="portfolio-desc-text">这里是作品的简短描述，介绍视频的内容和背景。</p>
+      </div>
+    </div>
+
+    <div class="portfolio-card" onclick="openVideoModal('video2')">
+      <div class="portfolio-cover">
+        <img src="/img/second.webp" alt="作品2封面" loading="lazy">
+        <div class="play-overlay">
+          <i class="iconfont icon-play-fill"></i>
+        </div>
+      </div>
+      <div class="portfolio-info">
+        <h3 class="portfolio-title">作品标题 2</h3>
+        <p class="portfolio-date">2026-05-15</p>
+        <p class="portfolio-desc-text">这里是作品的简短描述，介绍视频的内容和背景。</p>
+      </div>
+    </div>
+
+    <div class="portfolio-card portfolio-add" onclick="showAddHint()">
+      <div class="portfolio-cover add-cover">
+        <i class="iconfont icon-plus"></i>
+      </div>
+      <div class="portfolio-info">
+        <h3 class="portfolio-title">添加新作品</h3>
+        <p class="portfolio-desc-text">点击了解如何添加视频作品</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="portfolio-content">
+    <p>这里是我的个人视频作品展示页面。</p>
+<p>你可以在这里添加作品的介绍文字。</p>
+
+  </div>
+</div>
+
+<div id="videoModal" class="video-modal" onclick="closeVideoModal(event)">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <span class="modal-close" onclick="closeVideoModal()">&times;</span>
+    <video id="modalVideo" controls preload="none" poster="/img/first.webp">
+      <source src="" type="video/mp4">
+      您的浏览器不支持视频播放。
+    </video>
+    <div class="modal-info">
+      <h3 id="modalTitle">作品标题</h3>
+      <p id="modalDesc">作品描述</p>
+    </div>
+  </div>
+</div>
+
+<div id="addHintModal" class="hint-modal" onclick="closeHintModal(event)">
+  <div class="hint-content" onclick="event.stopPropagation()">
+    <span class="modal-close" onclick="closeHintModal()">&times;</span>
+    <h3><i class="iconfont icon-info"></i> 如何添加视频作品</h3>
+    <div class="hint-steps">
+      <p><strong>步骤 1：</strong> 把你的视频文件（如 .mp4）放到 <code>source/videos/</code> 目录</p>
+      <p><strong>步骤 2：</strong> 准备一张封面图（推荐 16:9 比例），放到 <code>source/img/</code> 目录</p>
+      <p><strong>步骤 3：</strong> 编辑 <code>themes/google-research/layout/portfolio.ejs</code>，复制一个 portfolio-card 区块，修改标题、日期、描述、视频路径和封面图路径</p>
+      <p><strong>步骤 4：</strong> 运行 <code>hexo clean && hexo g && hexo d</code> 重新生成并部署</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  var videoData = {
+    'video1': {
+      src: '/videos/demo1.mp4',
+      title: '作品标题 1',
+      desc: '这里是作品1的详细描述。'
+    },
+    'video2': {
+      src: '/videos/demo2.mp4',
+      title: '作品标题 2',
+      desc: '这里是作品2的详细描述。'
+    }
+  };
+
+  function openVideoModal(videoId) {
+    var data = videoData[videoId];
+    if (!data) return;
+    var modal = document.getElementById('videoModal');
+    var video = document.getElementById('modalVideo');
+    document.getElementById('modalTitle').textContent = data.title;
+    document.getElementById('modalDesc').textContent = data.desc;
+    video.src = data.src;
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeVideoModal(e) {
+    if (e && e.target !== document.getElementById('videoModal') && e.target.className !== 'modal-close') return;
+    var modal = document.getElementById('videoModal');
+    var video = document.getElementById('modalVideo');
+    video.pause();
+    video.src = '';
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  function showAddHint() {
+    document.getElementById('addHintModal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeHintModal(e) {
+    if (e && e.target !== document.getElementById('addHintModal') && e.target.className !== 'modal-close') return;
+    document.getElementById('addHintModal').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      closeVideoModal();
+      closeHintModal();
+    }
+  });
+</script>
+
+
+  <footer style="text-align:center; padding:40px 0; color:#888; margin-top:60px; border-top:1px solid #eee;">
+  <p>&copy; 2026 CZH</p>
+</footer>
+
+  
+    <script>
+      if(document.getElementById('typed-text')) {
+        new Typed('#typed-text', {
+          strings: ['视频作品集'],
+          typeSpeed: 70, showCursor: false
+        });
+      }
+    </script>
+  
+
+  <script>
+    var searchFunc = function(path, search_id, content_id) {
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        success: function(xmlResponse) {
+          var datas = $("entry", xmlResponse).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          if (!$input) return;
+          
+          $input.addEventListener('input', function() {
+            var str = '<div class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              $resultContent.style.display = 'none';
+              return;
+            }
+            var count = 0;
+            datas.forEach(function(data) {
+              var isMatch = true;
+              var data_title = data.title.trim().toLowerCase();
+              var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+              if (data_title && keywords.some(k => data_title.indexOf(k) >= 0 || data_content.indexOf(k) >= 0)) {
+                 str += "<a href='" + data.url + "' class='search-item'>";
+                 str += "<div class='search-title'>" + data.title + "</div>";
+                 str += "</a>";
+                 count++;
+              }
+            });
+            if (count > 0) {
+              $resultContent.innerHTML = str;
+              $resultContent.style.display = 'block';
+            }
+          });
+        }
+      });
+    };
+    searchFunc('/search.xml', 'local-search-input', 'search-result');
+  </script>
+</body>
+</html>
