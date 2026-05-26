@@ -332,7 +332,7 @@ ul { list-style: none; }
   font-size: 0.9em;
 }
 
-/* 多行代码块 */
+/* 基础 pre 样式（用于没有 highlight 的情况） */
 .markdown-body pre {
   background-color: #f6f8fa !important;
   color: #24292e;
@@ -343,8 +343,7 @@ ul { list-style: none; }
   font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
   font-size: 14px;
   line-height: 1.6;
-  border: none;
-  box-shadow: none;
+  border: 1px solid #e2e8f0;
 }
 
 /* 代码块高亮 */
@@ -359,22 +358,24 @@ ul { list-style: none; }
   border-radius: 6px;
   overflow: hidden;
   border: 1px solid #e2e8f0;
+  background-color: #f6f8fa;
 }
 .markdown-body .highlight table {
   width: 100%;
   border-collapse: collapse;
   margin: 0;
   border: none;
+  background-color: transparent;
 }
 .markdown-body .highlight td {
   border: none;
   padding: 0;
   vertical-align: top;
+  background-color: transparent;
 }
 .markdown-body .highlight .gutter {
   background-color: #f0f2f5;
-  padding: 12px 0;
-  border-right: 1px solid #dfe2e5;
+  padding: 16px 0;
 }
 .markdown-body .highlight .gutter pre {
   background: transparent;
@@ -387,9 +388,9 @@ ul { list-style: none; }
   font-size: 14px;
 }
 .markdown-body .highlight .code {
-  padding: 12px 0;
+  padding: 16px 0;
 }
-.markdown-body .highlight .code pre {
+.markdown-body .highlight pre {
   padding: 0 12px;
   margin: 0;
   background: transparent;
