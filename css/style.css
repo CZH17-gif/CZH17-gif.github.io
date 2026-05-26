@@ -140,7 +140,7 @@ ul { list-style: none; }
 
 /* ================= 5. 首页网格 ================= */
 .home-layout { margin: 40px auto; }
-.grid-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 50px; }
+.grid-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
 .grid-card { 
   background: transparent; 
   border: none; 
@@ -154,10 +154,10 @@ ul { list-style: none; }
   text-decoration: none;
 }
 .grid-card:hover { 
-  background: #f8f9fa;
+  background: #f0f2f5;
   border-radius: 28px;
 }
-.grid-cover img { width: 100%; height: 240px; object-fit: cover; border-radius: 16px; }
+.grid-cover img { width: 100%; height: 230px; object-fit: cover; border-radius: 16px; }
 .grid-info { padding: 40px 0 0 0; flex: 1; display: flex; flex-direction: column; gap: 20px; }
 .grid-title { 
   font-size: 1.5rem; 
@@ -391,7 +391,7 @@ ul { list-style: none; }
   overflow: hidden;
   border: 1px solid #e2e8f0;
   background-color: #f6f8fa;
-  margin-left: -30px;
+  margin-left: -20px;
   margin-right: -10px;
 }
 .markdown-body .highlight table {
@@ -415,13 +415,13 @@ ul { list-style: none; }
 .markdown-body .highlight .gutter pre {
   background: transparent;
   color: #8b949e;
-  padding: 0 8px;
+  padding: 0 4px 0 8px;
   text-align: right;
   margin: 0;
   border: none;
   box-shadow: none;
   font-size: 14px;
-  min-width: 40px;
+  min-width: 36px;
 }
 .markdown-body .highlight .code {
   padding: 16px 0;
