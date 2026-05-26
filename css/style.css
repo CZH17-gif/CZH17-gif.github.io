@@ -154,7 +154,7 @@ ul { list-style: none; }
   text-decoration: none;
 }
 .grid-card:hover { 
-  background: #f8f9fa;
+  background: #e8eaed;
   border-radius: 32px;
 }
 .grid-cover img { width: 100%; height: 220px; object-fit: cover; border-radius: 20px; }
