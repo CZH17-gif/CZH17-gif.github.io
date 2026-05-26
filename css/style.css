@@ -140,41 +140,41 @@ ul { list-style: none; }
 
 /* ================= 5. 首页网格 ================= */
 .home-layout { margin: 40px auto; }
-.grid-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.grid-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .grid-card { 
   background: transparent; 
   border: none; 
-  border-radius: 24px; 
+  border-radius: 32px; 
   overflow: hidden; 
   display: flex; 
   flex-direction: column; 
   transition: all 0.3s ease;
-  padding: 32px;
+  padding: 40px;
   cursor: pointer;
   text-decoration: none;
 }
 .grid-card:hover { 
-  background: #f0f2f5;
-  border-radius: 28px;
+  background: #f8f9fa;
+  border-radius: 36px;
 }
-.grid-cover img { width: 100%; height: 230px; object-fit: cover; border-radius: 16px; }
-.grid-info { padding: 40px 0 0 0; flex: 1; display: flex; flex-direction: column; gap: 20px; }
+.grid-cover img { width: 100%; height: 280px; object-fit: cover; border-radius: 24px; }
+.grid-info { padding: 72px 0 0 0; flex: 1; display: flex; flex-direction: column; gap: 24px; }
 .grid-title { 
-  font-size: 1.5rem; 
+  font-size: 1.75rem; 
   font-weight: 500; 
-  line-height: 1.3; 
+  line-height: 1.4; 
   margin: 0; 
   color: #202124;
 }
 .grid-desc { 
-  font-size: 1rem; 
+  font-size: 1.125rem; 
   color: #5f6368; 
   line-height: 1.6;
   margin: 0;
   flex: 1;
 }
 .grid-more { 
-  font-size: 1rem; 
+  font-size: 1.125rem; 
   color: #1a73e8; 
   font-weight: 500;
   margin-top: auto;

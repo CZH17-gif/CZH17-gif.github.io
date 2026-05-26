@@ -37,75 +37,52 @@ git branch -M main
       </tags>
   </entry>
   <entry>
-    <title>拒绝学了就忘：小白从零搭建个性化全栈博客</title>
-    <url>/2022/01/08/why-i-build-blog/</url>
-    <content><![CDATA[<h2 id="一、原因"><a href="#一、原因" class="headerlink" title="一、原因"></a>一、原因</h2><p>曾经有一段时间，<strong>“学了忘，忘了学，再学再忘”</strong>，这种怪循环让我觉得自己的学习效率底下<br>因此我觉得，<strong>记录，交流，总结对于学习非常重要，也希望与大家进行交流和讨论。</strong></p>
-<h2 id="二、理想博客"><a href="#二、理想博客" class="headerlink" title="二、理想博客"></a>二、理想博客</h2><p>在参考了Google Research Blog、OpenAI Research Blog、张鑫旭的鑫空间-鑫生活、Anthony Fu、CoolShell (酷壳 - 陈皓)等等顶级的博客之后，我理想中的博客的样子也愈发清晰：</p>
-<ol>
-<li><p><strong>内容至上</strong>：<br>所有的元素（标题、图片、摘要）都是为了更快地获取信息。首页我打算用整齐划一的“卡片”排列，内容页则采用大面积的留白，来提升阅读体验。</p>
-</li>
-<li><p><strong>拒绝数据丢失，不依赖本地</strong>：<br>我希望它完全不依赖于本地电脑。哪怕有一天我的笔记本坏了，或者我换了新电脑，我只需要从云端的“私有仓库”里拉取配置文件，就能无缝衔接，继续写作。<strong>数据必须掌握在自己手里。</strong></p>
-</li>
-<li><p><strong>零成本，循序渐进</strong>：<br>作为一个技术尝鲜者，我不想为了写博客每年花费几百块去租云服务器。它必须是免费托管的，但同时不能简陋。等我熟练之后，再考虑租用服务器。</p>
-</li>
-<li><p><strong>一次编写，高效转发</strong>：<br>我希望以这个博客为基地。在这里写好 Markdown 文章后，可以通过配置（或配合工具），轻松地分发到知乎、CSDN 等平台。不需要重复排版，只需要输入账号信息，让知识传播得更远。</p>
-</li>
-</ol>
-<h2 id="三、方案选择"><a href="#三、方案选择" class="headerlink" title="三、方案选择"></a>三、方案选择</h2><h3 id="1-静态网页框架的选择：Hexo-vs-Hugo"><a href="#1-静态网页框架的选择：Hexo-vs-Hugo" class="headerlink" title="1. 静态网页框架的选择：Hexo vs Hugo"></a>1. 静态网页框架的选择：Hexo vs Hugo</h3><p>在决定框架时，我主要对比了静态博客界的两大巨头：<strong>Hexo</strong> 和 <strong>Hugo</strong>。</p>
-<h4 id="Hexo（我现在的选择）"><a href="#Hexo（我现在的选择）" class="headerlink" title="Hexo（我现在的选择）"></a>Hexo（我现在的选择）</h4><p>  <strong>优点</strong>：<br>    * <strong>生态极好</strong>：由台湾同胞开发，华人用户群体极其庞大。这意味着中文文档完善，中文主题（如我现在用的 Fluid、还有 Butterfly）非常丰富，审美完全在线。<br>    * <strong>插件丰富</strong>：对于像我这样的小白，想加个 Live2D 看板娘、加个 APlayer 音乐播放器、搞个点击特效，搜一下插件就能搞定，配置简单。<br> <strong>缺点</strong>：<br>    * 是基于 Node.js 的，当文章数量达到几千篇时，生成速度会变慢。</p>
-<h4 id="Hugo（未来的备选）"><a href="#Hugo（未来的备选）" class="headerlink" title="Hugo（未来的备选）"></a>Hugo（未来的备选）</h4><p>  <strong>优点</strong>：<br>    * 基于 Go 语言，生成速度极快（毫秒级），安装也更简单（一个文件走天下）。<br>  <strong>缺点</strong>：<br>    * 插件相对较少，折腾门槛高，主题修改需要学习 Go 模板语言。</p>
-<h3 id="2-托管平台的选择：GitHub-Pages-vs-云服务器"><a href="#2-托管平台的选择：GitHub-Pages-vs-云服务器" class="headerlink" title="2. 托管平台的选择：GitHub Pages vs 云服务器"></a>2. 托管平台的选择：GitHub Pages vs 云服务器</h3><p>很多新手纠结是买服务器还是用免费托管，我的对比逻辑如下：</p>
-<table>
-<thead>
-<tr>
-<th align="left">维度</th>
-<th align="left">GitHub Pages (我的选择)</th>
-<th align="left">云服务器 (ECS&#x2F;VPS)</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><strong>费用</strong></td>
-<td align="left"><strong>0元 (永久免费)</strong></td>
-<td align="left">几百~几千元&#x2F;年</td>
-</tr>
-<tr>
-<td align="left"><strong>维护</strong></td>
-<td align="left"><strong>极低</strong> (只管写文章)</td>
-<td align="left"><strong>高</strong> (需维护Linux系统、Nginx、安全防护)</td>
-</tr>
-<tr>
-<td align="left"><strong>能力</strong></td>
-<td align="left">仅静态网页 (HTML&#x2F;CSS&#x2F;JS)</td>
-<td align="left">全能 (可跑数据库、后端程序)</td>
-</tr>
-<tr>
-<td align="left"><strong>适用</strong></td>
-<td align="left">个人博客、文档站</td>
-<td align="left">复杂应用、企业官网</td>
-</tr>
-</tbody></table>
-<p><strong>结论</strong>：对于纯内容输出的博客，GitHub Pages + Hexo 是性价比天花板。</p>
-<h2 id="四、现阶段方案"><a href="#四、现阶段方案" class="headerlink" title="四、现阶段方案"></a>四、现阶段方案</h2><p><strong>现阶段方案： 通过Hexo创建静态网页，然后上传到github免费托管，使用Giscus进行评论。</strong></p>
-<p>理由很简单：我现在正处于积累期，**“好用、好看、好配置”**能给我带来更多的写作动力。等未来某一天，我的文章真的积累到了几千篇，Hexo 撑不住的时候，说明我已经是一个资深博主了，那时候再迁移到 Hugo 进行技术升级也不迟。</p>
-<h2 id="🌟-结语"><a href="#🌟-结语" class="headerlink" title="🌟 结语"></a>🌟 结语</h2><p>这个博客的上线，是我对抗遗忘的第一步，也是我全栈成长之路的起点。<br>哪怕它现在还很稚嫩，但<strong>开始</strong>本身就是最大的意义。欢迎大家常来做客，见证我的成长！</p>
-<p>下面是我觉得真的非常厉害的博客，篇幅有限，我就只列了2个：</p>
-<ul>
-<li>osh Comeau，作为React 社区的大 V，曾就职于 Khan Academy，他的博客风格交互体验真的非常好<br>链接： <a href="https://www.joshwcomeau.com/">https://www.joshwcomeau.com/</a></li>
-<li>Google Research Blog，干净、但是高级，属于是内容至上，链接： <a href="https://research.google/blog/">https://research.google/blog/</a></li>
-</ul>
-<hr>
-<blockquote>
-<p><em>本文首发于 <a href="https://czh17-gif.github.io/">CZH-Tech</a>，转载请注明出处。</em></p>
+    <title>【Python进阶】如何运行别人的代码</title>
+    <url>/2026/01/11/%E6%8B%BF%E5%88%B0%E5%88%AB%E4%BA%BA%E7%9A%84%E4%BB%A3%E7%A0%81%E6%80%8E%E4%B9%88%E8%B7%91%EF%BC%9F/</url>
+    <content><![CDATA[<h1 id="🏃‍♂️-【Python实战】第四篇：拿到别人的代码怎么跑？终极运行指南（含逆向推导神器）"><a href="#🏃‍♂️-【Python实战】第四篇：拿到别人的代码怎么跑？终极运行指南（含逆向推导神器）" class="headerlink" title="🏃‍♂️ 【Python实战】第四篇：拿到别人的代码怎么跑？终极运行指南（含逆向推导神器）"></a>🏃‍♂️ 【Python实战】第四篇：拿到别人的代码怎么跑？终极运行指南（含逆向推导神器）</h1><blockquote>
+<p><strong>前言</strong>：<br>老板、老师或网上大佬丢给你一个压缩包，里面连个说明文件都没有，你该如何优雅地让它在你电脑上跑起来？</p>
 </blockquote>
+<hr>
+<h2 id="🛑-一、-为什么不能直接跑？"><a href="#🛑-一、-为什么不能直接跑？" class="headerlink" title="🛑 一、 为什么不能直接跑？"></a>🛑 一、 为什么不能直接跑？</h2><p>很多新手拿到代码的第一反应是：直接右键 -&gt; <code>Run</code>。<br>结果通常只有一种：<strong>报错</strong>。</p>
+<h3 id="核心原因：环境不对等"><a href="#核心原因：环境不对等" class="headerlink" title="核心原因：环境不对等"></a>核心原因：环境不对等</h3><p>别人的代码是在他的“厨房”里做出来的，他用了特制的调料（比如 <code>pandas 1.5.0</code>, <code>torch 1.12</code>）。</p>
+<ul>
+<li><strong>你的 Base 环境</strong>：可能根本没有这个包。</li>
+<li><strong>你的其他环境</strong>：可能包的版本不对（比如你装了 <code>pandas 2.0</code>，导致旧代码不兼容）。</li>
+</ul>
+<p><strong>✅ 正确做法</strong>：为这份代码，快速搭建一个<strong>专属的临时厨房（虚拟环境）</strong>。</p>
+<hr>
+<h2 id="🛠️-二、-标准化运行四步法"><a href="#🛠️-二、-标准化运行四步法" class="headerlink" title="🛠️ 二、 标准化运行四步法"></a>🛠️ 二、 标准化运行四步法</h2><h3 id="第一步：侦察“配方表”-检查依赖文件"><a href="#第一步：侦察“配方表”-检查依赖文件" class="headerlink" title="第一步：侦察“配方表” (检查依赖文件)"></a>第一步：侦察“配方表” (检查依赖文件)</h3><p>解压代码包，打开文件夹，先不要急着看 <code>.py</code> 文件，先找有没有以下两个文件之一：</p>
+<ol>
+<li><strong><code>requirements.txt</code></strong> (最常见，Pip 格式)</li>
+<li><strong><code>environment.yml</code></strong> (Conda 专用格式)</li>
+</ol>
+<p>这两个文件就是“配方表”，记录了代码运行所需的所有包和版本。</p>
+<h3 id="第二步：建立新厨房-创建环境"><a href="#第二步：建立新厨房-创建环境" class="headerlink" title="第二步：建立新厨房 (创建环境)"></a>第二步：建立新厨房 (创建环境)</h3><p>打开 Anaconda Prompt (或终端)，根据你的项目类型创建一个新环境。<br><em>(假设这个项目叫 <code>run_project</code>，需要 python 3.9)</em></p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建一个名为 run_project 的新环境，因为我们配置过 .condarc，这个新环境会自动建在 E 盘，完全不用担心 C 盘空间。</span></span><br><span class="line">conda create <span class="literal">-n</span> run_project python=<span class="number">3.9</span></span><br><span class="line"></span><br><span class="line">conda activate run_project</span><br></pre></td></tr></table></figure>
+<h4 id="情况-A：有-requirements-txt-简单模式"><a href="#情况-A：有-requirements-txt-简单模式" class="headerlink" title="情况 A：有 requirements.txt (简单模式)"></a>情况 A：有 requirements.txt (简单模式)</h4><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用 pip 安装（建议加上清华源加速）：</span></span><br><span class="line">pip install <span class="literal">-r</span> requirements.txt <span class="literal">-i</span> [<span class="type">https</span>://<span class="type">pypi.tuna.tsinghua.edu.cn</span>/<span class="type">simple</span>](https://pypi.tuna.tsinghua.edu.cn/simple)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="情况-B：有-environment-yml-简单模式"><a href="#情况-B：有-environment-yml-简单模式" class="headerlink" title="情况 B：有 environment.yml (简单模式)"></a>情况 B：有 environment.yml (简单模式)</h4><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 直接让 Conda 根据文件自动配置：</span></span><br><span class="line">conda env create <span class="operator">-f</span> environment.yml</span><br></pre></td></tr></table></figure>
+
+<h4 id="情况-C：什么文件都没有-地狱模式-自动扫描模式"><a href="#情况-C：什么文件都没有-地狱模式-自动扫描模式" class="headerlink" title="情况 C：什么文件都没有 (地狱模式 -&gt; 自动扫描模式)"></a>情况 C：什么文件都没有 (地狱模式 -&gt; 自动扫描模式)</h4><p>如果对方是个“不讲武德”的人，没给你留任何说明文件，千万别手动一个个去试！ 我们有两个神器：</p>
+<p>方案 1：使用 pipreqs 生成配方（推荐） 这是一个专门的第三方工具，它能扫描整个文件夹里的 .py 文件，自动分析出用了哪些包，并帮你生成 requirements.txt。</p>
+<p>1.安装工具 (只需装一次)：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">pip install pipreqs</span><br></pre></td></tr></table></figure>
+<p>2.一键扫描： 在终端里，进入代码所在的文件夹，然后运行：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># --encoding=utf8 是为了防止Windows下编码报错</span></span><br><span class="line">pipreqs ./ <span class="literal">--encoding</span>=utf8</span><br></pre></td></tr></table></figure>
+<p>3.安装： 这时候你会发现文件夹里多了一个 requirements.txt！然后回到“情况 A”执行安装命令即可。</p>
+<p>方案 2:利用 PyCharm 的“红色灯泡” (Lazy 模式) 如果你懒得用命令行，PyCharm 也有内置神技：</p>
+<p>用 PyCharm 打开代码，配置好解释器。</p>
+<p>打开主代码文件，你会看到缺少的包下面有红色波浪线。</p>
+<p>把鼠标放上去，或者按 Alt + Enter。</p>
+<p>选择 “Install package xxx”。PyCharm 会自动在后台帮你装好。</p>
 ]]></content>
       <categories>
-        <category>随笔</category>
+        <category>Python系列</category>
       </categories>
       <tags>
-        <tag>思考</tag>
-        <tag>建站</tag>
-        <tag>方案选择</tag>
-        <tag>个人成长</tag>
+        <tag>Anaconda</tag>
+        <tag>虚拟环境</tag>
+        <tag>硬链接</tag>
       </tags>
   </entry>
   <entry>
@@ -155,55 +132,6 @@ git branch -M main
       <tags>
         <tag>Python</tag>
         <tag>虚拟环境迁移</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【Python进阶】如何运行别人的代码</title>
-    <url>/2026/01/11/%E6%8B%BF%E5%88%B0%E5%88%AB%E4%BA%BA%E7%9A%84%E4%BB%A3%E7%A0%81%E6%80%8E%E4%B9%88%E8%B7%91%EF%BC%9F/</url>
-    <content><![CDATA[<h1 id="🏃‍♂️-【Python实战】第四篇：拿到别人的代码怎么跑？终极运行指南（含逆向推导神器）"><a href="#🏃‍♂️-【Python实战】第四篇：拿到别人的代码怎么跑？终极运行指南（含逆向推导神器）" class="headerlink" title="🏃‍♂️ 【Python实战】第四篇：拿到别人的代码怎么跑？终极运行指南（含逆向推导神器）"></a>🏃‍♂️ 【Python实战】第四篇：拿到别人的代码怎么跑？终极运行指南（含逆向推导神器）</h1><blockquote>
-<p><strong>前言</strong>：<br>老板、老师或网上大佬丢给你一个压缩包，里面连个说明文件都没有，你该如何优雅地让它在你电脑上跑起来？</p>
-</blockquote>
-<hr>
-<h2 id="🛑-一、-为什么不能直接跑？"><a href="#🛑-一、-为什么不能直接跑？" class="headerlink" title="🛑 一、 为什么不能直接跑？"></a>🛑 一、 为什么不能直接跑？</h2><p>很多新手拿到代码的第一反应是：直接右键 -&gt; <code>Run</code>。<br>结果通常只有一种：<strong>报错</strong>。</p>
-<h3 id="核心原因：环境不对等"><a href="#核心原因：环境不对等" class="headerlink" title="核心原因：环境不对等"></a>核心原因：环境不对等</h3><p>别人的代码是在他的“厨房”里做出来的，他用了特制的调料（比如 <code>pandas 1.5.0</code>, <code>torch 1.12</code>）。</p>
-<ul>
-<li><strong>你的 Base 环境</strong>：可能根本没有这个包。</li>
-<li><strong>你的其他环境</strong>：可能包的版本不对（比如你装了 <code>pandas 2.0</code>，导致旧代码不兼容）。</li>
-</ul>
-<p><strong>✅ 正确做法</strong>：为这份代码，快速搭建一个<strong>专属的临时厨房（虚拟环境）</strong>。</p>
-<hr>
-<h2 id="🛠️-二、-标准化运行四步法"><a href="#🛠️-二、-标准化运行四步法" class="headerlink" title="🛠️ 二、 标准化运行四步法"></a>🛠️ 二、 标准化运行四步法</h2><h3 id="第一步：侦察“配方表”-检查依赖文件"><a href="#第一步：侦察“配方表”-检查依赖文件" class="headerlink" title="第一步：侦察“配方表” (检查依赖文件)"></a>第一步：侦察“配方表” (检查依赖文件)</h3><p>解压代码包，打开文件夹，先不要急着看 <code>.py</code> 文件，先找有没有以下两个文件之一：</p>
-<ol>
-<li><strong><code>requirements.txt</code></strong> (最常见，Pip 格式)</li>
-<li><strong><code>environment.yml</code></strong> (Conda 专用格式)</li>
-</ol>
-<p>这两个文件就是“配方表”，记录了代码运行所需的所有包和版本。</p>
-<h3 id="第二步：建立新厨房-创建环境"><a href="#第二步：建立新厨房-创建环境" class="headerlink" title="第二步：建立新厨房 (创建环境)"></a>第二步：建立新厨房 (创建环境)</h3><p>打开 Anaconda Prompt (或终端)，根据你的项目类型创建一个新环境。<br><em>(假设这个项目叫 <code>run_project</code>，需要 python 3.9)</em></p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建一个名为 run_project 的新环境，因为我们配置过 .condarc，这个新环境会自动建在 E 盘，完全不用担心 C 盘空间。</span></span><br><span class="line">conda create <span class="literal">-n</span> run_project python=<span class="number">3.9</span></span><br><span class="line"></span><br><span class="line">conda activate run_project</span><br></pre></td></tr></table></figure>
-<h4 id="情况-A：有-requirements-txt-简单模式"><a href="#情况-A：有-requirements-txt-简单模式" class="headerlink" title="情况 A：有 requirements.txt (简单模式)"></a>情况 A：有 requirements.txt (简单模式)</h4><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用 pip 安装（建议加上清华源加速）：</span></span><br><span class="line">pip install <span class="literal">-r</span> requirements.txt <span class="literal">-i</span> [<span class="type">https</span>://<span class="type">pypi.tuna.tsinghua.edu.cn</span>/<span class="type">simple</span>](https://pypi.tuna.tsinghua.edu.cn/simple)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h4 id="情况-B：有-environment-yml-简单模式"><a href="#情况-B：有-environment-yml-简单模式" class="headerlink" title="情况 B：有 environment.yml (简单模式)"></a>情况 B：有 environment.yml (简单模式)</h4><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 直接让 Conda 根据文件自动配置：</span></span><br><span class="line">conda env create <span class="operator">-f</span> environment.yml</span><br></pre></td></tr></table></figure>
-
-<h4 id="情况-C：什么文件都没有-地狱模式-自动扫描模式"><a href="#情况-C：什么文件都没有-地狱模式-自动扫描模式" class="headerlink" title="情况 C：什么文件都没有 (地狱模式 -&gt; 自动扫描模式)"></a>情况 C：什么文件都没有 (地狱模式 -&gt; 自动扫描模式)</h4><p>如果对方是个“不讲武德”的人，没给你留任何说明文件，千万别手动一个个去试！ 我们有两个神器：</p>
-<p>方案 1：使用 pipreqs 生成配方（推荐） 这是一个专门的第三方工具，它能扫描整个文件夹里的 .py 文件，自动分析出用了哪些包，并帮你生成 requirements.txt。</p>
-<p>1.安装工具 (只需装一次)：</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">pip install pipreqs</span><br></pre></td></tr></table></figure>
-<p>2.一键扫描： 在终端里，进入代码所在的文件夹，然后运行：</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># --encoding=utf8 是为了防止Windows下编码报错</span></span><br><span class="line">pipreqs ./ <span class="literal">--encoding</span>=utf8</span><br></pre></td></tr></table></figure>
-<p>3.安装： 这时候你会发现文件夹里多了一个 requirements.txt！然后回到“情况 A”执行安装命令即可。</p>
-<p>方案 2:利用 PyCharm 的“红色灯泡” (Lazy 模式) 如果你懒得用命令行，PyCharm 也有内置神技：</p>
-<p>用 PyCharm 打开代码，配置好解释器。</p>
-<p>打开主代码文件，你会看到缺少的包下面有红色波浪线。</p>
-<p>把鼠标放上去，或者按 Alt + Enter。</p>
-<p>选择 “Install package xxx”。PyCharm 会自动在后台帮你装好。</p>
-]]></content>
-      <categories>
-        <category>Python系列</category>
-      </categories>
-      <tags>
-        <tag>Anaconda</tag>
-        <tag>虚拟环境</tag>
-        <tag>硬链接</tag>
       </tags>
   </entry>
   <entry>
@@ -288,6 +216,78 @@ git branch -M main
         <tag>Hexo</tag>
         <tag>SSH</tag>
         <tag>架构</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>拒绝学了就忘：小白从零搭建个性化全栈博客</title>
+    <url>/2022/01/08/why-i-build-blog/</url>
+    <content><![CDATA[<h2 id="一、原因"><a href="#一、原因" class="headerlink" title="一、原因"></a>一、原因</h2><p>曾经有一段时间，<strong>“学了忘，忘了学，再学再忘”</strong>，这种怪循环让我觉得自己的学习效率底下<br>因此我觉得，<strong>记录，交流，总结对于学习非常重要，也希望与大家进行交流和讨论。</strong></p>
+<h2 id="二、理想博客"><a href="#二、理想博客" class="headerlink" title="二、理想博客"></a>二、理想博客</h2><p>在参考了Google Research Blog、OpenAI Research Blog、张鑫旭的鑫空间-鑫生活、Anthony Fu、CoolShell (酷壳 - 陈皓)等等顶级的博客之后，我理想中的博客的样子也愈发清晰：</p>
+<ol>
+<li><p><strong>内容至上</strong>：<br>所有的元素（标题、图片、摘要）都是为了更快地获取信息。首页我打算用整齐划一的“卡片”排列，内容页则采用大面积的留白，来提升阅读体验。</p>
+</li>
+<li><p><strong>拒绝数据丢失，不依赖本地</strong>：<br>我希望它完全不依赖于本地电脑。哪怕有一天我的笔记本坏了，或者我换了新电脑，我只需要从云端的“私有仓库”里拉取配置文件，就能无缝衔接，继续写作。<strong>数据必须掌握在自己手里。</strong></p>
+</li>
+<li><p><strong>零成本，循序渐进</strong>：<br>作为一个技术尝鲜者，我不想为了写博客每年花费几百块去租云服务器。它必须是免费托管的，但同时不能简陋。等我熟练之后，再考虑租用服务器。</p>
+</li>
+<li><p><strong>一次编写，高效转发</strong>：<br>我希望以这个博客为基地。在这里写好 Markdown 文章后，可以通过配置（或配合工具），轻松地分发到知乎、CSDN 等平台。不需要重复排版，只需要输入账号信息，让知识传播得更远。</p>
+</li>
+</ol>
+<h2 id="三、方案选择"><a href="#三、方案选择" class="headerlink" title="三、方案选择"></a>三、方案选择</h2><h3 id="1-静态网页框架的选择：Hexo-vs-Hugo"><a href="#1-静态网页框架的选择：Hexo-vs-Hugo" class="headerlink" title="1. 静态网页框架的选择：Hexo vs Hugo"></a>1. 静态网页框架的选择：Hexo vs Hugo</h3><p>在决定框架时，我主要对比了静态博客界的两大巨头：<strong>Hexo</strong> 和 <strong>Hugo</strong>。</p>
+<h4 id="Hexo（我现在的选择）"><a href="#Hexo（我现在的选择）" class="headerlink" title="Hexo（我现在的选择）"></a>Hexo（我现在的选择）</h4><p>  <strong>优点</strong>：<br>    * <strong>生态极好</strong>：由台湾同胞开发，华人用户群体极其庞大。这意味着中文文档完善，中文主题（如我现在用的 Fluid、还有 Butterfly）非常丰富，审美完全在线。<br>    * <strong>插件丰富</strong>：对于像我这样的小白，想加个 Live2D 看板娘、加个 APlayer 音乐播放器、搞个点击特效，搜一下插件就能搞定，配置简单。<br> <strong>缺点</strong>：<br>    * 是基于 Node.js 的，当文章数量达到几千篇时，生成速度会变慢。</p>
+<h4 id="Hugo（未来的备选）"><a href="#Hugo（未来的备选）" class="headerlink" title="Hugo（未来的备选）"></a>Hugo（未来的备选）</h4><p>  <strong>优点</strong>：<br>    * 基于 Go 语言，生成速度极快（毫秒级），安装也更简单（一个文件走天下）。<br>  <strong>缺点</strong>：<br>    * 插件相对较少，折腾门槛高，主题修改需要学习 Go 模板语言。</p>
+<h3 id="2-托管平台的选择：GitHub-Pages-vs-云服务器"><a href="#2-托管平台的选择：GitHub-Pages-vs-云服务器" class="headerlink" title="2. 托管平台的选择：GitHub Pages vs 云服务器"></a>2. 托管平台的选择：GitHub Pages vs 云服务器</h3><p>很多新手纠结是买服务器还是用免费托管，我的对比逻辑如下：</p>
+<table>
+<thead>
+<tr>
+<th align="left">维度</th>
+<th align="left">GitHub Pages (我的选择)</th>
+<th align="left">云服务器 (ECS&#x2F;VPS)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>费用</strong></td>
+<td align="left"><strong>0元 (永久免费)</strong></td>
+<td align="left">几百~几千元&#x2F;年</td>
+</tr>
+<tr>
+<td align="left"><strong>维护</strong></td>
+<td align="left"><strong>极低</strong> (只管写文章)</td>
+<td align="left"><strong>高</strong> (需维护Linux系统、Nginx、安全防护)</td>
+</tr>
+<tr>
+<td align="left"><strong>能力</strong></td>
+<td align="left">仅静态网页 (HTML&#x2F;CSS&#x2F;JS)</td>
+<td align="left">全能 (可跑数据库、后端程序)</td>
+</tr>
+<tr>
+<td align="left"><strong>适用</strong></td>
+<td align="left">个人博客、文档站</td>
+<td align="left">复杂应用、企业官网</td>
+</tr>
+</tbody></table>
+<p><strong>结论</strong>：对于纯内容输出的博客，GitHub Pages + Hexo 是性价比天花板。</p>
+<h2 id="四、现阶段方案"><a href="#四、现阶段方案" class="headerlink" title="四、现阶段方案"></a>四、现阶段方案</h2><p><strong>现阶段方案： 通过Hexo创建静态网页，然后上传到github免费托管，使用Giscus进行评论。</strong></p>
+<p>理由很简单：我现在正处于积累期，**“好用、好看、好配置”**能给我带来更多的写作动力。等未来某一天，我的文章真的积累到了几千篇，Hexo 撑不住的时候，说明我已经是一个资深博主了，那时候再迁移到 Hugo 进行技术升级也不迟。</p>
+<h2 id="🌟-结语"><a href="#🌟-结语" class="headerlink" title="🌟 结语"></a>🌟 结语</h2><p>这个博客的上线，是我对抗遗忘的第一步，也是我全栈成长之路的起点。<br>哪怕它现在还很稚嫩，但<strong>开始</strong>本身就是最大的意义。欢迎大家常来做客，见证我的成长！</p>
+<p>下面是我觉得真的非常厉害的博客，篇幅有限，我就只列了2个：</p>
+<ul>
+<li>osh Comeau，作为React 社区的大 V，曾就职于 Khan Academy，他的博客风格交互体验真的非常好<br>链接： <a href="https://www.joshwcomeau.com/">https://www.joshwcomeau.com/</a></li>
+<li>Google Research Blog，干净、但是高级，属于是内容至上，链接： <a href="https://research.google/blog/">https://research.google/blog/</a></li>
+</ul>
+<hr>
+<blockquote>
+<p><em>本文首发于 <a href="https://czh17-gif.github.io/">CZH-Tech</a>，转载请注明出处。</em></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+      <tags>
+        <tag>思考</tag>
+        <tag>建站</tag>
+        <tag>方案选择</tag>
+        <tag>个人成长</tag>
       </tags>
   </entry>
   <entry>
