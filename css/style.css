@@ -140,25 +140,25 @@ ul { list-style: none; }
 
 /* ================= 5. 首页网格 ================= */
 .home-layout { margin: 40px auto; }
-.grid-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+.grid-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
 .grid-card { 
   background: transparent; 
   border: none; 
-  border-radius: 8px; 
+  border-radius: 16px; 
   overflow: hidden; 
   display: flex; 
   flex-direction: column; 
   transition: all 0.3s ease;
-  padding: 16px;
+  padding: 20px;
 }
 .grid-card:hover { 
   background: #f8f9fa;
-  border-radius: 12px;
+  border-radius: 20px;
 }
-.grid-cover img { width: 100%; height: 220px; object-fit: cover; border-radius: 4px; }
-.grid-info { padding: 16px 0 0 0; flex: 1; display: flex; flex-direction: column; }
-.grid-date { font-size: 0.85rem; color: var(--gray); margin-bottom: 8px; }
-.grid-title { font-size: 1.25rem; font-weight: 500; line-height: 1.4; margin: 0; color: var(--text); }
+.grid-cover img { width: 100%; height: 220px; object-fit: cover; border-radius: 12px; }
+.grid-info { padding: 24px 0 0 0; flex: 1; display: flex; flex-direction: column; }
+.grid-date { font-size: 0.85rem; color: var(--gray); margin-bottom: 12px; }
+.grid-title { font-size: 1.25rem; font-weight: 500; line-height: 1.5; margin: 0; color: var(--text); }
 
 /* 分页 */
 .pagination-container { margin: 60px 0; display: flex; flex-direction: column; align-items: center; gap: 20px; }
@@ -388,16 +388,18 @@ ul { list-style: none; }
 .markdown-body .highlight .gutter {
   background-color: #f6f8fa;
   padding: 16px 0;
+  border-right: 1px solid #e8eaed;
 }
 .markdown-body .highlight .gutter pre {
   background: transparent;
   color: #8b949e;
-  padding: 0 8px 0 12px;
-  text-align: left;
+  padding: 0 8px;
+  text-align: right;
   margin: 0;
   border: none;
   box-shadow: none;
   font-size: 14px;
+  min-width: 40px;
 }
 .markdown-body .highlight .code {
   padding: 16px 0;
