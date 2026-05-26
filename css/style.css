@@ -354,25 +354,47 @@ ul { list-style: none; }
 .markdown-body pre .number { color: #005cc5; }
 .markdown-body pre .comment { color: #6a737d; font-style: italic; }
 
-/* 代码块行号优化 */
+/* 彻底修复代码块格子问题 */
 .markdown-body .highlight {
   border-radius: 6px;
   overflow: hidden;
+  border: 1px solid #e2e8f0;
+}
+.markdown-body .highlight table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+  border: none;
+}
+.markdown-body .highlight td {
+  border: none;
+  padding: 0;
+  vertical-align: top;
 }
 .markdown-body .highlight .gutter {
   background-color: #f0f2f5;
+  padding: 12px 0;
+  border-right: 1px solid #dfe2e5;
 }
 .markdown-body .highlight .gutter pre {
   background: transparent;
   color: #8b949e;
   padding: 0 12px;
   text-align: right;
-  border-right: 1px solid #dfe2e5;
-  user-select: none;
+  margin: 0;
+  border: none;
+  box-shadow: none;
+  font-size: 14px;
+}
+.markdown-body .highlight .code {
+  padding: 12px 0;
 }
 .markdown-body .highlight .code pre {
-  padding-left: 12px;
+  padding: 0 12px;
+  margin: 0;
   background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
 /* 中文排版优化 */

@@ -50,6 +50,42 @@
       </tags>
   </entry>
   <entry>
+    <title>个人博客搭建(2)：Git 原理与具体操作</title>
+    <url>/2026/01/08/git-workflow-and-backup(2)/</url>
+    <content><![CDATA[<h2 id="🚨-为什么必须备份源码？"><a href="#🚨-为什么必须备份源码？" class="headerlink" title="🚨 为什么必须备份源码？"></a>🚨 为什么必须备份源码？</h2><p>很多博主只做了 <code>hexo d</code>，这只是把生成的<strong>网页结果</strong>传到了网上。<br>真正的<strong>核心资产</strong>——你的 Markdown 原稿、精心调教的 <code>_config.yml</code> 配置、主题魔改代码——依然只存在于你本地的电脑里。</p>
+<p>一旦电脑损坏或重装系统，你将失去一切。因此，<strong>构建私有源码仓库</strong>是必选项。</p>
+<h2 id="🧠-Git-的核心原理（避坑指南）"><a href="#🧠-Git-的核心原理（避坑指南）" class="headerlink" title="🧠 Git 的核心原理（避坑指南）"></a>🧠 Git 的核心原理（避坑指南）</h2><p>在执行 Git 指令前，必须理解它的工作机制，否则容易弄乱电脑文件。</p>
+<h3 id="1-git-文件夹：时光机盒子"><a href="#1-git-文件夹：时光机盒子" class="headerlink" title="1. .git 文件夹：时光机盒子"></a>1. <code>.git</code> 文件夹：时光机盒子</h3><p>当你执行 <code>git init</code> 时，Git 会在<strong>当前文件夹</strong>下创建一个隐藏的 <code>.git</code> 文件夹。</p>
+<ul>
+<li>它存储了该文件夹下所有文件的<strong>快照</strong>和<strong>历史变更记录</strong>。</li>
+<li><strong>重要原则</strong>：Git 是“在这个文件夹里建仓库”，它不会占用其他盘的空间。</li>
+</ul>
+<h3 id="2-这里的坑：不要在-C-盘或桌面操作！"><a href="#2-这里的坑：不要在-C-盘或桌面操作！" class="headerlink" title="2. 这里的坑：不要在 C 盘或桌面操作！"></a>2. 这里的坑：不要在 C 盘或桌面操作！</h3><ul>
+<li><strong>错误示范</strong>：打开 Git Bash 直接 <code>git init</code>。这会在 <code>C:\Users\用户名</code> 下建仓库，导致你的桌面、文档所有文件都被吸入 Git，占用大量 C 盘空间。</li>
+<li><strong>正确做法</strong>：必须先 <code>cd /e/MyBlog</code> 进入你的博客目录。建议将项目放在 <strong>D盘</strong> 或 <strong>E盘</strong>，数据更安全，且不占系统盘空间。</li>
+</ul>
+<h2 id="🛠️-实战：如何备份源码到私有仓库"><a href="#🛠️-实战：如何备份源码到私有仓库" class="headerlink" title="🛠️ 实战：如何备份源码到私有仓库"></a>🛠️ 实战：如何备份源码到私有仓库</h2><h3 id="第一步：创建仓库"><a href="#第一步：创建仓库" class="headerlink" title="第一步：创建仓库"></a>第一步：创建仓库</h3><p>在 GitHub 上新建一个仓库，命名为 <code>my-blog-source</code>，<strong>务必勾选 Private (私有)</strong>，保护隐私。</p>
+<h3 id="第二步：建立连接（仅需一次）"><a href="#第二步：建立连接（仅需一次）" class="headerlink" title="第二步：建立连接（仅需一次）"></a>第二步：建立连接（仅需一次）</h3><p>在博客根目录 (<code>E:\MyBlog</code>) 打开终端：</p>
+<pre><code class="language-bash"># 1. 初始化本地仓库
+git init
+
+# 2. 关联远程私有库 (注意换成你的 SSH 地址)
+git remote add origin-source git@github.com:CZH17-gif/my-blog-source.git
+
+# 3. 统一分支名为 main
+git branch -M main
+</code></pre>
+]]></content>
+      <categories>
+        <category>个人博客搭建系列</category>
+      </categories>
+      <tags>
+        <tag>Git</tag>
+        <tag>自动化</tag>
+        <tag>备份</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>拒绝学了就忘：小白从零搭建个性化全栈博客</title>
     <url>/2022/01/08/why-i-build-blog/</url>
     <content><![CDATA[<h2 id="一、原因"><a href="#一、原因" class="headerlink" title="一、原因"></a>一、原因</h2><p>曾经有一段时间，<strong>“学了忘，忘了学，再学再忘”</strong>，这种怪循环让我觉得自己的学习效率底下<br>因此我觉得，<strong>记录，交流，总结对于学习非常重要，也希望与大家进行交流和讨论。</strong></p>
@@ -119,6 +155,139 @@
         <tag>建站</tag>
         <tag>方案选择</tag>
         <tag>个人成长</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【Python进阶】如何运行别人的代码</title>
+    <url>/2026/01/11/%E6%8B%BF%E5%88%B0%E5%88%AB%E4%BA%BA%E7%9A%84%E4%BB%A3%E7%A0%81%E6%80%8E%E4%B9%88%E8%B7%91%EF%BC%9F/</url>
+    <content><![CDATA[<h1 id="🏃‍♂️-【Python实战】第四篇：拿到别人的代码怎么跑？终极运行指南（含逆向推导神器）"><a href="#🏃‍♂️-【Python实战】第四篇：拿到别人的代码怎么跑？终极运行指南（含逆向推导神器）" class="headerlink" title="🏃‍♂️ 【Python实战】第四篇：拿到别人的代码怎么跑？终极运行指南（含逆向推导神器）"></a>🏃‍♂️ 【Python实战】第四篇：拿到别人的代码怎么跑？终极运行指南（含逆向推导神器）</h1><blockquote>
+<p><strong>前言</strong>：<br>老板、老师或网上大佬丢给你一个压缩包，里面连个说明文件都没有，你该如何优雅地让它在你电脑上跑起来？</p>
+</blockquote>
+<hr>
+<h2 id="🛑-一、-为什么不能直接跑？"><a href="#🛑-一、-为什么不能直接跑？" class="headerlink" title="🛑 一、 为什么不能直接跑？"></a>🛑 一、 为什么不能直接跑？</h2><p>很多新手拿到代码的第一反应是：直接右键 -&gt; <code>Run</code>。<br>结果通常只有一种：<strong>报错</strong>。</p>
+<h3 id="核心原因：环境不对等"><a href="#核心原因：环境不对等" class="headerlink" title="核心原因：环境不对等"></a>核心原因：环境不对等</h3><p>别人的代码是在他的“厨房”里做出来的，他用了特制的调料（比如 <code>pandas 1.5.0</code>, <code>torch 1.12</code>）。</p>
+<ul>
+<li><strong>你的 Base 环境</strong>：可能根本没有这个包。</li>
+<li><strong>你的其他环境</strong>：可能包的版本不对（比如你装了 <code>pandas 2.0</code>，导致旧代码不兼容）。</li>
+</ul>
+<p><strong>✅ 正确做法</strong>：为这份代码，快速搭建一个<strong>专属的临时厨房（虚拟环境）</strong>。</p>
+<hr>
+<h2 id="🛠️-二、-标准化运行四步法"><a href="#🛠️-二、-标准化运行四步法" class="headerlink" title="🛠️ 二、 标准化运行四步法"></a>🛠️ 二、 标准化运行四步法</h2><h3 id="第一步：侦察“配方表”-检查依赖文件"><a href="#第一步：侦察“配方表”-检查依赖文件" class="headerlink" title="第一步：侦察“配方表” (检查依赖文件)"></a>第一步：侦察“配方表” (检查依赖文件)</h3><p>解压代码包，打开文件夹，先不要急着看 <code>.py</code> 文件，先找有没有以下两个文件之一：</p>
+<ol>
+<li><strong><code>requirements.txt</code></strong> (最常见，Pip 格式)</li>
+<li><strong><code>environment.yml</code></strong> (Conda 专用格式)</li>
+</ol>
+<p>这两个文件就是“配方表”，记录了代码运行所需的所有包和版本。</p>
+<h3 id="第二步：建立新厨房-创建环境"><a href="#第二步：建立新厨房-创建环境" class="headerlink" title="第二步：建立新厨房 (创建环境)"></a>第二步：建立新厨房 (创建环境)</h3><p>打开 Anaconda Prompt (或终端)，根据你的项目类型创建一个新环境。<br><em>(假设这个项目叫 <code>run_project</code>，需要 python 3.9)</em></p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建一个名为 run_project 的新环境，因为我们配置过 .condarc，这个新环境会自动建在 E 盘，完全不用担心 C 盘空间。</span></span><br><span class="line">conda create <span class="literal">-n</span> run_project python=<span class="number">3.9</span></span><br><span class="line"></span><br><span class="line">conda activate run_project</span><br></pre></td></tr></table></figure>
+<h4 id="情况-A：有-requirements-txt-简单模式"><a href="#情况-A：有-requirements-txt-简单模式" class="headerlink" title="情况 A：有 requirements.txt (简单模式)"></a>情况 A：有 requirements.txt (简单模式)</h4><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用 pip 安装（建议加上清华源加速）：</span></span><br><span class="line">pip install <span class="literal">-r</span> requirements.txt <span class="literal">-i</span> [<span class="type">https</span>://<span class="type">pypi.tuna.tsinghua.edu.cn</span>/<span class="type">simple</span>](https://pypi.tuna.tsinghua.edu.cn/simple)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="情况-B：有-environment-yml-简单模式"><a href="#情况-B：有-environment-yml-简单模式" class="headerlink" title="情况 B：有 environment.yml (简单模式)"></a>情况 B：有 environment.yml (简单模式)</h4><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 直接让 Conda 根据文件自动配置：</span></span><br><span class="line">conda env create <span class="operator">-f</span> environment.yml</span><br></pre></td></tr></table></figure>
+
+<h4 id="情况-C：什么文件都没有-地狱模式-自动扫描模式"><a href="#情况-C：什么文件都没有-地狱模式-自动扫描模式" class="headerlink" title="情况 C：什么文件都没有 (地狱模式 -&gt; 自动扫描模式)"></a>情况 C：什么文件都没有 (地狱模式 -&gt; 自动扫描模式)</h4><p>如果对方是个“不讲武德”的人，没给你留任何说明文件，千万别手动一个个去试！ 我们有两个神器：</p>
+<p>方案 1：使用 pipreqs 生成配方（推荐） 这是一个专门的第三方工具，它能扫描整个文件夹里的 .py 文件，自动分析出用了哪些包，并帮你生成 requirements.txt。</p>
+<p>1.安装工具 (只需装一次)：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">pip install pipreqs</span><br></pre></td></tr></table></figure>
+<p>2.一键扫描： 在终端里，进入代码所在的文件夹，然后运行：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># --encoding=utf8 是为了防止Windows下编码报错</span></span><br><span class="line">pipreqs ./ <span class="literal">--encoding</span>=utf8</span><br></pre></td></tr></table></figure>
+<p>3.安装： 这时候你会发现文件夹里多了一个 requirements.txt！然后回到“情况 A”执行安装命令即可。</p>
+<p>方案 2:利用 PyCharm 的“红色灯泡” (Lazy 模式) 如果你懒得用命令行，PyCharm 也有内置神技：</p>
+<p>用 PyCharm 打开代码，配置好解释器。</p>
+<p>打开主代码文件，你会看到缺少的包下面有红色波浪线。</p>
+<p>把鼠标放上去，或者按 Alt + Enter。</p>
+<p>选择 “Install package xxx”。PyCharm 会自动在后台帮你装好。</p>
+]]></content>
+      <categories>
+        <category>Python系列</category>
+      </categories>
+      <tags>
+        <tag>Anaconda</tag>
+        <tag>虚拟环境</tag>
+        <tag>硬链接</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>个人博客搭建(1)：核心思路</title>
+    <url>/2026/01/08/blog-architecture-and-logic(1)/</url>
+    <content><![CDATA[<h2 id="🗺️-核心思路"><a href="#🗺️-核心思路" class="headerlink" title="🗺️ 核心思路"></a>🗺️ 核心思路</h2><p>这是创建个人专属博客的 <strong>5 个步骤</strong></p>
+<h3 id="1-安装Node-js与git"><a href="#1-安装Node-js与git" class="headerlink" title="1. 安装Node.js与git"></a>1. 安装Node.js与git</h3><ul>
+<li><strong>Node.js (LTS版本)</strong>：博客的“发动机”，负责把 Markdown 生成网页。</li>
+<li><strong>Git</strong>：博客的“运输车”，负责把代码传到 GitHub。</li>
+</ul>
+<h3 id="2-使用免费的GitHub-作为托管平台"><a href="#2-使用免费的GitHub-作为托管平台" class="headerlink" title="2. 使用免费的GitHub 作为托管平台"></a>2. 使用免费的GitHub 作为托管平台</h3><p>注册一个 GitHub 账号，然后创建 <strong>两个</strong> 仓库（Repository）：</p>
+<ul>
+<li><strong>公开仓库 (Public)</strong>：<ul>
+<li>名称格式必须为：<code>github用户名.github.io</code> (例如 <code>我的github用户名是CZH17-gif，仓库名称为CZH17-gif.github.io</code>)</li>
+<li><strong>作用</strong>：存放生成的 HTML 网页，<strong>给全世界看</strong>。</li>
+</ul>
+</li>
+<li><strong>私有仓库 (Private)</strong>：<ul>
+<li>名称随意 (例如 <code>my-blog-source</code>)</li>
+<li><strong>作用</strong>：存放 Markdown 原稿和配置文件，<strong>只给自己看</strong> (防止源码丢失)。</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-本地建站-Hexo-初始化"><a href="#3-本地建站-Hexo-初始化" class="headerlink" title="3. 本地建站 (Hexo 初始化)"></a>3. 本地建站 (Hexo 初始化)</h3><p>在电脑非系统盘（如 E 盘）新建文件夹，右键打开终端：</p>
+<ul>
+<li>安装框架：<code>npm install -g hexo-cli</code></li>
+<li>初始化：<code>hexo init MyBlog</code></li>
+<li>安装依赖：<code>npm install</code></li>
+</ul>
+<h3 id="4-打通“隧道”-SSH-密钥配置"><a href="#4-打通“隧道”-SSH-密钥配置" class="headerlink" title="4. 打通“隧道” (SSH 密钥配置)"></a>4. 打通“隧道” (SSH 密钥配置)</h3><p>为了实现自动化部署，不需要每次输密码：</p>
+<ul>
+<li>本地生成密钥：<code>ssh-keygen -t ed25519 -C &quot;你的邮箱&quot;</code></li>
+<li>上传公钥：把生成的 <code>id_ed25519.pub</code> 内容复制到 GitHub 的 Settings -&gt; SSH keys 中。</li>
+<li><strong>目的</strong>：让你的电脑拥有直接操作 GitHub 仓库的最高权限。</li>
+</ul>
+<h3 id="5-装修与个性化-Fluid-主题配置"><a href="#5-装修与个性化-Fluid-主题配置" class="headerlink" title="5. 装修与个性化 (Fluid 主题配置)"></a>5. 装修与个性化 (Fluid 主题配置)</h3><ul>
+<li>安装 Fluid 主题。</li>
+<li><strong>关键操作</strong>：创建 <code>_config.fluid.yml</code> 文件。</li>
+<li><strong>作用</strong>：专门用来修改音乐、看板娘、壁纸等设置，覆盖默认配置，保证逻辑清晰。</li>
+</ul>
+<h2 id="🏗️-核心架构与环境准备"><a href="#🏗️-核心架构与环境准备" class="headerlink" title="🏗️ 核心架构与环境准备"></a>🏗️ 核心架构与环境准备</h2><p>这个博客并不是凭空产生的，它依赖两个核心工具：</p>
+<ol>
+<li><strong>Node.js</strong>：博客的“发动机”。Hexo 是基于 Node.js 运行的，它负责把你的 Markdown 文章“编译”成漂亮的 HTML 网页。</li>
+<li><strong>Git</strong>：博客的“运输车”。它负责把生成的网页推送到 GitHub (公网)，同时把源码备份到 私有仓库。</li>
+</ol>
+<h3 id="关键配置逻辑：SSH-密钥"><a href="#关键配置逻辑：SSH-密钥" class="headerlink" title="关键配置逻辑：SSH 密钥"></a>关键配置逻辑：SSH 密钥</h3><p>在连接 GitHub 时，有两种方式：HTTPS 和 SSH。</p>
+<ul>
+<li><strong>HTTPS</strong>：每次提交都要输账号密码（或 Token），非常繁琐。</li>
+<li><strong>SSH</strong>：配置一次“公钥私钥”，以后自动验证，安全且无感。</li>
+</ul>
+<p><strong>为什么必须配 SSH？</strong><br>因为我们要实现“一键自动化部署”。如果脚本跑到一半弹出来让你输密码，自动化就毫无意义了。</p>
+<p><strong>配置思路：</strong></p>
+<ol>
+<li>本地生成钥匙对：<code>ssh-keygen -t ed25519 -C &quot;邮箱&quot;</code></li>
+<li>把“公钥”交给 GitHub 后台。</li>
+<li>本地测试连通性：<code>ssh -T git@github.com</code></li>
+</ol>
+<h2 id="⚙️-配置文件逻辑：Fluid-主题的覆盖机制"><a href="#⚙️-配置文件逻辑：Fluid-主题的覆盖机制" class="headerlink" title="⚙️ 配置文件逻辑：Fluid 主题的覆盖机制"></a>⚙️ 配置文件逻辑：Fluid 主题的覆盖机制</h2><p>Hexo 的配置逻辑非常巧妙，分为两层：</p>
+<ol>
+<li><p><strong>站点配置 (<code>_config.yml</code>)</strong>：</p>
+<ul>
+<li>位于根目录。</li>
+<li>控制全局：网站标题、作者、URL、部署地址 (Deploy)、使用的框架等。</li>
+</ul>
+</li>
+<li><p><strong>主题配置 (<code>_config.fluid.yml</code>)</strong>：</p>
+<ul>
+<li><strong>重点</strong>：我使用的是 Fluid 主题。为了不修改主题原生文件（方便以后升级），我在根目录新建了这个文件。</li>
+<li><strong>覆盖逻辑</strong>：这里面的设置（如音乐播放器、封面图、看板娘）会<strong>覆盖</strong>主题默认的设置。</li>
+<li><strong>优势</strong>：以后不管怎么魔改，只需要动这一个文件，逻辑清晰，不乱改源码。</li>
+</ul>
+</li>
+</ol>
+<h2 id="🎯-总结"><a href="#🎯-总结" class="headerlink" title="🎯 总结"></a>🎯 总结</h2><p>搭建博客不仅仅是敲代码，更是理清思路的过程。<br>搞懂了 Node.js 负责生成，Git 负责传输，SSH 负责鉴权，配置负责个性化，接下来的实操就是水到渠成的事了。</p>
+<p>下一篇，我将详细讲解<strong>Git 的核心原理</strong>以及如何实现<strong>源码的自动化备份</strong>。</p>
+]]></content>
+      <categories>
+        <category>个人博客搭建系列</category>
+      </categories>
+      <tags>
+        <tag>核心思路</tag>
+        <tag>Hexo</tag>
+        <tag>SSH</tag>
+        <tag>架构</tag>
       </tags>
   </entry>
   <entry>
@@ -217,241 +386,6 @@ xinference-local --host 127.0.0.1 --port 9997
       </tags>
   </entry>
   <entry>
-    <title>个人博客搭建(1)：核心思路</title>
-    <url>/2026/01/08/blog-architecture-and-logic(1)/</url>
-    <content><![CDATA[<h2 id="🗺️-核心思路"><a href="#🗺️-核心思路" class="headerlink" title="🗺️ 核心思路"></a>🗺️ 核心思路</h2><p>这是创建个人专属博客的 <strong>5 个步骤</strong></p>
-<h3 id="1-安装Node-js与git"><a href="#1-安装Node-js与git" class="headerlink" title="1. 安装Node.js与git"></a>1. 安装Node.js与git</h3><ul>
-<li><strong>Node.js (LTS版本)</strong>：博客的“发动机”，负责把 Markdown 生成网页。</li>
-<li><strong>Git</strong>：博客的“运输车”，负责把代码传到 GitHub。</li>
-</ul>
-<h3 id="2-使用免费的GitHub-作为托管平台"><a href="#2-使用免费的GitHub-作为托管平台" class="headerlink" title="2. 使用免费的GitHub 作为托管平台"></a>2. 使用免费的GitHub 作为托管平台</h3><p>注册一个 GitHub 账号，然后创建 <strong>两个</strong> 仓库（Repository）：</p>
-<ul>
-<li><strong>公开仓库 (Public)</strong>：<ul>
-<li>名称格式必须为：<code>github用户名.github.io</code> (例如 <code>我的github用户名是CZH17-gif，仓库名称为CZH17-gif.github.io</code>)</li>
-<li><strong>作用</strong>：存放生成的 HTML 网页，<strong>给全世界看</strong>。</li>
-</ul>
-</li>
-<li><strong>私有仓库 (Private)</strong>：<ul>
-<li>名称随意 (例如 <code>my-blog-source</code>)</li>
-<li><strong>作用</strong>：存放 Markdown 原稿和配置文件，<strong>只给自己看</strong> (防止源码丢失)。</li>
-</ul>
-</li>
-</ul>
-<h3 id="3-本地建站-Hexo-初始化"><a href="#3-本地建站-Hexo-初始化" class="headerlink" title="3. 本地建站 (Hexo 初始化)"></a>3. 本地建站 (Hexo 初始化)</h3><p>在电脑非系统盘（如 E 盘）新建文件夹，右键打开终端：</p>
-<ul>
-<li>安装框架：<code>npm install -g hexo-cli</code></li>
-<li>初始化：<code>hexo init MyBlog</code></li>
-<li>安装依赖：<code>npm install</code></li>
-</ul>
-<h3 id="4-打通“隧道”-SSH-密钥配置"><a href="#4-打通“隧道”-SSH-密钥配置" class="headerlink" title="4. 打通“隧道” (SSH 密钥配置)"></a>4. 打通“隧道” (SSH 密钥配置)</h3><p>为了实现自动化部署，不需要每次输密码：</p>
-<ul>
-<li>本地生成密钥：<code>ssh-keygen -t ed25519 -C &quot;你的邮箱&quot;</code></li>
-<li>上传公钥：把生成的 <code>id_ed25519.pub</code> 内容复制到 GitHub 的 Settings -&gt; SSH keys 中。</li>
-<li><strong>目的</strong>：让你的电脑拥有直接操作 GitHub 仓库的最高权限。</li>
-</ul>
-<h3 id="5-装修与个性化-Fluid-主题配置"><a href="#5-装修与个性化-Fluid-主题配置" class="headerlink" title="5. 装修与个性化 (Fluid 主题配置)"></a>5. 装修与个性化 (Fluid 主题配置)</h3><ul>
-<li>安装 Fluid 主题。</li>
-<li><strong>关键操作</strong>：创建 <code>_config.fluid.yml</code> 文件。</li>
-<li><strong>作用</strong>：专门用来修改音乐、看板娘、壁纸等设置，覆盖默认配置，保证逻辑清晰。</li>
-</ul>
-<h2 id="🏗️-核心架构与环境准备"><a href="#🏗️-核心架构与环境准备" class="headerlink" title="🏗️ 核心架构与环境准备"></a>🏗️ 核心架构与环境准备</h2><p>这个博客并不是凭空产生的，它依赖两个核心工具：</p>
-<ol>
-<li><strong>Node.js</strong>：博客的“发动机”。Hexo 是基于 Node.js 运行的，它负责把你的 Markdown 文章“编译”成漂亮的 HTML 网页。</li>
-<li><strong>Git</strong>：博客的“运输车”。它负责把生成的网页推送到 GitHub (公网)，同时把源码备份到 私有仓库。</li>
-</ol>
-<h3 id="关键配置逻辑：SSH-密钥"><a href="#关键配置逻辑：SSH-密钥" class="headerlink" title="关键配置逻辑：SSH 密钥"></a>关键配置逻辑：SSH 密钥</h3><p>在连接 GitHub 时，有两种方式：HTTPS 和 SSH。</p>
-<ul>
-<li><strong>HTTPS</strong>：每次提交都要输账号密码（或 Token），非常繁琐。</li>
-<li><strong>SSH</strong>：配置一次“公钥私钥”，以后自动验证，安全且无感。</li>
-</ul>
-<p><strong>为什么必须配 SSH？</strong><br>因为我们要实现“一键自动化部署”。如果脚本跑到一半弹出来让你输密码，自动化就毫无意义了。</p>
-<p><strong>配置思路：</strong></p>
-<ol>
-<li>本地生成钥匙对：<code>ssh-keygen -t ed25519 -C &quot;邮箱&quot;</code></li>
-<li>把“公钥”交给 GitHub 后台。</li>
-<li>本地测试连通性：<code>ssh -T git@github.com</code></li>
-</ol>
-<h2 id="⚙️-配置文件逻辑：Fluid-主题的覆盖机制"><a href="#⚙️-配置文件逻辑：Fluid-主题的覆盖机制" class="headerlink" title="⚙️ 配置文件逻辑：Fluid 主题的覆盖机制"></a>⚙️ 配置文件逻辑：Fluid 主题的覆盖机制</h2><p>Hexo 的配置逻辑非常巧妙，分为两层：</p>
-<ol>
-<li><p><strong>站点配置 (<code>_config.yml</code>)</strong>：</p>
-<ul>
-<li>位于根目录。</li>
-<li>控制全局：网站标题、作者、URL、部署地址 (Deploy)、使用的框架等。</li>
-</ul>
-</li>
-<li><p><strong>主题配置 (<code>_config.fluid.yml</code>)</strong>：</p>
-<ul>
-<li><strong>重点</strong>：我使用的是 Fluid 主题。为了不修改主题原生文件（方便以后升级），我在根目录新建了这个文件。</li>
-<li><strong>覆盖逻辑</strong>：这里面的设置（如音乐播放器、封面图、看板娘）会<strong>覆盖</strong>主题默认的设置。</li>
-<li><strong>优势</strong>：以后不管怎么魔改，只需要动这一个文件，逻辑清晰，不乱改源码。</li>
-</ul>
-</li>
-</ol>
-<h2 id="🎯-总结"><a href="#🎯-总结" class="headerlink" title="🎯 总结"></a>🎯 总结</h2><p>搭建博客不仅仅是敲代码，更是理清思路的过程。<br>搞懂了 Node.js 负责生成，Git 负责传输，SSH 负责鉴权，配置负责个性化，接下来的实操就是水到渠成的事了。</p>
-<p>下一篇，我将详细讲解<strong>Git 的核心原理</strong>以及如何实现<strong>源码的自动化备份</strong>。</p>
-]]></content>
-      <categories>
-        <category>个人博客搭建系列</category>
-      </categories>
-      <tags>
-        <tag>核心思路</tag>
-        <tag>Hexo</tag>
-        <tag>SSH</tag>
-        <tag>架构</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>个人博客搭建(2)：Git 原理与具体操作</title>
-    <url>/2026/01/08/git-workflow-and-backup(2)/</url>
-    <content><![CDATA[<h2 id="🚨-为什么必须备份源码？"><a href="#🚨-为什么必须备份源码？" class="headerlink" title="🚨 为什么必须备份源码？"></a>🚨 为什么必须备份源码？</h2><p>很多博主只做了 <code>hexo d</code>，这只是把生成的<strong>网页结果</strong>传到了网上。<br>真正的<strong>核心资产</strong>——你的 Markdown 原稿、精心调教的 <code>_config.yml</code> 配置、主题魔改代码——依然只存在于你本地的电脑里。</p>
-<p>一旦电脑损坏或重装系统，你将失去一切。因此，<strong>构建私有源码仓库</strong>是必选项。</p>
-<h2 id="🧠-Git-的核心原理（避坑指南）"><a href="#🧠-Git-的核心原理（避坑指南）" class="headerlink" title="🧠 Git 的核心原理（避坑指南）"></a>🧠 Git 的核心原理（避坑指南）</h2><p>在执行 Git 指令前，必须理解它的工作机制，否则容易弄乱电脑文件。</p>
-<h3 id="1-git-文件夹：时光机盒子"><a href="#1-git-文件夹：时光机盒子" class="headerlink" title="1. .git 文件夹：时光机盒子"></a>1. <code>.git</code> 文件夹：时光机盒子</h3><p>当你执行 <code>git init</code> 时，Git 会在<strong>当前文件夹</strong>下创建一个隐藏的 <code>.git</code> 文件夹。</p>
-<ul>
-<li>它存储了该文件夹下所有文件的<strong>快照</strong>和<strong>历史变更记录</strong>。</li>
-<li><strong>重要原则</strong>：Git 是“在这个文件夹里建仓库”，它不会占用其他盘的空间。</li>
-</ul>
-<h3 id="2-这里的坑：不要在-C-盘或桌面操作！"><a href="#2-这里的坑：不要在-C-盘或桌面操作！" class="headerlink" title="2. 这里的坑：不要在 C 盘或桌面操作！"></a>2. 这里的坑：不要在 C 盘或桌面操作！</h3><ul>
-<li><strong>错误示范</strong>：打开 Git Bash 直接 <code>git init</code>。这会在 <code>C:\Users\用户名</code> 下建仓库，导致你的桌面、文档所有文件都被吸入 Git，占用大量 C 盘空间。</li>
-<li><strong>正确做法</strong>：必须先 <code>cd /e/MyBlog</code> 进入你的博客目录。建议将项目放在 <strong>D盘</strong> 或 <strong>E盘</strong>，数据更安全，且不占系统盘空间。</li>
-</ul>
-<h2 id="🛠️-实战：如何备份源码到私有仓库"><a href="#🛠️-实战：如何备份源码到私有仓库" class="headerlink" title="🛠️ 实战：如何备份源码到私有仓库"></a>🛠️ 实战：如何备份源码到私有仓库</h2><h3 id="第一步：创建仓库"><a href="#第一步：创建仓库" class="headerlink" title="第一步：创建仓库"></a>第一步：创建仓库</h3><p>在 GitHub 上新建一个仓库，命名为 <code>my-blog-source</code>，<strong>务必勾选 Private (私有)</strong>，保护隐私。</p>
-<h3 id="第二步：建立连接（仅需一次）"><a href="#第二步：建立连接（仅需一次）" class="headerlink" title="第二步：建立连接（仅需一次）"></a>第二步：建立连接（仅需一次）</h3><p>在博客根目录 (<code>E:\MyBlog</code>) 打开终端：</p>
-<pre><code class="language-bash"># 1. 初始化本地仓库
-git init
-
-# 2. 关联远程私有库 (注意换成你的 SSH 地址)
-git remote add origin-source git@github.com:CZH17-gif/my-blog-source.git
-
-# 3. 统一分支名为 main
-git branch -M main
-</code></pre>
-]]></content>
-      <categories>
-        <category>个人博客搭建系列</category>
-      </categories>
-      <tags>
-        <tag>Git</tag>
-        <tag>自动化</tag>
-        <tag>备份</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【Python进阶】如何运行别人的代码</title>
-    <url>/2026/01/11/%E6%8B%BF%E5%88%B0%E5%88%AB%E4%BA%BA%E7%9A%84%E4%BB%A3%E7%A0%81%E6%80%8E%E4%B9%88%E8%B7%91%EF%BC%9F/</url>
-    <content><![CDATA[<h1 id="🏃‍♂️-【Python实战】第四篇：拿到别人的代码怎么跑？终极运行指南（含逆向推导神器）"><a href="#🏃‍♂️-【Python实战】第四篇：拿到别人的代码怎么跑？终极运行指南（含逆向推导神器）" class="headerlink" title="🏃‍♂️ 【Python实战】第四篇：拿到别人的代码怎么跑？终极运行指南（含逆向推导神器）"></a>🏃‍♂️ 【Python实战】第四篇：拿到别人的代码怎么跑？终极运行指南（含逆向推导神器）</h1><blockquote>
-<p><strong>前言</strong>：<br>老板、老师或网上大佬丢给你一个压缩包，里面连个说明文件都没有，你该如何优雅地让它在你电脑上跑起来？</p>
-</blockquote>
-<hr>
-<h2 id="🛑-一、-为什么不能直接跑？"><a href="#🛑-一、-为什么不能直接跑？" class="headerlink" title="🛑 一、 为什么不能直接跑？"></a>🛑 一、 为什么不能直接跑？</h2><p>很多新手拿到代码的第一反应是：直接右键 -&gt; <code>Run</code>。<br>结果通常只有一种：<strong>报错</strong>。</p>
-<h3 id="核心原因：环境不对等"><a href="#核心原因：环境不对等" class="headerlink" title="核心原因：环境不对等"></a>核心原因：环境不对等</h3><p>别人的代码是在他的“厨房”里做出来的，他用了特制的调料（比如 <code>pandas 1.5.0</code>, <code>torch 1.12</code>）。</p>
-<ul>
-<li><strong>你的 Base 环境</strong>：可能根本没有这个包。</li>
-<li><strong>你的其他环境</strong>：可能包的版本不对（比如你装了 <code>pandas 2.0</code>，导致旧代码不兼容）。</li>
-</ul>
-<p><strong>✅ 正确做法</strong>：为这份代码，快速搭建一个<strong>专属的临时厨房（虚拟环境）</strong>。</p>
-<hr>
-<h2 id="🛠️-二、-标准化运行四步法"><a href="#🛠️-二、-标准化运行四步法" class="headerlink" title="🛠️ 二、 标准化运行四步法"></a>🛠️ 二、 标准化运行四步法</h2><h3 id="第一步：侦察“配方表”-检查依赖文件"><a href="#第一步：侦察“配方表”-检查依赖文件" class="headerlink" title="第一步：侦察“配方表” (检查依赖文件)"></a>第一步：侦察“配方表” (检查依赖文件)</h3><p>解压代码包，打开文件夹，先不要急着看 <code>.py</code> 文件，先找有没有以下两个文件之一：</p>
-<ol>
-<li><strong><code>requirements.txt</code></strong> (最常见，Pip 格式)</li>
-<li><strong><code>environment.yml</code></strong> (Conda 专用格式)</li>
-</ol>
-<p>这两个文件就是“配方表”，记录了代码运行所需的所有包和版本。</p>
-<h3 id="第二步：建立新厨房-创建环境"><a href="#第二步：建立新厨房-创建环境" class="headerlink" title="第二步：建立新厨房 (创建环境)"></a>第二步：建立新厨房 (创建环境)</h3><p>打开 Anaconda Prompt (或终端)，根据你的项目类型创建一个新环境。<br><em>(假设这个项目叫 <code>run_project</code>，需要 python 3.9)</em></p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建一个名为 run_project 的新环境，因为我们配置过 .condarc，这个新环境会自动建在 E 盘，完全不用担心 C 盘空间。</span></span><br><span class="line">conda create <span class="literal">-n</span> run_project python=<span class="number">3.9</span></span><br><span class="line"></span><br><span class="line">conda activate run_project</span><br></pre></td></tr></table></figure>
-<h4 id="情况-A：有-requirements-txt-简单模式"><a href="#情况-A：有-requirements-txt-简单模式" class="headerlink" title="情况 A：有 requirements.txt (简单模式)"></a>情况 A：有 requirements.txt (简单模式)</h4><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用 pip 安装（建议加上清华源加速）：</span></span><br><span class="line">pip install <span class="literal">-r</span> requirements.txt <span class="literal">-i</span> [<span class="type">https</span>://<span class="type">pypi.tuna.tsinghua.edu.cn</span>/<span class="type">simple</span>](https://pypi.tuna.tsinghua.edu.cn/simple)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h4 id="情况-B：有-environment-yml-简单模式"><a href="#情况-B：有-environment-yml-简单模式" class="headerlink" title="情况 B：有 environment.yml (简单模式)"></a>情况 B：有 environment.yml (简单模式)</h4><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 直接让 Conda 根据文件自动配置：</span></span><br><span class="line">conda env create <span class="operator">-f</span> environment.yml</span><br></pre></td></tr></table></figure>
-
-<h4 id="情况-C：什么文件都没有-地狱模式-自动扫描模式"><a href="#情况-C：什么文件都没有-地狱模式-自动扫描模式" class="headerlink" title="情况 C：什么文件都没有 (地狱模式 -&gt; 自动扫描模式)"></a>情况 C：什么文件都没有 (地狱模式 -&gt; 自动扫描模式)</h4><p>如果对方是个“不讲武德”的人，没给你留任何说明文件，千万别手动一个个去试！ 我们有两个神器：</p>
-<p>方案 1：使用 pipreqs 生成配方（推荐） 这是一个专门的第三方工具，它能扫描整个文件夹里的 .py 文件，自动分析出用了哪些包，并帮你生成 requirements.txt。</p>
-<p>1.安装工具 (只需装一次)：</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">pip install pipreqs</span><br></pre></td></tr></table></figure>
-<p>2.一键扫描： 在终端里，进入代码所在的文件夹，然后运行：</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># --encoding=utf8 是为了防止Windows下编码报错</span></span><br><span class="line">pipreqs ./ <span class="literal">--encoding</span>=utf8</span><br></pre></td></tr></table></figure>
-<p>3.安装： 这时候你会发现文件夹里多了一个 requirements.txt！然后回到“情况 A”执行安装命令即可。</p>
-<p>方案 2:利用 PyCharm 的“红色灯泡” (Lazy 模式) 如果你懒得用命令行，PyCharm 也有内置神技：</p>
-<p>用 PyCharm 打开代码，配置好解释器。</p>
-<p>打开主代码文件，你会看到缺少的包下面有红色波浪线。</p>
-<p>把鼠标放上去，或者按 Alt + Enter。</p>
-<p>选择 “Install package xxx”。PyCharm 会自动在后台帮你装好。</p>
-]]></content>
-      <categories>
-        <category>Python系列</category>
-      </categories>
-      <tags>
-        <tag>Anaconda</tag>
-        <tag>虚拟环境</tag>
-        <tag>硬链接</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>实战记录（2）：Conda 环境隔离实战：本地部署 Xinference + LangChain-Chatchat</title>
-    <url>/2026/01/28/%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B22/</url>
-    <content><![CDATA[<h2 id="前言：为什么我们需要两个虚拟环境？"><a href="#前言：为什么我们需要两个虚拟环境？" class="headerlink" title="前言：为什么我们需要两个虚拟环境？"></a>前言：为什么我们需要两个虚拟环境？</h2><p>在本地搭建私有化 RAG（检索增强生成）知识库时，很多开发者会遇到一个典型的痛点——<strong>“依赖地狱” (Dependency Hell)</strong>。</p>
-<p>简单来说，就是 <strong>“一山不容二虎”</strong>：</p>
-<ul>
-<li><strong>Xinference (后端推理)</strong> 说：“我需要 <strong>新版本</strong> 的 <code>FastAPI</code> 和 <code>Gradio</code> 才能工作。”</li>
-<li><strong>LangChain-Chatchat (前端应用)</strong> 说：“不行，我只能用 <strong>旧版本</strong> 的 <code>FastAPI</code> 和 <code>Numpy</code> 才能跑。”</li>
-</ul>
-<p>如果你试图把这两个软件装在同一个 Conda 环境（比如 <code>deep_learning</code>）里，pip 在安装时就会“打架”，强制把高版本依赖降级，导致 Xinference 彻底坏掉。</p>
-<p><strong>解决方案：环境隔离（Conda Environment Isolation）</strong></p>
-<p>我们需要建立两个独立的“平行宇宙”：</p>
-<ol>
-<li><strong><code>xinference_env</code></strong>：只跑后端模型，锁定 <code>numpy&lt;2.0</code>，适配新版组件。</li>
-<li><strong><code>chatchat_env</code></strong>：只跑前端 UI，适配旧版组件。</li>
-</ol>
-<p>运行的时候，我们需要同时打开<strong>两个 Shell 窗口</strong>，左边跑后端，右边跑前端。</p>
-<hr>
-<h2 id="第一部分：构建后端环境-xinference-env"><a href="#第一部分：构建后端环境-xinference-env" class="headerlink" title="第一部分：构建后端环境 (xinference_env)"></a>第一部分：构建后端环境 (xinference_env)</h2><p>这是最容易报错的部分。我们需要创建一个干净的环境，并打上特定的“补丁”来防止崩溃。</p>
-<h3 id="1-创建并激活环境"><a href="#1-创建并激活环境" class="headerlink" title="1. 创建并激活环境"></a>1. 创建并激活环境</h3><p>打开 PowerShell，执行以下命令。注意我们将 Python 锁定在 <strong>3.10</strong> 以获得最佳稳定性，并强制安装在 E 盘。</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1. 指定路径创建环境 (防止占用 C 盘)</span></span><br><span class="line">conda create <span class="literal">-p</span> E:\CondaData\envs\xinference_env python=<span class="number">3.10</span> <span class="literal">-y</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 激活新环境</span></span><br><span class="line">conda activate E:\CondaData\envs\xinference_env</span><br></pre></td></tr></table></figure>
-<h3 id="2-安装核心组件-核心避坑点"><a href="#2-安装核心组件-核心避坑点" class="headerlink" title="2. 安装核心组件 (核心避坑点)"></a>2. 安装核心组件 (核心避坑点)</h3><p>这里有三个关键动作：</p>
-<ul>
-<li><strong>锁死 Numpy：</strong> 防止安装 Numpy 2.0 导致底层二进制冲突。</li>
-<li><strong>安装显卡监控：</strong> 防止报黄色警告。</li>
-<li><strong>Gradio 降级修复：</strong> Xinference 目前对 Gradio 5.x 兼容性不佳，需降级到 4.44.1。</li>
-</ul>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 3. 安装 xinference 全家桶（同时锁死 numpy 版本防止崩溃）</span></span><br><span class="line">pip install <span class="string">&quot;xinference[all]&quot;</span> <span class="string">&quot;numpy&lt;2.0&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. 补充显卡监控库</span></span><br><span class="line">pip install nvidia<span class="literal">-ml-py</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 5. 【重要修复】降级关键包，解决启动卡死/版本冲突问题</span></span><br><span class="line"><span class="comment"># 忽略执行过程中的红字依赖报错，只要最后显示 Successfully installed 即可</span></span><br><span class="line">pip install <span class="string">&quot;gradio==4.44.1&quot;</span> <span class="string">&quot;fastapi==0.111.0&quot;</span> <span class="string">&quot;uvicorn==0.29.0&quot;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="第二部分：构建前端环境-chatchat-env"><a href="#第二部分：构建前端环境-chatchat-env" class="headerlink" title="第二部分：构建前端环境 (chatchat_env)"></a>第二部分：构建前端环境 (chatchat_env)</h2><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1. 创建前端专用环境</span></span><br><span class="line">conda create <span class="literal">-p</span> E:\CondaData\envs\chatchat_env python=<span class="number">3.10</span> <span class="literal">-y</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 激活环境</span></span><br><span class="line">conda activate E:\CondaData\envs\chatchat_env</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 安装 Chatchat 依赖 (根据你的具体项目 requirement.txt 安装)</span></span><br><span class="line"><span class="comment"># pip install -r requirements.txt</span></span><br></pre></td></tr></table></figure>
-<h2 id="第三部分：如何运行？-手动打开两个-Shell"><a href="#第三部分：如何运行？-手动打开两个-Shell" class="headerlink" title="第三部分：如何运行？(手动打开两个 Shell )"></a>第三部分：如何运行？(手动打开两个 Shell )</h2><p>左边窗口：PowerShell 1 (后端)<br>负责提供算力支持，你会看到大量的日志在跳动（模型加载、API 请求）。</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1. 清理端口 (防止之前的进程卡死)：</span></span><br><span class="line">taskkill /F /IM python.exe</span><br><span class="line">taskkill /F /IM xinference<span class="literal">-local</span>.exe</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 启动服务</span></span><br><span class="line">conda activate E:\CondaData\envs\xinference_env</span><br><span class="line"><span class="comment"># 启动命令 (Host 改为 127.0.0.1 避开防火墙干扰)</span></span><br><span class="line">xinference<span class="literal">-local</span> <span class="literal">--host</span> <span class="number">127.0</span>.<span class="number">0.1</span> <span class="literal">--port</span> <span class="number">9997</span></span><br></pre></td></tr></table></figure>
-<p>右边窗口：PowerShell 2 (前端)<br>负责显示 UI 界面，连接后端的 9997 端口。</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 步骤 1：激活前端环境</span></span><br><span class="line">conda activate E:\CondaData\envs\chatchat_env</span><br><span class="line"></span><br><span class="line"><span class="comment"># 步骤 2：切换到项目目录必须进入 libs 下的 server 目录，这是新版 Chatchat 的核心位置。</span></span><br><span class="line"><span class="built_in">cd</span> /d E:\AI_Projects\Langchain<span class="literal">-Chatchat-master</span></span><br><span class="line"><span class="comment"># 步骤 3：设置环境变量 (关键！) 告诉系统项目的根目录在哪里，防止读取配置失败。</span></span><br><span class="line"><span class="variable">$env:CHATCHAT_ROOT</span> = <span class="string">&quot;E:\AI_Projects\Langchain-Chatchat-master&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 步骤 4：修复/初始化配置 这一步会重新生成或修复配置，防止路径写错。</span></span><br><span class="line">chatchat init</span><br><span class="line">(注：如果提示 basic_settings.yaml 已存在问是否覆盖，输入 y 并回车。放心，这不会删掉你的知识库数据，只会修复路径配置。)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 步骤 5：加载本地知识库</span></span><br><span class="line">chatchat kb <span class="literal">-r</span>  </span><br><span class="line"></span><br><span class="line"><span class="comment"># 步骤 6：前端启动</span></span><br><span class="line">chatchat <span class="built_in">start</span> <span class="literal">-a</span></span><br></pre></td></tr></table></figure>
-<h2 id="第四部分：一键启动脚本"><a href="#第四部分：一键启动脚本" class="headerlink" title="第四部分：一键启动脚本"></a>第四部分：一键启动脚本</h2><p>每次都要手动开两个窗口、输四行命令太麻烦了？ 我们可以写一个 Windows 批处理脚本 (.bat)，双击一下，自动弹出两个窗口并运行。</p>
-<p>请新建一个文本文档，命名为 start_ai_system.bat (注意后缀是 .bat)，粘贴以下内容：</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">@<span class="built_in">echo</span> off</span><br><span class="line"><span class="built_in">echo</span> =================================================</span><br><span class="line"><span class="built_in">echo</span>       正在启动 AI 私有化部署系统 (双环境版)</span><br><span class="line"><span class="built_in">echo</span> =================================================</span><br><span class="line"></span><br><span class="line">:: <span class="built_in">Set</span> Chatchat Project Path (方便下方调用)</span><br><span class="line"><span class="built_in">set</span> CHATCHAT_PATH=E:\AI_Projects\Langchain<span class="literal">-Chatchat-master</span>\libs\chatchat<span class="literal">-server</span></span><br><span class="line"></span><br><span class="line">:: <span class="literal">---------------------------------------------------</span></span><br><span class="line">:: [<span class="number">1</span>/<span class="number">3</span>] 清理残留进程 (可选)</span><br><span class="line">:: <span class="literal">---------------------------------------------------</span></span><br><span class="line"><span class="built_in">echo</span> [<span class="number">1</span>/<span class="number">3</span>] 清理旧进程...</span><br><span class="line">taskkill /F /IM xinference<span class="literal">-local</span>.exe &gt;nul <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line">:: taskkill /F /IM python.exe &gt;nul <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line"></span><br><span class="line">:: <span class="literal">---------------------------------------------------</span></span><br><span class="line">:: [<span class="number">2</span>/<span class="number">3</span>] 启动后端 Xinference (窗口 A)</span><br><span class="line">:: <span class="literal">---------------------------------------------------</span></span><br><span class="line"><span class="built_in">echo</span> [<span class="number">2</span>/<span class="number">3</span>] 正在启动后端 Xinference (端口 <span class="number">9997</span>)...</span><br><span class="line">:: 使用 call conda activate 激活后端环境</span><br><span class="line"><span class="built_in">start</span> <span class="string">&quot;Backend_Xinference&quot;</span> cmd /k <span class="string">&quot;call conda activate E:\CondaData\envs\xinference_env &amp;&amp; xinference-local --host 127.0.0.1 --port 9997&quot;</span></span><br><span class="line"></span><br><span class="line">:: 等待 <span class="number">8</span> 秒，确保后端完全启动</span><br><span class="line"><span class="built_in">echo</span> 等待后端就绪...</span><br><span class="line">timeout /t <span class="number">8</span> /nobreak &gt;nul</span><br><span class="line"></span><br><span class="line">:: <span class="literal">---------------------------------------------------</span></span><br><span class="line">:: [<span class="number">3</span>/<span class="number">3</span>] 启动前端 Chatchat (窗口 B)</span><br><span class="line">:: <span class="literal">---------------------------------------------------</span></span><br><span class="line"><span class="built_in">echo</span> [<span class="number">3</span>/<span class="number">3</span>] 正在启动前端 Chatchat...</span><br><span class="line">:: 解释：</span><br><span class="line">:: <span class="number">1</span>. /d 指定工作目录</span><br><span class="line">:: <span class="number">2</span>. 激活环境</span><br><span class="line">:: <span class="number">3</span>. <span class="built_in">set</span> CHATCHAT_ROOT 设置环境变量 (Batch语法)</span><br><span class="line">:: <span class="number">4</span>. chatchat <span class="built_in">start</span> <span class="literal">-a</span> 启动</span><br><span class="line"><span class="built_in">start</span> <span class="string">&quot;Frontend_Chatchat&quot;</span> /d <span class="string">&quot;%CHATCHAT_PATH%&quot;</span> cmd /k <span class="string">&quot;call conda activate E:\CondaData\envs\chatchat_env &amp;&amp; set CHATCHAT_ROOT=%CHATCHAT_PATH% &amp;&amp; chatchat start -a&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> =================================================</span><br><span class="line"><span class="built_in">echo</span>           系统启动中，请勿关闭弹出的黑窗口</span><br><span class="line"><span class="built_in">echo</span> =================================================</span><br><span class="line">pause</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>注意：Windows 的命令行（CMD）默认使用 GBK (ANSI) 编码来显示中文，而你现在的 .bat 文件应该是用 UTF-8 格式保存的。</li>
-</ul>
-<p>当 CMD 用 GBK 去读 UTF-8 的汉字时，就会出现乱码。更糟糕的是，乱码会吞掉部分命令字符（比如把 set CH 吞成了乱码，只剩下 ATCHAT_ROOT），导致程序运行报错。</p>
-<ul>
-<li>解决：用“记事本”另存为 ANSI 编码（推荐）不需要改代码，只需要改文件的保存格式。</li>
-</ul>
-<ol>
-<li><p>右键点击你的 start_ai_system.bat 文件，选择 “编辑”（或者用记事本打开）。</p>
-</li>
-<li><p>点击左上角的 “文件” (File) -&gt; “另存为” (Save As)。</p>
-</li>
-<li><p>在弹出的窗口最下方，找到 “编码” (Encoding) 选项。把它从 UTF-8 改为 ANSI。</p>
-</li>
-<li><p>点击 保存 并覆盖原文件。再次双击运行，乱码就会消失，命令也能正常识别了。</p>
-</li>
-</ol>
-]]></content>
-      <categories>
-        <category>AI实战</category>
-      </categories>
-      <tags>
-        <tag>Xinference</tag>
-        <tag>Langchain</tag>
-        <tag>本地部署</tag>
-        <tag>Conda</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>【Python进阶】揭秘 Anaconda：虚拟环境与“硬链接”</title>
     <url>/2026/01/11/%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83%E4%B8%8E%E2%80%9C%E7%A1%AC%E9%93%BE%E6%8E%A5%E2%80%9D/</url>
     <content><![CDATA[<h1 id="🐍-【Python进阶】揭秘-Anaconda：虚拟环境与“硬链接”"><a href="#🐍-【Python进阶】揭秘-Anaconda：虚拟环境与“硬链接”" class="headerlink" title="🐍 【Python进阶】揭秘 Anaconda：虚拟环境与“硬链接”"></a>🐍 【Python进阶】揭秘 Anaconda：虚拟环境与“硬链接”</h1><blockquote>
@@ -535,6 +469,72 @@ git branch -M main
         <tag>Anaconda</tag>
         <tag>虚拟环境</tag>
         <tag>硬链接</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>实战记录（2）：Conda 环境隔离实战：本地部署 Xinference + LangChain-Chatchat</title>
+    <url>/2026/01/28/%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B22/</url>
+    <content><![CDATA[<h2 id="前言：为什么我们需要两个虚拟环境？"><a href="#前言：为什么我们需要两个虚拟环境？" class="headerlink" title="前言：为什么我们需要两个虚拟环境？"></a>前言：为什么我们需要两个虚拟环境？</h2><p>在本地搭建私有化 RAG（检索增强生成）知识库时，很多开发者会遇到一个典型的痛点——<strong>“依赖地狱” (Dependency Hell)</strong>。</p>
+<p>简单来说，就是 <strong>“一山不容二虎”</strong>：</p>
+<ul>
+<li><strong>Xinference (后端推理)</strong> 说：“我需要 <strong>新版本</strong> 的 <code>FastAPI</code> 和 <code>Gradio</code> 才能工作。”</li>
+<li><strong>LangChain-Chatchat (前端应用)</strong> 说：“不行，我只能用 <strong>旧版本</strong> 的 <code>FastAPI</code> 和 <code>Numpy</code> 才能跑。”</li>
+</ul>
+<p>如果你试图把这两个软件装在同一个 Conda 环境（比如 <code>deep_learning</code>）里，pip 在安装时就会“打架”，强制把高版本依赖降级，导致 Xinference 彻底坏掉。</p>
+<p><strong>解决方案：环境隔离（Conda Environment Isolation）</strong></p>
+<p>我们需要建立两个独立的“平行宇宙”：</p>
+<ol>
+<li><strong><code>xinference_env</code></strong>：只跑后端模型，锁定 <code>numpy&lt;2.0</code>，适配新版组件。</li>
+<li><strong><code>chatchat_env</code></strong>：只跑前端 UI，适配旧版组件。</li>
+</ol>
+<p>运行的时候，我们需要同时打开<strong>两个 Shell 窗口</strong>，左边跑后端，右边跑前端。</p>
+<hr>
+<h2 id="第一部分：构建后端环境-xinference-env"><a href="#第一部分：构建后端环境-xinference-env" class="headerlink" title="第一部分：构建后端环境 (xinference_env)"></a>第一部分：构建后端环境 (xinference_env)</h2><p>这是最容易报错的部分。我们需要创建一个干净的环境，并打上特定的“补丁”来防止崩溃。</p>
+<h3 id="1-创建并激活环境"><a href="#1-创建并激活环境" class="headerlink" title="1. 创建并激活环境"></a>1. 创建并激活环境</h3><p>打开 PowerShell，执行以下命令。注意我们将 Python 锁定在 <strong>3.10</strong> 以获得最佳稳定性，并强制安装在 E 盘。</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1. 指定路径创建环境 (防止占用 C 盘)</span></span><br><span class="line">conda create <span class="literal">-p</span> E:\CondaData\envs\xinference_env python=<span class="number">3.10</span> <span class="literal">-y</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 激活新环境</span></span><br><span class="line">conda activate E:\CondaData\envs\xinference_env</span><br></pre></td></tr></table></figure>
+<h3 id="2-安装核心组件-核心避坑点"><a href="#2-安装核心组件-核心避坑点" class="headerlink" title="2. 安装核心组件 (核心避坑点)"></a>2. 安装核心组件 (核心避坑点)</h3><p>这里有三个关键动作：</p>
+<ul>
+<li><strong>锁死 Numpy：</strong> 防止安装 Numpy 2.0 导致底层二进制冲突。</li>
+<li><strong>安装显卡监控：</strong> 防止报黄色警告。</li>
+<li><strong>Gradio 降级修复：</strong> Xinference 目前对 Gradio 5.x 兼容性不佳，需降级到 4.44.1。</li>
+</ul>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 3. 安装 xinference 全家桶（同时锁死 numpy 版本防止崩溃）</span></span><br><span class="line">pip install <span class="string">&quot;xinference[all]&quot;</span> <span class="string">&quot;numpy&lt;2.0&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. 补充显卡监控库</span></span><br><span class="line">pip install nvidia<span class="literal">-ml-py</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 5. 【重要修复】降级关键包，解决启动卡死/版本冲突问题</span></span><br><span class="line"><span class="comment"># 忽略执行过程中的红字依赖报错，只要最后显示 Successfully installed 即可</span></span><br><span class="line">pip install <span class="string">&quot;gradio==4.44.1&quot;</span> <span class="string">&quot;fastapi==0.111.0&quot;</span> <span class="string">&quot;uvicorn==0.29.0&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="第二部分：构建前端环境-chatchat-env"><a href="#第二部分：构建前端环境-chatchat-env" class="headerlink" title="第二部分：构建前端环境 (chatchat_env)"></a>第二部分：构建前端环境 (chatchat_env)</h2><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1. 创建前端专用环境</span></span><br><span class="line">conda create <span class="literal">-p</span> E:\CondaData\envs\chatchat_env python=<span class="number">3.10</span> <span class="literal">-y</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 激活环境</span></span><br><span class="line">conda activate E:\CondaData\envs\chatchat_env</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 安装 Chatchat 依赖 (根据你的具体项目 requirement.txt 安装)</span></span><br><span class="line"><span class="comment"># pip install -r requirements.txt</span></span><br></pre></td></tr></table></figure>
+<h2 id="第三部分：如何运行？-手动打开两个-Shell"><a href="#第三部分：如何运行？-手动打开两个-Shell" class="headerlink" title="第三部分：如何运行？(手动打开两个 Shell )"></a>第三部分：如何运行？(手动打开两个 Shell )</h2><p>左边窗口：PowerShell 1 (后端)<br>负责提供算力支持，你会看到大量的日志在跳动（模型加载、API 请求）。</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 1. 清理端口 (防止之前的进程卡死)：</span></span><br><span class="line">taskkill /F /IM python.exe</span><br><span class="line">taskkill /F /IM xinference<span class="literal">-local</span>.exe</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 启动服务</span></span><br><span class="line">conda activate E:\CondaData\envs\xinference_env</span><br><span class="line"><span class="comment"># 启动命令 (Host 改为 127.0.0.1 避开防火墙干扰)</span></span><br><span class="line">xinference<span class="literal">-local</span> <span class="literal">--host</span> <span class="number">127.0</span>.<span class="number">0.1</span> <span class="literal">--port</span> <span class="number">9997</span></span><br></pre></td></tr></table></figure>
+<p>右边窗口：PowerShell 2 (前端)<br>负责显示 UI 界面，连接后端的 9997 端口。</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 步骤 1：激活前端环境</span></span><br><span class="line">conda activate E:\CondaData\envs\chatchat_env</span><br><span class="line"></span><br><span class="line"><span class="comment"># 步骤 2：切换到项目目录必须进入 libs 下的 server 目录，这是新版 Chatchat 的核心位置。</span></span><br><span class="line"><span class="built_in">cd</span> /d E:\AI_Projects\Langchain<span class="literal">-Chatchat-master</span></span><br><span class="line"><span class="comment"># 步骤 3：设置环境变量 (关键！) 告诉系统项目的根目录在哪里，防止读取配置失败。</span></span><br><span class="line"><span class="variable">$env:CHATCHAT_ROOT</span> = <span class="string">&quot;E:\AI_Projects\Langchain-Chatchat-master&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 步骤 4：修复/初始化配置 这一步会重新生成或修复配置，防止路径写错。</span></span><br><span class="line">chatchat init</span><br><span class="line">(注：如果提示 basic_settings.yaml 已存在问是否覆盖，输入 y 并回车。放心，这不会删掉你的知识库数据，只会修复路径配置。)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 步骤 5：加载本地知识库</span></span><br><span class="line">chatchat kb <span class="literal">-r</span>  </span><br><span class="line"></span><br><span class="line"><span class="comment"># 步骤 6：前端启动</span></span><br><span class="line">chatchat <span class="built_in">start</span> <span class="literal">-a</span></span><br></pre></td></tr></table></figure>
+<h2 id="第四部分：一键启动脚本"><a href="#第四部分：一键启动脚本" class="headerlink" title="第四部分：一键启动脚本"></a>第四部分：一键启动脚本</h2><p>每次都要手动开两个窗口、输四行命令太麻烦了？ 我们可以写一个 Windows 批处理脚本 (.bat)，双击一下，自动弹出两个窗口并运行。</p>
+<p>请新建一个文本文档，命名为 start_ai_system.bat (注意后缀是 .bat)，粘贴以下内容：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">@<span class="built_in">echo</span> off</span><br><span class="line"><span class="built_in">echo</span> =================================================</span><br><span class="line"><span class="built_in">echo</span>       正在启动 AI 私有化部署系统 (双环境版)</span><br><span class="line"><span class="built_in">echo</span> =================================================</span><br><span class="line"></span><br><span class="line">:: <span class="built_in">Set</span> Chatchat Project Path (方便下方调用)</span><br><span class="line"><span class="built_in">set</span> CHATCHAT_PATH=E:\AI_Projects\Langchain<span class="literal">-Chatchat-master</span>\libs\chatchat<span class="literal">-server</span></span><br><span class="line"></span><br><span class="line">:: <span class="literal">---------------------------------------------------</span></span><br><span class="line">:: [<span class="number">1</span>/<span class="number">3</span>] 清理残留进程 (可选)</span><br><span class="line">:: <span class="literal">---------------------------------------------------</span></span><br><span class="line"><span class="built_in">echo</span> [<span class="number">1</span>/<span class="number">3</span>] 清理旧进程...</span><br><span class="line">taskkill /F /IM xinference<span class="literal">-local</span>.exe &gt;nul <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line">:: taskkill /F /IM python.exe &gt;nul <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line"></span><br><span class="line">:: <span class="literal">---------------------------------------------------</span></span><br><span class="line">:: [<span class="number">2</span>/<span class="number">3</span>] 启动后端 Xinference (窗口 A)</span><br><span class="line">:: <span class="literal">---------------------------------------------------</span></span><br><span class="line"><span class="built_in">echo</span> [<span class="number">2</span>/<span class="number">3</span>] 正在启动后端 Xinference (端口 <span class="number">9997</span>)...</span><br><span class="line">:: 使用 call conda activate 激活后端环境</span><br><span class="line"><span class="built_in">start</span> <span class="string">&quot;Backend_Xinference&quot;</span> cmd /k <span class="string">&quot;call conda activate E:\CondaData\envs\xinference_env &amp;&amp; xinference-local --host 127.0.0.1 --port 9997&quot;</span></span><br><span class="line"></span><br><span class="line">:: 等待 <span class="number">8</span> 秒，确保后端完全启动</span><br><span class="line"><span class="built_in">echo</span> 等待后端就绪...</span><br><span class="line">timeout /t <span class="number">8</span> /nobreak &gt;nul</span><br><span class="line"></span><br><span class="line">:: <span class="literal">---------------------------------------------------</span></span><br><span class="line">:: [<span class="number">3</span>/<span class="number">3</span>] 启动前端 Chatchat (窗口 B)</span><br><span class="line">:: <span class="literal">---------------------------------------------------</span></span><br><span class="line"><span class="built_in">echo</span> [<span class="number">3</span>/<span class="number">3</span>] 正在启动前端 Chatchat...</span><br><span class="line">:: 解释：</span><br><span class="line">:: <span class="number">1</span>. /d 指定工作目录</span><br><span class="line">:: <span class="number">2</span>. 激活环境</span><br><span class="line">:: <span class="number">3</span>. <span class="built_in">set</span> CHATCHAT_ROOT 设置环境变量 (Batch语法)</span><br><span class="line">:: <span class="number">4</span>. chatchat <span class="built_in">start</span> <span class="literal">-a</span> 启动</span><br><span class="line"><span class="built_in">start</span> <span class="string">&quot;Frontend_Chatchat&quot;</span> /d <span class="string">&quot;%CHATCHAT_PATH%&quot;</span> cmd /k <span class="string">&quot;call conda activate E:\CondaData\envs\chatchat_env &amp;&amp; set CHATCHAT_ROOT=%CHATCHAT_PATH% &amp;&amp; chatchat start -a&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> =================================================</span><br><span class="line"><span class="built_in">echo</span>           系统启动中，请勿关闭弹出的黑窗口</span><br><span class="line"><span class="built_in">echo</span> =================================================</span><br><span class="line">pause</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>注意：Windows 的命令行（CMD）默认使用 GBK (ANSI) 编码来显示中文，而你现在的 .bat 文件应该是用 UTF-8 格式保存的。</li>
+</ul>
+<p>当 CMD 用 GBK 去读 UTF-8 的汉字时，就会出现乱码。更糟糕的是，乱码会吞掉部分命令字符（比如把 set CH 吞成了乱码，只剩下 ATCHAT_ROOT），导致程序运行报错。</p>
+<ul>
+<li>解决：用“记事本”另存为 ANSI 编码（推荐）不需要改代码，只需要改文件的保存格式。</li>
+</ul>
+<ol>
+<li><p>右键点击你的 start_ai_system.bat 文件，选择 “编辑”（或者用记事本打开）。</p>
+</li>
+<li><p>点击左上角的 “文件” (File) -&gt; “另存为” (Save As)。</p>
+</li>
+<li><p>在弹出的窗口最下方，找到 “编码” (Encoding) 选项。把它从 UTF-8 改为 ANSI。</p>
+</li>
+<li><p>点击 保存 并覆盖原文件。再次双击运行，乱码就会消失，命令也能正常识别了。</p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>AI实战</category>
+      </categories>
+      <tags>
+        <tag>Xinference</tag>
+        <tag>Langchain</tag>
+        <tag>本地部署</tag>
+        <tag>Conda</tag>
       </tags>
   </entry>
 </search>
