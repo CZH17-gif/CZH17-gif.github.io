@@ -374,7 +374,7 @@ ul { list-style: none; }
   background-color: transparent;
 }
 .markdown-body .highlight .gutter {
-  background-color: #f0f2f5;
+  background-color: #f6f8fa;
   padding: 16px 0;
 }
 .markdown-body .highlight .gutter pre {
