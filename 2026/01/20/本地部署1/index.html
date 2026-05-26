@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<title>实战记录（1）：Windows 本地部署 Xinference + Langchain-Chatchat 避坑指南 | CZH Tech Blog</title>
+
+<link rel="stylesheet" href="/css/style.css">
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+<link rel="preconnect" href="https://gs.jurieo.com/gemini/fonts-googleapis">
+<link rel="preconnect" href="https://gs.jurieo.com/gemini/fonts-gstatic" crossorigin>
+<link href="https://gs.jurieo.com/gemini/fonts-googleapis/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<meta name="generator" content="Hexo 8.1.1"></head>
+<body>
+  <nav class="top-nav">
+  <div class="container nav-inner">
+    <a href="/" class="nav-logo">
+      <i class="iconfont icon-code" style="margin-right:8px;"></i> CZH Tech Blog
+    </a>
+    <div class="nav-links">
+      <a href="/"><i class="iconfont icon-home"></i> 首页</a>
+      <a href="/archives/"><i class="iconfont icon-archive"></i> 归档</a>
+      <a href="/categories/"><i class="iconfont icon-th-large"></i> 专栏</a>
+      <a href="/portfolio/"><i class="iconfont icon-video"></i> 作品集</a>
+      <a href="/about/"><i class="iconfont icon-user"></i> 关于</a>
+    </div>
+  </div>
+</nav>
+  
+  
+  
+  <header class="page-banner" 
+          style="background-image: url('/img/banner.webp'); background-color: #000;">
+    <div class="banner-mask"></div>
+    <div class="banner-title">实战记录（1）：Windows 本地部署 Xinference + Langchain-Chatchat 避坑指南</div>
+  </header>
+
+  
+  <div class="post-wrapper">
+  <div class="post-main">
+    
+    <div class="post-nav">
+      <span class="back-home" onclick="location.href='/'">
+        <i class="iconfont icon-arrow-left"></i> 返回首页
+      </span>
+      <span class="breadcrumb-sep">/</span>
+      <span>正文内容</span>
+    </div>
+
+    <article class="post-article">
+      <header class="post-header">
+        <div class="post-meta">
+          <time><i class="iconfont icon-calendar"></i> 2026-01-20</time>
+          <span class="meta-divider">|</span>
+          <span><i class="iconfont icon-folder"></i> AI实战</span>
+          <span class="meta-divider">|</span>
+          <span><i class="iconfont icon-file-text"></i> 2077 字</span>
+        </div>
+      </header>
+      
+      <div class="markdown-body">
+        <h1 id="实战记录（1）：Windows-本地部署-Xinference-Langchain-Chatchat-避坑指南"><a href="#实战记录（1）：Windows-本地部署-Xinference-Langchain-Chatchat-避坑指南" class="headerlink" title="实战记录（1）：Windows 本地部署 Xinference + Langchain-Chatchat 避坑指南"></a>实战记录（1）：Windows 本地部署 Xinference + Langchain-Chatchat 避坑指南</h1><blockquote>
+<p><strong>背景</strong>：在 RTX 3060 (6GB 显存) 的条件下，我尝试部署了 Xinference 作为推理后端。经历了显存爆炸、端口冲突、C盘爆满等一系列问题后，终于探索出了一套<strong>绝对能跑、不伤电脑、迁移方便</strong>的最佳实践。</p>
+</blockquote>
+<hr>
+<h2 id="一、-核心概念：我们在做什么？"><a href="#一、-核心概念：我们在做什么？" class="headerlink" title="一、 核心概念：我们在做什么？"></a>一、 核心概念：我们在做什么？</h2><p>在本地 AI 架构中，我们需要两个核心组件：</p>
+<ol>
+<li><strong>Xinference (后端&#x2F;厨师)</strong>：<ul>
+<li><strong>定义</strong>：一个高性能的大模型推理引擎。</li>
+<li><strong>作用</strong>：负责加载模型（如 Qwen, Llama），进行复杂的数学计算（推理），并提供 API 接口。</li>
+<li><strong>底层</strong>：支持 vLLM（速度快）和 Llama.cpp（省显存，兼容性好）。</li>
+</ul>
+</li>
+<li><strong>Langchain-Chatchat (前端&#x2F;服务员)</strong>：<ul>
+<li><strong>作用</strong>：提供 Web 聊天界面，管理知识库文件，调用 Xinference 的 API 来生成回答。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="二、-部署策略：环境隔离与存储迁移"><a href="#二、-部署策略：环境隔离与存储迁移" class="headerlink" title="二、 部署策略：环境隔离与存储迁移"></a>二、 部署策略：环境隔离与存储迁移</h2><h3 id="1-环境隔离"><a href="#1-环境隔离" class="headerlink" title="1. 环境隔离"></a>1. 环境隔离</h3><p><strong>强烈建议</strong>将后端和前端隔离在两个不同的 Conda 环境中：</p>
+<ul>
+<li><code>xinference_env</code>：只跑后端，锁定 <code>numpy&lt;2.0</code> 防止底层冲突。</li>
+<li><code>chatchat_env</code>：只跑前端 UI。</li>
+</ul>
+<h3 id="2-存储迁移"><a href="#2-存储迁移" class="headerlink" title="2. 存储迁移"></a>2. 存储迁移</h3><p>Xinference 默认将巨大的模型文件下载到 <code>C:\Users\用户名\.xinference</code>。为了防止 C 盘爆红，必须设置环境变量将其迁移到 E 盘。</p>
+<p><strong>操作步骤：</strong></p>
+<ol>
+<li><strong>移动文件</strong>：将 <code>.xinference</code> 文件夹剪切到 E 盘，例如 <code>E:\AI_Projects\models\.xinference</code>。</li>
+<li><strong>设置环境变量</strong>：<ul>
+<li>变量名：<code>XINFERENCE_HOME</code></li>
+<li>变量值：<code>E:\AI_Projects\models\.xinference</code> (必须精确指向 .xinference 层级)</li>
+</ul>
+</li>
+<li><strong>重启生效</strong>：设置后必须重启 PowerShell。</li>
+</ol>
+<hr>
+<h2 id="三、-针对-6G-显存的“保命”配置"><a href="#三、-针对-6G-显存的“保命”配置" class="headerlink" title="三、 针对 6G 显存的“保命”配置"></a>三、 针对 6G 显存的“保命”配置</h2><p>RTX 3060 只有 6GB 显存，强跑 7B 模型会导致<strong>花屏、驱动崩溃</strong>。经过测试，以下是最佳平衡配置：</p>
+<h3 id="1-对话模型-LLM"><a href="#1-对话模型-LLM" class="headerlink" title="1. 对话模型 (LLM)"></a>1. 对话模型 (LLM)</h3><ul>
+<li><strong>模型选择</strong>：<code>Qwen1.5-chat</code></li>
+<li><strong>规格 (Size)</strong>：<ul>
+<li><strong>1.8B</strong> (推荐)：聪明且极速，显存占用约 1.5GB。</li>
+<li><strong>0.5B</strong> (极速)：超快但较笨，显存占用忽略不计。</li>
+<li><em>❌ 慎用 4B&#x2F;7B，极易导致显存溢出 (OOM)。</em></li>
+</ul>
+</li>
+<li><strong>引擎 (Engine)</strong>：<code>Llama.cpp</code> (GGUF格式，对消费级显卡最友好)。</li>
+<li><strong>量化 (Quantization)</strong>：<code>q4_k_m</code> (平衡) 或 <code>q8_0</code> (0.5B模型专用)。</li>
+<li><strong>关键设置</strong>：<strong>UID 必须手动填为 <code>qwen1.5-chat</code></strong>，否则前端连不上。</li>
+</ul>
+<h3 id="2-向量模型-Embedding"><a href="#2-向量模型-Embedding" class="headerlink" title="2. 向量模型 (Embedding)"></a>2. 向量模型 (Embedding)</h3><ul>
+<li><strong>模型选择</strong>：<code>bge-large-zh-v1.5</code></li>
+<li><strong>设备 (Device)</strong>：<ul>
+<li><strong>CPU</strong> (最稳)：完全不占显存，防止花屏，内存占用约 2G。</li>
+<li><strong>GPU</strong> (可选)：如果 LLM 很小 (0.5B)，可尝试放回 GPU。</li>
+</ul>
+</li>
+<li><strong>引擎</strong>：<code>sentence_transformers</code>。</li>
+<li><strong>关键设置</strong>：<strong>UID 必须手动填为 <code>bge-large-zh-v1.5</code></strong>。</li>
+</ul>
+<hr>
+<h2 id="四、-踩坑与解决方案-Troubleshooting"><a href="#四、-踩坑与解决方案-Troubleshooting" class="headerlink" title="四、 踩坑与解决方案 (Troubleshooting)"></a>四、 踩坑与解决方案 (Troubleshooting)</h2><h3 id="Q1-电脑花屏、屏幕闪烁"><a href="#Q1-电脑花屏、屏幕闪烁" class="headerlink" title="Q1: 电脑花屏、屏幕闪烁"></a>Q1: 电脑花屏、屏幕闪烁</h3><ul>
+<li><strong>原因</strong>：显存瞬间被占满（VRAM Overflow），系统图形界面无显存可用。</li>
+<li><strong>解决</strong>：降级模型参数（7B -&gt; 1.8B），或使用 CPU Offload。</li>
+</ul>
+<h3 id="Q2-RuntimeError-Cluster-is-not-available-端口被占"><a href="#Q2-RuntimeError-Cluster-is-not-available-端口被占" class="headerlink" title="Q2: RuntimeError: Cluster is not available &#x2F; 端口被占"></a>Q2: <code>RuntimeError: Cluster is not available</code> &#x2F; 端口被占</h3><ul>
+<li><strong>原因</strong>：之前的 Xinference 进程没关干净，9997 端口被幽灵进程占用。</li>
+<li><strong>解决</strong>：  <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 杀掉残留进程</span></span><br><span class="line">taskkill /F /IM python.exe</span><br><span class="line"><span class="comment"># 或者查端口杀 PID</span></span><br><span class="line">netstat <span class="literal">-ano</span> | findstr <span class="number">9997</span></span><br><span class="line">taskkill /F /PID &lt;PID数字&gt;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="Q3-Chatchat-启动后找不到模型"><a href="#Q3-Chatchat-启动后找不到模型" class="headerlink" title="Q3: Chatchat 启动后找不到模型"></a>Q3: Chatchat 启动后找不到模型</h3><ul>
+<li><strong>原因</strong>：Xinference 启动模型时自动加了后缀（如 <code>qwen1.5-chat-0</code>），导致 ID 不匹配。</li>
+<li><strong>解决</strong>：在 Xinference 网页端 Launch 时，展开 Optional Configurations，<strong>手动填写 Model UID</strong>。</li>
+</ul>
+<h3 id="Q4-内存-RAM-爆满"><a href="#Q4-内存-RAM-爆满" class="headerlink" title="Q4: 内存 (RAM) 爆满"></a>Q4: 内存 (RAM) 爆满</h3><ul>
+<li><strong>原因</strong>：Embedding 模型在 CPU 跑 + 浏览器占用 + 系统占用。</li>
+<li><strong>解决</strong>：关闭多余浏览器标签；如果显存有富余，将 Embedding 模型挪回 GPU 运行。</li>
+</ul>
+<hr>
+<h2 id="五、-常用命令速查"><a href="#五、-常用命令速查" class="headerlink" title="五、 常用命令速查"></a>五、 常用命令速查</h2><p><strong>1. 启动后端 (Window A):</strong></p>
+<pre><code class="language-powershell">conda activate xinference_env
+# 确保环境变量 XINFERENCE_HOME 已生效
+xinference-local --host 127.0.0.1 --port 9997
+</code></pre>
+
+      </div>
+
+      <div class="post-footer-tags">
+        
+          
+            <a href="/tags/Xinference/" class="tag-link"># Xinference</a>
+          
+            <a href="/tags/Langchain/" class="tag-link"># Langchain</a>
+          
+            <a href="/tags/%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/" class="tag-link"># 本地部署</a>
+          
+            <a href="/tags/AI/" class="tag-link"># AI</a>
+          
+        
+      </div>
+    </article>
+
+    <div class="comment-container">
+      <div class="comment-head">
+        <i class="iconfont icon-message"></i> 参与讨论
+      </div>
+      <script src="https://giscus.app/client.js"
+              data-repo="CZH17-gif/CZH17-gif.github.io"
+              data-repo-id="R_kgDOQzBcSw"
+              data-category="Announcements"
+              data-category-id="DIC_kwDOQzBcS84C0ys7"
+              data-mapping="pathname"
+              data-strict="0"
+              data-reactions-enabled="0"
+              data-emit-metadata="0"
+              data-input-position="top"
+              data-theme="light"
+              data-lang="zh-CN"
+              crossorigin="anonymous"
+              async>
+      </script>
+    </div>
+  </div>
+
+  <aside class="toc-sidebar">
+    <div class="toc-card">
+      <div class="toc-title">
+        <i class="iconfont icon-list"></i> 文章目录
+      </div>
+      <div class="toc-content">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9E%E6%88%98%E8%AE%B0%E5%BD%95%EF%BC%881%EF%BC%89%EF%BC%9AWindows-%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2-Xinference-Langchain-Chatchat-%E9%81%BF%E5%9D%91%E6%8C%87%E5%8D%97"><span class="toc-text">实战记录（1）：Windows 本地部署 Xinference + Langchain-Chatchat 避坑指南</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81-%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%EF%BC%9A%E6%88%91%E4%BB%AC%E5%9C%A8%E5%81%9A%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-text">一、 核心概念：我们在做什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81-%E9%83%A8%E7%BD%B2%E7%AD%96%E7%95%A5%EF%BC%9A%E7%8E%AF%E5%A2%83%E9%9A%94%E7%A6%BB%E4%B8%8E%E5%AD%98%E5%82%A8%E8%BF%81%E7%A7%BB"><span class="toc-text">二、 部署策略：环境隔离与存储迁移</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%8E%AF%E5%A2%83%E9%9A%94%E7%A6%BB"><span class="toc-text">1. 环境隔离</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AD%98%E5%82%A8%E8%BF%81%E7%A7%BB"><span class="toc-text">2. 存储迁移</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81-%E9%92%88%E5%AF%B9-6G-%E6%98%BE%E5%AD%98%E7%9A%84%E2%80%9C%E4%BF%9D%E5%91%BD%E2%80%9D%E9%85%8D%E7%BD%AE"><span class="toc-text">三、 针对 6G 显存的“保命”配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AF%B9%E8%AF%9D%E6%A8%A1%E5%9E%8B-LLM"><span class="toc-text">1. 对话模型 (LLM)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%90%91%E9%87%8F%E6%A8%A1%E5%9E%8B-Embedding"><span class="toc-text">2. 向量模型 (Embedding)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81-%E8%B8%A9%E5%9D%91%E4%B8%8E%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-Troubleshooting"><span class="toc-text">四、 踩坑与解决方案 (Troubleshooting)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Q1-%E7%94%B5%E8%84%91%E8%8A%B1%E5%B1%8F%E3%80%81%E5%B1%8F%E5%B9%95%E9%97%AA%E7%83%81"><span class="toc-text">Q1: 电脑花屏、屏幕闪烁</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q2-RuntimeError-Cluster-is-not-available-%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0"><span class="toc-text">Q2: RuntimeError: Cluster is not available &#x2F; 端口被占</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q3-Chatchat-%E5%90%AF%E5%8A%A8%E5%90%8E%E6%89%BE%E4%B8%8D%E5%88%B0%E6%A8%A1%E5%9E%8B"><span class="toc-text">Q3: Chatchat 启动后找不到模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q4-%E5%86%85%E5%AD%98-RAM-%E7%88%86%E6%BB%A1"><span class="toc-text">Q4: 内存 (RAM) 爆满</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E9%80%9F%E6%9F%A5"><span class="toc-text">五、 常用命令速查</span></a></li></ol></li></ol>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const tocLinks = document.querySelectorAll('.toc-link');
+    const sections = Array.from(tocLinks).map(link => {
+      return document.querySelector(decodeURI(link.getAttribute('href')));
+    }).filter(section => section !== null);
+
+    function spy() {
+      const scrollPos = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+      let activeIndex = -1;
+      
+      sections.forEach((section, index) => {
+        if (scrollPos >= section.offsetTop - 100) {
+          activeIndex = index;
+        }
+      });
+
+      tocLinks.forEach(link => link.classList.remove('active'));
+      if (activeIndex !== -1) {
+        tocLinks[activeIndex].classList.add('active');
+      }
+    }
+
+    window.addEventListener('scroll', spy);
+    spy(); 
+  });
+</script>
+
+<style>
+  /* 局部微调样式 */
+  .comment-container {
+    margin-top: 50px;
+    padding: 30px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  }
+  .comment-head {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .post-footer-tags {
+    margin-top: 40px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .tag-link {
+    background: #f1f3f4;
+    color: #5f6368;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    transition: 0.3s;
+  }
+  .tag-link:hover {
+    background: #1a73e8;
+    color: #fff;
+    text-decoration: none;
+  }
+  .meta-divider {
+    margin: 0 10px;
+    color: #eee;
+  }
+</style>
+
+  <footer style="text-align:center; padding:40px 0; color:#888; margin-top:60px; border-top:1px solid #eee;">
+  <p>&copy; 2026 CZH</p>
+</footer>
+
+  
+    <script>
+      if(document.getElementById('typed-text')) {
+        new Typed('#typed-text', {
+          strings: ['实战记录（1）：Windows 本地部署 Xinference + Langchain-Chatchat 避坑指南'],
+          typeSpeed: 70, showCursor: false
+        });
+      }
+    </script>
+  
+
+  <script>
+    var searchFunc = function(path, search_id, content_id) {
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        success: function(xmlResponse) {
+          var datas = $("entry", xmlResponse).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          if (!$input) return;
+          
+          $input.addEventListener('input', function() {
+            var str = '<div class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              $resultContent.style.display = 'none';
+              return;
+            }
+            var count = 0;
+            datas.forEach(function(data) {
+              var isMatch = true;
+              var data_title = data.title.trim().toLowerCase();
+              var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+              if (data_title && keywords.some(k => data_title.indexOf(k) >= 0 || data_content.indexOf(k) >= 0)) {
+                 str += "<a href='" + data.url + "' class='search-item'>";
+                 str += "<div class='search-title'>" + data.title + "</div>";
+                 str += "</a>";
+                 count++;
+              }
+            });
+            if (count > 0) {
+              $resultContent.innerHTML = str;
+              $resultContent.style.display = 'block';
+            }
+          });
+        }
+      });
+    };
+    searchFunc('/search.xml', 'local-search-input', 'search-result');
+  </script>
+</body>
+</html>
