@@ -140,7 +140,7 @@ ul { list-style: none; }
 
 /* ================= 5. 首页网格 ================= */
 .home-layout { margin: 40px auto; }
-.grid-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+.grid-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
 .grid-card { 
   background: transparent; 
   border: none; 
@@ -415,13 +415,14 @@ ul { list-style: none; }
 .markdown-body .highlight .gutter pre {
   background: transparent;
   color: #8b949e;
-  padding: 0 4px 0 8px;
+  padding: 0 8px 0 8px;
   text-align: right;
   margin: 0;
   border: none;
   box-shadow: none;
   font-size: 14px;
-  min-width: 36px;
+  width: 40px;
+  flex-shrink: 0;
 }
 .markdown-body .highlight .code {
   padding: 16px 0;
