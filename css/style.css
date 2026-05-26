@@ -373,6 +373,8 @@ ul { list-style: none; }
   overflow: hidden;
   border: 1px solid #e2e8f0;
   background-color: #f6f8fa;
+  margin-left: -20px;
+  margin-right: -20px;
 }
 .markdown-body .highlight table {
   width: 100%;
